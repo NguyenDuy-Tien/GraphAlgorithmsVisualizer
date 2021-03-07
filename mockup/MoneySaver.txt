@@ -1,0 +1,37 @@
+Object Customer:
+* double Balance
+* double toSpend
+* method:
+- void income(double income)
+- void spend(double income)
+- double getBalance()
+- void whattoeat(double balance)
+	+ display video URL
+	+ display what to buy
+- void setBalance(double x)
+- void showHistory(date a - b)
+- void conclude()
+	+ month
+	+ year
+
+Object Transaction:
+* double delta
+* int priority
+* int type (0, 1)
+	+ 0 means spend
+	+ 1 means get
+* method:
+- void display()
+- void addtoHistory()
+- void remove()
+- void message()
+
+Object Meal:
+* String url
+* double totalPrice
+* double totalTime
+* method:
+- void display()
+- String description()
+- void showAttributes()
+- String toString()
