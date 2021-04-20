@@ -25,7 +25,7 @@ public class BillQuery {
 				+ "where Description LIKE '%" + desc + "%'\r\n"
 				;
 	}
-	public static String getTotalSpendWithPriority(int priority)
+	public static String getTotalSpendWithPriorityQuery(int priority)
 	{
 		return "select * from Bills\r\n"
 				+ "where Priority = " + priority;
