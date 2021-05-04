@@ -17,7 +17,7 @@ public class Edge implements Comparable<Edge> {
 		return this.weight;
 	}
 	
-	public int either()
+	public int begin()
 	{
 		return v;
 	}
@@ -30,6 +30,12 @@ public class Edge implements Comparable<Edge> {
 		}
 		return u;
 	}
+	
+	public int end()
+	{
+		return u;
+	}
+	
 	@Override
 	public int compareTo(Edge that) {
 		// TODO Auto-generated method stub
