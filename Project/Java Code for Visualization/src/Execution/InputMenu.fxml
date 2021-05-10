@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Execution.InputMenuController">
+   <children>
+      <VBox fx:id="vBox" layoutX="500.0" prefHeight="400.0" prefWidth="195.0" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="25.0">
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <VBox prefHeight="100.0" prefWidth="152.0">
+                     <children>
+                        <Label text="Number of vertices" />
+                        <TextField promptText="(Type in an integer)" />
+                        <Label text="Number of edges" />
+                        <TextField promptText="(Type in an integer)" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Label text="List of edges:" />
+            <Label text="Format: u - v - w " />
+            <Label text="(start - end - weight)" />
+            <TextArea prefHeight="50000.0" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
