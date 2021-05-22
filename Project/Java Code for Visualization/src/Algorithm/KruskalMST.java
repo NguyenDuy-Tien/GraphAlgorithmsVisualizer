@@ -28,6 +28,14 @@ public class KruskalMST {
 		while ((!pq.isEmpty()) && (mst.size() < (G.number_of_vertices() - 1)))
 		{
 			Edge e = pq.poll();
+			try {
+				//highlight e
+				Thread.sleep(200);
+			}
+			catch (Exception exception)
+			{
+				
+			}
 			int u = e.begin();
 			int v = e.other(u);
 			if (UF.connected(u, v))
@@ -35,7 +43,16 @@ public class KruskalMST {
 				continue;
 			}
 			UF.union(u, v);
-			mst.add(e);
+			try
+			{
+				//change color e
+				mst.add(e);
+				Thread.sleep(200);
+			}
+			catch (Exception exception)
+			{
+				
+			}
 		}
 	}
 	public Iterable<Edge> list_of_edges()

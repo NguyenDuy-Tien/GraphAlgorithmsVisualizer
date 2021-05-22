@@ -31,6 +31,14 @@ public class Graph {
 	
 	public void addDirectedEdge(Edge e)
 	{
+		try {
+			//draw an edge with arrow here
+			Thread.sleep(200);
+		}
+		catch (Exception exception)
+		{
+			
+		}
 		this.list_of_edges.add(e);
 		int v = e.begin();
 		this.adjacency_list.get(v).add(e);
@@ -38,6 +46,14 @@ public class Graph {
 	
 	public void addUndirectedEdge(Edge e)
 	{
+		try {
+			//draw an edge without arrow here
+			Thread.sleep(200);
+		}
+		catch (Exception exception)
+		{
+			
+		}
 		this.list_of_edges.add(e);
 		int v = e.begin();
 		int w = e.other(v);

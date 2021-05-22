@@ -27,6 +27,15 @@ public class PrimMST {
 		pq.add(0);
 		while (!pq.isEmpty())
 		{
+			try {
+				//highlight node
+				int nodeID = pq.peek();
+				Thread.sleep(200);
+			}
+			catch(Exception exception)
+			{
+				
+			}
 			visit(G, pq.poll());
 		}
 	}
@@ -36,6 +45,14 @@ public class PrimMST {
 		marked[v] = true;
 		for (Edge e: G.adjacency_list(v))
 		{
+			try {
+				//highlight edge
+				Thread.sleep(200);
+			}
+			catch(Exception exception)
+			{
+				
+			}
 			int u = e.other(v);
 			if (marked[u]) continue;
 			if (e.weight() < distTo[u])

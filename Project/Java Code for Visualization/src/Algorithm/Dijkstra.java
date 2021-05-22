@@ -31,6 +31,15 @@ public class Dijkstra {
 		pq.add(v);
 		while (!pq.isEmpty())
 		{
+			try {
+				//highlight node
+				int nodeID = pq.peek();
+				Thread.sleep(200);
+			}
+			catch(Exception exception)
+			{
+				
+			}
 			relax(G, pq.poll());
 		}
  	}
@@ -54,6 +63,14 @@ public class Dijkstra {
 	{
 		for (Edge e: G.adjacency_list(v))
 		{
+			try {
+				//draw
+				Thread.sleep(200);
+			}
+			catch (Exception exception)
+			{
+				
+			}
 			int w = e.other(v);
 			if (distTo[w] > distTo[v] + e.weight())
 			{
