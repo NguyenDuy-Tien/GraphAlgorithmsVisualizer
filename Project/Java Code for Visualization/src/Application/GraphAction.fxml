@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">
+   <children>
+      <RadioButton layoutX="22.0" layoutY="60.0" mnemonicParsing="false" selected="true" text="Add node">
+         <toggleGroup>
+            <ToggleGroup fx:id="addType" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton layoutX="144.0" layoutY="60.0" mnemonicParsing="false" text="Add edge" />
+      <AnchorPane layoutX="90.0" layoutY="111.0" prefHeight="400.0" prefWidth="600.0" />
+      <TextField fx:id="textAlgorithm" layoutX="245.0" layoutY="14.0" promptText="Algorithm name here">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
+      <Button fx:id="backButton" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" text="Back" />
+      <Button fx:id="resetButton" layoutX="14.0" layoutY="123.0" mnemonicParsing="false" text="Reset" />
+      <Button fx:id="clearButton" layoutX="14.0" layoutY="165.0" mnemonicParsing="false" text="Clear" />
+      <Button fx:id="pauseButton" layoutX="14.0" layoutY="209.0" mnemonicParsing="false" text="Pause" />
+   </children>
+</AnchorPane>
