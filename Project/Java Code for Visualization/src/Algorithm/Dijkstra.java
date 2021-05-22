@@ -59,12 +59,13 @@ public class Dijkstra {
 		}
 		return false;
 	}
-	public void relax(Graph G, int v)
+	private void relax(Graph G, int v)
 	{
 		for (Edge e: G.adjacency_list(v))
 		{
 			try {
 				//draw
+				
 				Thread.sleep(200);
 			}
 			catch (Exception exception)
