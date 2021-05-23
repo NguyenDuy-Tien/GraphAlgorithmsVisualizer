@@ -10,7 +10,7 @@ import Elements.Graph;
 public class Dijkstra {
 	Edge[] edgeTo;
 	double[] distTo;
-	HashMap<Integer, Double> dist;
+	private HashMap<Integer, Double> dist;
 	PriorityQueue<Integer> pq;
 	boolean[] marked;
 	public Dijkstra(Graph G, int v)
