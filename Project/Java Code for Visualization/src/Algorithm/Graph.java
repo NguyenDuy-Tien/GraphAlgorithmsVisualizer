@@ -49,7 +49,7 @@ public class Graph {
 		}
 		this.list_of_vertices.remove(v);
 	}
-	public Iterable<Edge> adjacent_list_of_vertex(Vertex v)
+	public Iterable<Edge> adjacent_edges_of_vertex(Vertex v)
 	{
 		Vector<Edge> adj = new Vector<Edge>();
 		for (Edge e: this.list_of_edges)
@@ -66,6 +66,28 @@ public class Graph {
 				if (e.getBegin().equals(v)||e.getEnd(e.getBegin()).equals(v))
 				{
 					adj.add(e);
+				}
+			}
+		}
+		return adj;
+	}
+	public Iterable<Vertex> adjacent_vertices_of_vertex(Vertex v)
+	{
+		Vector<Vertex> adj = new Vector<Vertex>();
+		for (Edge e: this.list_of_edges)
+		{
+			if (e instanceof DirectedEdge)
+			{
+				if (e.getBegin().equals(v))
+				{
+					adj.add(e.getEnd(v));
+				}
+			}
+			if (e instanceof UndirectedEdge)
+			{
+				if (e.getBegin().equals(v)||e.getEnd(e.getBegin()).equals(v))
+				{
+					adj.add(e.getEnd(v));
 				}
 			}
 		}
