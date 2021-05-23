@@ -1,11 +1,15 @@
 package Application;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
@@ -32,17 +36,27 @@ public class InputMenuController implements Initializable{
 	}
 	public void validate()
 	{
+		boolean valid = false;
 		if (directedBox.isSelected())
 		{
-			if (AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Kruskal")||
+			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
+				valid = false;
+				showAlert("Algorithm not selected", "Please choose algorithm");
+			}
+			else if (AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Kruskal")||
 					AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Prim"))
 			{
 				showAlert("Invalid algorithm", "Only Dijkstra can be implemented with directed graph");
+				valid = false;
 			}
 		}
 		if (undirectedBox.isSelected())
 		{
-
+			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
+				valid = false;
+				showAlert("Algorithm not selected", "Please choose algorithm");
+			}
+			else valid = true;
 		}
 		try {
 			String graphText = graphData.getText().trim();
@@ -64,6 +78,7 @@ public class InputMenuController implements Initializable{
 					w = Integer.valueOf(splitdata[4 + 3*i]);
 				}
 			}
+			if(valid == true) this.loadNextScence();
 		}
 		catch (Exception exception)
 		{
@@ -77,5 +92,17 @@ public class InputMenuController implements Initializable{
 		AlgorithmBox.getItems().clear();
 		AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
 		graphData.setText("");
+	}
+	public void loadNextScence() {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphAction.fxml"));
+        Parent root;
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+	        InputMenu.primaryStage.setScene(newScene);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
