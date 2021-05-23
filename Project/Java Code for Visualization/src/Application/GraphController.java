@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import Elements.Edge;
+import Algorithm.Edge;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,7 +35,7 @@ public class GraphController implements Initializable{
 //	List<Vertex> circles = new ArrayList<>();
 //    List<Edge> mstEdges = new ArrayList<>(), realEdges = new ArrayList<>();
 	
-    List<Elements.Edge> mstEdges = new ArrayList<Edge>();
+    List<Algorithm.Edge> mstEdges = new ArrayList<Edge>();
     List<Shape> edges = new ArrayList<>();
     boolean addNode = true, addEdge = false, calculate = false,
             calculated = false, playing = false, paused = false, pinned = false;
