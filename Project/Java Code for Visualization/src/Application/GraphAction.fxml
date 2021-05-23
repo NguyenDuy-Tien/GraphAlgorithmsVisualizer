@@ -15,7 +15,7 @@
          </toggleGroup>
       </RadioButton>
       <RadioButton layoutX="144.0" layoutY="60.0" mnemonicParsing="false" text="Add edge" />
-      <AnchorPane layoutX="90.0" layoutY="111.0" prefHeight="400.0" prefWidth="600.0" />
+      <AnchorPane layoutX="90.0" layoutY="111.0" onMouseDragEntered="#handle" prefHeight="400.0" prefWidth="600.0" />
       <TextField fx:id="textAlgorithm" layoutX="245.0" layoutY="14.0" promptText="Algorithm name here">
          <font>
             <Font size="16.0" />
