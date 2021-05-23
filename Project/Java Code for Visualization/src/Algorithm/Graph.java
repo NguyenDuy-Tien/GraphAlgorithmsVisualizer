@@ -14,13 +14,17 @@ public class Graph {
 		list_of_edges = new Vector<Edge>();
 		list_of_vertices = new Vector<Vertex>();
 	}
-	public void addDirectedEdge(Edge e)
+	public void addEdge(Edge e)
 	{
 		this.list_of_edges.add(e);
 	}
 	public void removeEdge(Edge e)
 	{
 		this.list_of_edges.remove(e);
+	}
+	public void changeAlgorithm(Algorithm newAlgorithm)
+	{
+		this.algorithm = newAlgorithm;
 	}
 	public void addVertex(Vertex v)
 	{

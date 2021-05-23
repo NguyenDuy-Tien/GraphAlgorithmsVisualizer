@@ -7,4 +7,10 @@ public class UndirectedEdge extends Edge{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public void draw(int colour) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -1,6 +1,6 @@
 package Algorithm;
 
-public abstract class Edge implements Comparable<Edge> {
+public abstract class Edge implements Comparable<Edge>, Drawable {
 
 	private Vertex begin;
 	private Vertex end;

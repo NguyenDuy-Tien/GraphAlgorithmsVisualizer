@@ -3,10 +3,9 @@ package Algorithm;
 import java.awt.Point;
 import java.util.Vector;
 
-public class Vertex {
+public class Vertex implements Drawable{
 	private int ID;
 	private Point position;
-
 	public Point getPosition()
 	{
 		return this.position;
@@ -15,11 +14,7 @@ public class Vertex {
 	{
 		return this.ID;
 	}
-	public void moveTo(Point newPosition)
-	{
-		this.position = newPosition;
-	}
-	
+
 
 	@Override
 	public boolean equals(Object o)
@@ -38,5 +33,10 @@ public class Vertex {
 			return true;
 		}
 		return false;
+	}
+	@Override
+	public void draw(int colour) {
+		// TODO Auto-generated method stub
+		
 	}
 }
