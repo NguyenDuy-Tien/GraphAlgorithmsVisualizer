@@ -1,7 +1,16 @@
-package Algorithm;
+package Elements;
+
+
+
+import Algorithm.Drawable;
+import javafx.scene.control.Label;
+import javafx.scene.shape.Shape;
 
 public abstract class Edge implements Comparable<Edge>, Drawable {
 
+	public Shape line;
+	public Label weightLabel;
+	
 	private Vertex begin;
 	private Vertex end;
 	private double weight;
@@ -10,8 +19,16 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 		this.begin = v;
 		this.end = u;
 		this.weight = weight;
+		this.weightLabel = new Label(String.valueOf(weight));
+		
 	}
-	
+	public Shape getLine() {
+		return line;
+	}
+	public void setLine(Shape line)
+	{
+		this.line = line;
+	}
 	public double getWeight()
 	{
 		return this.weight;

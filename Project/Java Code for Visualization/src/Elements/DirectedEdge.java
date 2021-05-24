@@ -1,4 +1,4 @@
-package Algorithm;
+package Elements;
 
 public class DirectedEdge extends Edge{
 

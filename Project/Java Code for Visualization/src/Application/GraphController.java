@@ -7,12 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
-import Algorithm.Edge;
-
 import Elements.Arrow;
-import Elements.EdgeFX;
-import Elements.VertexFX;
+import Elements.Edge;
+import Elements.UndirectedEdge;
+import Elements.Vertex;
 
 import javafx.animation.FillTransition;
 import javafx.animation.Interpolator;
@@ -73,8 +71,8 @@ public class GraphController implements Initializable{
     boolean menuBool = false;
     ContextMenu globalMenu;
 //	List<Vertex> circles = new ArrayList<>();
-    List<EdgeFX> mstEdges = new ArrayList<>(), realEdges = new ArrayList<>();
-	VertexFX selectedVertexFX = null;
+    List<Edge> mstEdges = new ArrayList<>(), realEdges = new ArrayList<>();
+	Vertex selectedVertex = null;
     List<Shape> edges = new ArrayList<>();
     boolean addNode = true, addEdge = false, calculate = false,
             calculated = false, playing = false, paused = false, pinned = false;
@@ -103,14 +101,14 @@ public class GraphController implements Initializable{
 //                        return;
 //                    }
                     nNode++;
-                    VertexFX circle = new VertexFX(ev.getX(), ev.getY(), 1.0, String.valueOf(nNode));
-                    canvasGroup.getChildren().add(circle);
+                    Vertex vertex = new Vertex(ev.getX(), ev.getY(), 10.0);
+                    canvasGroup.getChildren().add(vertex);
 
-                    circle.setOnMousePressed(mouseHandler);
-                    circle.setOnMouseReleased(mouseHandler);
-                    circle.setOnMouseDragged(mouseHandler);
-                    circle.setOnMouseExited(mouseHandler);
-                    circle.setOnMouseEntered(mouseHandler);
+                    vertex.setOnMousePressed(mouseHandler);
+                    vertex.setOnMouseReleased(mouseHandler);
+                    vertex.setOnMouseDragged(mouseHandler);
+                    vertex.setOnMouseExited(mouseHandler);
+                    vertex.setOnMouseEntered(mouseHandler);
 
 //                    ScaleTransition tr = new ScaleTransition(Duration.millis(100), circle);
 //                    tr.setByX(10f);
@@ -122,40 +120,50 @@ public class GraphController implements Initializable{
             }
         }
     }
-	public boolean isExistsEdgeFX(VertexFX begin, VertexFX end) {
-		for(EdgeFX edgeFX : realEdges) {
-			if(edgeFX.edge.getBegin() == begin.vertex) {
+	public boolean isExistsEdge(Vertex begin, Vertex end)
+	{
+		for (Edge edge: realEdges)
+		{
+			if (edge.getBegin().equals(begin) && edge.getEnd(edge.getBegin()).equals(end))
+			{
+				return true;
+			}
+			else if (edge instanceof UndirectedEdge && edge.getBegin().equals(end) && edge.getEnd(edge.getBegin()).equals(begin))
+			{
 				return true;
 			}
 		}
 		return false;
 	}
+	
 	EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent mouseEvent) {
-            VertexFX circle = (Elements.VertexFX) mouseEvent.getSource();
+            Vertex circle = (Elements.Vertex) mouseEvent.getSource();
             if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED && mouseEvent.getButton() == MouseButton.PRIMARY) {
 
                 if (!circle.isSelected) {
-                    if (selectedVertexFX != null) {
-                        if (addEdge && !isExistsEdgeFX(selectedVertexFX, circle)) {
+                    if (selectedVertex != null) {
+                        if (addEdge && !isExistsEdge(selectedVertex, circle)) {
                             weight = new Label();
                             System.out.println("Adding Edge");
                             //Adds the edge between two selected nodes
                             if (undirected) {
-                                edgeLine = new Line(selectedVertexFX.point.x, selectedVertexFX.point.y, circle.point.x, circle.point.y);
+                                edgeLine = new Line(selectedVertex.getPosition().getX(), selectedVertex.getPosition().getY(), 
+                                		circle.getPosition().getX(), circle.getPosition().getY());
                                 canvasGroup.getChildren().add(edgeLine);
                                 edgeLine.setId("line");
                             } else if (directed) {
-                                arrow = new Arrow(selectedVertexFX.point.x, selectedVertexFX.point.y, circle.point.x, circle.point.y);
+                                arrow = new Arrow(selectedVertex.getPosition().getX(), selectedVertex.getPosition().getY(), 
+                                		circle.getPosition().getX(), circle.getPosition().getY());
                                 canvasGroup.getChildren().add(arrow);
                                 arrow.setId("arrow");
                             }
 
                             //Adds weight between two selected nodes
-                                weight.setLayoutX(((selectedVertexFX.point.x) + (circle.point.x)) / 2);
-                                weight.setLayoutY(((selectedVertexFX.point.y) + (circle.point.y)) / 2);
+                                weight.setLayoutX(((selectedVertex.getPosition().getX()) + (circle.getPosition().getX())) / 2);
+                                weight.setLayoutY(((selectedVertex.getPosition().getX()) + (circle.getPosition().getY())) / 2);
 
                                 TextInputDialog dialog = new TextInputDialog("0");
                                 dialog.setTitle(null);
@@ -171,9 +179,10 @@ public class GraphController implements Initializable{
                                 canvasGroup.getChildren().add(weight);
                                 
                             Shape line_arrow = null;
-                            EdgeFX temp = null;
+                            Edge temp = null;
                             if (undirected) {
-                                temp = new EdgeFX(selectedVertexFX.vertex, circle.vertex, Integer.valueOf(weight.getText()), edgeLine, weight);
+                                temp = new UndirectedEdge(selectedVertex, circle, Double.valueOf(weight.getText()));
+                                temp.setLine(line_arrow);
                                 mstEdges.add(temp);
 
 //                                selectedVertexFX.vertex.adjacents.add(new Edge(selectedVertexFX.vertex, circle.vertex, Double.valueOf(weight.getText()), edgeLine, weight));
@@ -184,9 +193,10 @@ public class GraphController implements Initializable{
                                 line_arrow = edgeLine;
 
                             } else if (directed) {
-                                temp = new EdgeFX(selectedVertexFX.vertex, circle.vertex, Double.valueOf(weight.getText()), arrow, weight);
+                                temp = new UndirectedEdge(selectedVertex, circle, Double.valueOf(weight.getText()));
 //                                selectedVertexFX.vertex.adjacents.add(temp);
 //                                circle.node.revAdjacents.add(new Edge(circle.node, selectedVertexFx.node, Integer.valueOf(weight.getText()), arrow));
+                                temp.setLine(line_arrow);
                                 edges.add(arrow);
                                 line_arrow = arrow;
                                 realEdges.add(temp);
@@ -218,18 +228,18 @@ public class GraphController implements Initializable{
 //                            });
                        }
                         if (addNode || (calculate && !calculated) || addEdge) {
-                            selectedVertexFX.isSelected = false;
-                            FillTransition ft1 = new FillTransition(Duration.millis(300), selectedVertexFX, Color.RED, Color.BLACK);
+                            selectedVertex.isSelected = false;
+                            FillTransition ft1 = new FillTransition(Duration.millis(300), selectedVertex, Color.RED, Color.BLACK);
                             ft1.play();
                         }
-                        selectedVertexFX = null;
+                        selectedVertex = null;
                         return;
                     }
 
-                    FillTransition ft = new FillTransition(Duration.millis(300), circle, Color.BLACK, Color.RED);
+                    FillTransition ft = new FillTransition(Duration.millis(300), circle, Color.BLUE, Color.RED);
                     ft.play();
                     circle.isSelected = true;
-                    selectedVertexFX = circle;
+                    selectedVertex = circle;
 
                     // WHAT TO DO WHEN SELECTED ON ACTIVE ALGORITHM
 //                    if (calculate && !calculated) {
@@ -259,9 +269,9 @@ public class GraphController implements Initializable{
 //                    }
                 } else {
                     circle.isSelected = false;
-                    FillTransition ft1 = new FillTransition(Duration.millis(300), circle, Color.RED, Color.BLACK);
+                    FillTransition ft1 = new FillTransition(Duration.millis(300), circle, Color.RED, Color.BLUE);
                     ft1.play();
-                    selectedVertexFX = null;
+                    selectedVertex = null;
                 }
 
             }

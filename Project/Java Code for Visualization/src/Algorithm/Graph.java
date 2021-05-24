@@ -3,6 +3,11 @@ package Algorithm;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import Elements.DirectedEdge;
+import Elements.Edge;
+import Elements.UndirectedEdge;
+import Elements.Vertex;
+
 public class Graph {
 	private int number_of_vertices;
 	private int number_of_edges;

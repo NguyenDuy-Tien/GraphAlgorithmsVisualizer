@@ -37,7 +37,7 @@ public class InputMenuController implements Initializable{
 	}
 	public void validate()
 	{
-		boolean valid = false;
+		boolean valid = true;
 		if (directedBox.isSelected())
 		{
 			undirected = false;
@@ -63,6 +63,7 @@ public class InputMenuController implements Initializable{
 			}
 			else valid = true;
 		}
+		
 		try {
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
@@ -83,6 +84,7 @@ public class InputMenuController implements Initializable{
 					w = Integer.valueOf(splitdata[4 + 3*i]);
 				}
 			}
+			System.out.println("GraphText: " + graphText + valid);
 			if(valid == true) this.loadNextScence();
 		}
 		catch (Exception exception)
