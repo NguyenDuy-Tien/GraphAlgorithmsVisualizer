@@ -6,6 +6,14 @@ import java.util.Vector;
 public class Vertex implements Drawable{
 	private int ID;
 	private Point position;
+	private double radius;
+	public Vertex(double x, double y, double radius, String name)
+	{
+		position.setLocation(x, y);
+		this.radius = radius;
+		this.ID = Integer.valueOf(name);
+	}
+	
 	public Point getPosition()
 	{
 		return this.position;
@@ -14,7 +22,6 @@ public class Vertex implements Drawable{
 	{
 		return this.ID;
 	}
-
 
 	@Override
 	public boolean equals(Object o)

@@ -8,7 +8,8 @@ import java.util.ResourceBundle;
 
 
 import Algorithm.Edge;
-import Elements.VertexFX;
+import Algorithm.Vertex;
+//import Elements.VertexFX;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
@@ -73,8 +74,8 @@ public class GraphController implements Initializable{
 //                        return;
 //                    }
                     nNode++;
-                    VertexFX circle = new VertexFX(ev.getX(), ev.getY(), 1.2, String.valueOf(nNode));
-                    canvasGroup.getChildren().add(circle);
+                    Vertex circle = new Vertex(ev.getX(), ev.getY(), 1.2, String.valueOf(nNode));
+//                    canvasGroup.getChildren().add(circle);
 
 //                    circle.setOnMousePressed(mouseHandler);
 //                    circle.setOnMouseReleased(mouseHandler);
@@ -82,11 +83,11 @@ public class GraphController implements Initializable{
 //                    circle.setOnMouseExited(mouseHandler);
 //                    circle.setOnMouseEntered(mouseHandler);
 
-                    ScaleTransition tr = new ScaleTransition(Duration.millis(100), circle);
-                    tr.setByX(10f);
-                    tr.setByY(10f);
-                    tr.setInterpolator(Interpolator.EASE_OUT);
-                    tr.play();
+//                    ScaleTransition tr = new ScaleTransition(Duration.millis(100), circle);
+//                    tr.setByX(10f);
+//                    tr.setByY(10f);
+//                    tr.setInterpolator(Interpolator.EASE_OUT);
+//                    tr.play();
 
                 }
             }
