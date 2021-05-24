@@ -1,6 +1,6 @@
 package Elements;
 
-import java.awt.Point;
+
 import java.util.Vector;
 
 import Algorithm.Drawable;
@@ -22,6 +22,7 @@ public class Vertex extends Circle implements Drawable{
 		idLabel.setLayoutX(x - 18);
         idLabel.setLayoutY(y - 18);
 		this.ID = count;
+		this.setOpacity(0.6);
 	}
 	
 	public Point getPosition()

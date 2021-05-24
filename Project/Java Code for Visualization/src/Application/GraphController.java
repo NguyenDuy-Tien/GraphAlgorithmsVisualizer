@@ -11,15 +11,19 @@ import Elements.Arrow;
 import Elements.Edge;
 import Elements.UndirectedEdge;
 import Elements.Vertex;
-
+import javafx.animation.Animation;
 import javafx.animation.FillTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ScaleTransition;
+import javafx.animation.StrokeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -27,6 +31,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -62,6 +67,8 @@ public class GraphController implements Initializable{
     @FXML
 	private ToggleGroup addType;
     @FXML
+    private Label sourceText = new Label("Source ");
+    @FXML
     private Label weight;
     @FXML
     private Line edgeLine;
@@ -70,7 +77,7 @@ public class GraphController implements Initializable{
     
     boolean menuBool = false;
     ContextMenu globalMenu;
-//	List<Vertex> circles = new ArrayList<>();
+    List<Vertex> circles = new ArrayList<>();
     List<Edge> mstEdges = new ArrayList<>(), realEdges = new ArrayList<>();
 	Vertex selectedVertex = null;
     List<Shape> edges = new ArrayList<>();
@@ -103,7 +110,8 @@ public class GraphController implements Initializable{
                     nNode++;
                     Vertex vertex = new Vertex(ev.getX(), ev.getY(), 10.0);
                     canvasGroup.getChildren().add(vertex);
-
+                    circles.add(vertex);
+                    
                     vertex.setOnMousePressed(mouseHandler);
                     vertex.setOnMouseReleased(mouseHandler);
                     vertex.setOnMouseDragged(mouseHandler);
@@ -163,7 +171,7 @@ public class GraphController implements Initializable{
 
                             //Adds weight between two selected nodes
                                 weight.setLayoutX(((selectedVertex.getPosition().getX()) + (circle.getPosition().getX())) / 2);
-                                weight.setLayoutY(((selectedVertex.getPosition().getX()) + (circle.getPosition().getY())) / 2);
+                                weight.setLayoutY(((selectedVertex.getPosition().getY()) + (circle.getPosition().getY())) / 2);
 
                                 TextInputDialog dialog = new TextInputDialog("0");
                                 dialog.setTitle(null);
@@ -183,7 +191,7 @@ public class GraphController implements Initializable{
                             if (undirected) {
                                 temp = new UndirectedEdge(selectedVertex, circle, Double.valueOf(weight.getText()));
                                 temp.setLine(line_arrow);
-                                mstEdges.add(temp);
+                                realEdges.add(temp);
 
 //                                selectedVertexFX.vertex.adjacents.add(new Edge(selectedVertexFX.vertex, circle.vertex, Double.valueOf(weight.getText()), edgeLine, weight));
 //                                circle.vertex.adjacents.add(new Edge(circle.vertex, selectedVertexFX.vertex, Double.valueOf(weight.getText()), edgeLine, weight));
@@ -280,7 +288,7 @@ public class GraphController implements Initializable{
     };
 
 	
-
+    @FXML
 	public void AddNodeHandle(ActionEvent event) {
         addNode = true;
         addEdge = false;
@@ -298,10 +306,111 @@ public class GraphController implements Initializable{
         addEdgeButton.setSelected(true);
     }
 
+    @FXML
+    public void ClearHandle(ActionEvent event) {
+//        if(st != null && st.getStatus() != Animation.Status.STOPPED)
+//            st.stop();
+//        if(st != null) st.getChildren().clear();
+        menuBool = false;
+        selectedVertex = null;
+        calculated = false;
+        System.out.println("IN CLEAR:" + circles.size());
+        for (Vertex v : circles) {
+            v.isSelected = false;
+//            v.node.visited = false;
+//            v.node.previous = null;
+//            v.node.minDistance = Double.POSITIVE_INFINITY;
+//            v.node.DAGColor = 0;
+
+            FillTransition ft1 = new FillTransition(Duration.millis(300), v);
+            ft1.setToValue(Color.BLACK);
+            ft1.play();
+        }
+        for (Shape x : edges) {
+            if (undirected) {
+                StrokeTransition ftEdge = new StrokeTransition(Duration.millis(500), x);
+                ftEdge.setToValue(Color.BLACK);
+                ftEdge.play();
+            } else if (directed) {
+                FillTransition ftEdge = new FillTransition(Duration.millis(500), x);
+                ftEdge.setToValue(Color.BLACK);
+                ftEdge.play();
+            }
+        }
+        canvasGroup.getChildren().remove(sourceText);
+        for (Label x : distances) {
+            x.setText("Distance : INFINITY");
+            canvasGroup.getChildren().remove(x);
+        }
+//        for (Label x : visitTime) {
+//            x.setText("Visit : 0");
+//            canvasGroup.getChildren().remove(x);
+//        }
+//        for (Label x : lowTime) {
+//            x.setText("Low Value : NULL");
+//            canvasGroup.getChildren().remove(x);
+//        }
+//        textFlow.clear();
+
+//        Image image = new Image(getClass().getResourceAsStream("/res/pause_black_48x48.png"));
+//        playPauseImage.setImage(image);
+
+        distances = new ArrayList<>();
+//        visitTime = new ArrayList<>();
+//        lowTime = new ArrayList<>();
+        addNodeButton.setDisable(false);
+        addEdgeButton.setDisable(false);
+        AddNodeHandle(null);
+        playing = false;
+        paused = false;
+    }
 
 
+    @FXML
+    public void ResetHandle(ActionEvent event) {
+        ClearHandle(null);
+        nNode = 0;
+        canvasGroup.getChildren().clear();
+        canvasGroup.getChildren().addAll(viewer);
+        selectedVertex = null;
+        circles = new ArrayList<Vertex>();
+        distances = new ArrayList<Label>();
+//        visitTime = new ArrayList<Label>();
+//        lowTime = new ArrayList<Label>();
+        addNode = true;
+        addEdge = false;
+        calculate = false;
+        calculated = false;
+        addNodeButton.setSelected(true);
+        addEdgeButton.setSelected(false);
+        addEdgeButton.setDisable(true);
+        addNodeButton.setDisable(false);
+        clearButton.setDisable(true);
+//        algo = new Algorithm();
+//        Image image = new Image(getClass().getResourceAsStream("/res/pause_black_48x48.png"));
+//        playPauseImage.setImage(image);
+//        hiddenPane.setPinnedSide(null);
+
+        playing = false;
+        paused = false;
+    }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		System.out.println("Initialize drawing graph");
+		
+		ResetHandle(null);
+		
+		clearButton.setDisable(true);
+		//Back Button pressed
+		backButton.setOnAction(e-> {
+			try {
+				ResetHandle(null);
+				Parent root = FXMLLoader.load(getClass().getResource("InputMenu.fxml"));
+				Scene scene = new Scene(root);
+				InputMenu.primaryStage.setScene(scene);
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		});
 	}
 }

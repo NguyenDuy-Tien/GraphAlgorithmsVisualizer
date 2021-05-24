@@ -31,8 +31,8 @@
          </font>
       </TextField>
       <Button fx:id="backButton" layoutX="14.0" layoutY="20.0" mnemonicParsing="false" text="Back" />
-      <Button fx:id="resetButton" layoutX="14.0" layoutY="123.0" mnemonicParsing="false" text="Reset" />
-      <Button fx:id="clearButton" layoutX="14.0" layoutY="165.0" mnemonicParsing="false" text="Clear" />
+      <Button fx:id="resetButton" layoutX="14.0" layoutY="123.0" mnemonicParsing="false" onAction="#ResetHandle" text="Reset" />
+      <Button fx:id="clearButton" layoutX="14.0" layoutY="165.0" mnemonicParsing="false" onAction="#ClearHandle" text="Clear" />
       <Button fx:id="pauseButton" layoutX="14.0" layoutY="209.0" mnemonicParsing="false" text="Pause" />
    </children>
 </AnchorPane>
