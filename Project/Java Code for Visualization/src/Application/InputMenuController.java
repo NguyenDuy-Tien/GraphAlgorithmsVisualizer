@@ -26,6 +26,7 @@ public class InputMenuController implements Initializable{
 	ComboBox AlgorithmBox;
 	@FXML
 	TextArea graphData;
+	public static boolean undirected = false, directed = false;
 	public static void showAlert(String title, String message)
 	{
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -39,6 +40,8 @@ public class InputMenuController implements Initializable{
 		boolean valid = false;
 		if (directedBox.isSelected())
 		{
+			undirected = false;
+			directed = true;
 			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
 				valid = false;
 				showAlert("Algorithm not selected", "Please choose algorithm");
@@ -52,6 +55,8 @@ public class InputMenuController implements Initializable{
 		}
 		if (undirectedBox.isSelected())
 		{
+			directed = false;
+			undirected = true;
 			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
 				valid = false;
 				showAlert("Algorithm not selected", "Please choose algorithm");
