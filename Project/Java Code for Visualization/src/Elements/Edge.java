@@ -47,6 +47,9 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 		}
 		return end;
 	}
+	public Vertex getEnd() {
+		return end;
+	}
 	
 	
 	@Override

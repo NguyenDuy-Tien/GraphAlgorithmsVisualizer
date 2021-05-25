@@ -71,6 +71,8 @@ public class GraphController implements Initializable{
     @FXML
     private Label weight;
     @FXML
+    private Label vertexId;
+    @FXML
     private Line edgeLine;
     @FXML
     private Arrow arrow;
@@ -108,7 +110,12 @@ public class GraphController implements Initializable{
 //                        return;
 //                    }
                     nNode++;
-                    Vertex vertex = new Vertex(ev.getX(), ev.getY(), 10.0);
+                    Vertex vertex = new Vertex(ev.getX(), ev.getY(), 12.0);
+                    vertexId = new Label();
+                    canvasGroup.getChildren().add(vertexId);
+                    vertexId.setLayoutX(ev.getX() - 6);
+                    vertexId.setLayoutY(ev.getY() - 6);
+                    vertexId.setText(String.valueOf(vertex.getID()));
                     canvasGroup.getChildren().add(vertex);
                     circles.add(vertex);
                     
@@ -235,7 +242,7 @@ public class GraphController implements Initializable{
 //                                menuBool = false;
 //                            });
                        }
-                        if (addNode || (calculate && !calculated) || addEdge) {
+                       if (addNode || (calculate && !calculated) || addEdge) {
                             selectedVertex.isSelected = false;
                             FillTransition ft1 = new FillTransition(Duration.millis(300), selectedVertex, Color.RED, Color.BLACK);
                             ft1.play();
@@ -399,7 +406,44 @@ public class GraphController implements Initializable{
 		System.out.println("Initialize drawing graph");
 		
 		ResetHandle(null);
-		
+		for(Vertex vertex : InputMenuController.graph.getList_of_vertices()) {
+			vertexId = new Label();
+            canvasGroup.getChildren().add(vertexId);
+            vertexId.setLayoutX(vertex.getPosition().getX() - 6);
+            vertexId.setLayoutY(vertex.getPosition().getY() - 6);
+            vertexId.setText(String.valueOf(vertex.getID()));
+            canvasGroup.getChildren().add(vertex);
+            circles.add(vertex);
+            vertex.setOnMousePressed(mouseHandler);
+            vertex.setOnMouseReleased(mouseHandler);
+            vertex.setOnMouseDragged(mouseHandler);
+            vertex.setOnMouseExited(mouseHandler);
+            vertex.setOnMouseEntered(mouseHandler);
+		}
+		for(Edge edge : InputMenuController.graph.getList_of_edges()) {
+			weight = new Label();
+			if (undirected) {
+                edgeLine = new Line(edge.getBegin().getPosition().getX(), edge.getBegin().getPosition().getY(), 
+                		edge.getEnd().getPosition().getX(), edge.getEnd().getPosition().getY());
+                canvasGroup.getChildren().add(edgeLine);
+                edgeLine.setId("line");
+            } else if (directed) {
+                arrow = new Arrow(edge.getBegin().getPosition().getX(), edge.getBegin().getPosition().getY(), 
+                		edge.getEnd().getPosition().getX(), edge.getEnd().getPosition().getY());
+                canvasGroup.getChildren().add(arrow);
+                arrow.setId("arrow");
+            }
+
+            //Adds weight between two selected nodes
+                weight.setLayoutX(((edge.getBegin().getPosition().getX()) + (edge.getEnd().getPosition().getX())) / 2);
+                weight.setLayoutY(((edge.getBegin().getPosition().getY()) + (edge.getEnd().getPosition().getY())) / 2);
+
+                weight.setText(String.valueOf(edge.getWeight()));
+                canvasGroup.getChildren().add(weight);
+		}
+		if(InputMenuController.graph.getList_of_edges().size() >= 2) {
+			addEdgeButton.setDisable(false);
+		}
 		clearButton.setDisable(true);
 		//Back Button pressed
 		backButton.setOnAction(e-> {

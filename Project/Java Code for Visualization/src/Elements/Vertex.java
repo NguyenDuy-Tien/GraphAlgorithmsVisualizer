@@ -12,17 +12,13 @@ public class Vertex extends Circle implements Drawable{
 	private int ID;
 	public Point position;
 	public boolean isSelected = false;
-	public Label idLabel;
 	public Vertex(double x, double y, double radius)
 	{
 		super(x, y, radius);
 		count++;
 		position = new Point((int)x, (int)y);
-		idLabel = new Label(String.valueOf(count));
-		idLabel.setLayoutX(x - 18);
-        idLabel.setLayoutY(y - 18);
 		this.ID = count;
-		this.setOpacity(0.6);
+		this.setOpacity(0.4);
 	}
 	
 	public Point getPosition()
@@ -34,6 +30,9 @@ public class Vertex extends Circle implements Drawable{
 		return this.ID;
 	}
 
+	public void resetCount() {
+		count = 0;
+	}
 	@Override
 	public boolean equals(Object o)
 	{
