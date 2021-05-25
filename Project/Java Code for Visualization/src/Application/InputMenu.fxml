@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import org.controlsfx.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -16,7 +17,7 @@
    <children>
       <VBox layoutX="-3.0" prefHeight="400.0" prefWidth="193.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label prefHeight="14.0" prefWidth="91.0" text="Type of graph" />
+            <Label prefHeight="21.0" prefWidth="138.0" text="Type of graph" />
             <RadioButton fx:id="directedBox" mnemonicParsing="false" text="Directed">
                <toggleGroup>
                   <ToggleGroup fx:id="GraphType" />
@@ -27,7 +28,7 @@
             <ComboBox fx:id="AlgorithmBox" prefWidth="150.0" />
             <Label text="Graph data (Optional)" />
             <TextArea fx:id="graphData" prefHeight="239.0" prefWidth="194.0" promptText="(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)" />
-            <Button mnemonicParsing="false" onAction="#validate" text="Validate" />
+            <Button mnemonicParsing="false" onAction="#validate" text="Validate" textAlignment="CENTER" />
          </children>
       </VBox>
    </children>

@@ -26,6 +26,7 @@ public class InputMenuController implements Initializable{
 	ComboBox AlgorithmBox;
 	@FXML
 	TextArea graphData;
+	public static boolean undirected = false, directed = false;
 	public static void showAlert(String title, String message)
 	{
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -36,9 +37,11 @@ public class InputMenuController implements Initializable{
 	}
 	public void validate()
 	{
-		boolean valid = false;
+		boolean valid = true;
 		if (directedBox.isSelected())
 		{
+			undirected = false;
+			directed = true;
 			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
 				valid = false;
 				showAlert("Algorithm not selected", "Please choose algorithm");
@@ -52,12 +55,15 @@ public class InputMenuController implements Initializable{
 		}
 		if (undirectedBox.isSelected())
 		{
+			directed = false;
+			undirected = true;
 			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
 				valid = false;
 				showAlert("Algorithm not selected", "Please choose algorithm");
 			}
 			else valid = true;
 		}
+		
 		try {
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
@@ -78,6 +84,7 @@ public class InputMenuController implements Initializable{
 					w = Integer.valueOf(splitdata[4 + 3*i]);
 				}
 			}
+			System.out.println("GraphText: " + graphText + valid);
 			if(valid == true) this.loadNextScence();
 		}
 		catch (Exception exception)

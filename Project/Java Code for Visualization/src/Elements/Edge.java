@@ -1,49 +1,78 @@
 package Elements;
 
-public class Edge implements Comparable<Edge> {
 
-	private int v;
-	private int u;
-	private double weight;
-	public Edge(int v, int u, double weight)
-	{
-		this.v = v;
-		this.u = u;
-		this.weight = weight;
-	}
+
+import Algorithm.Drawable;
+import javafx.scene.control.Label;
+import javafx.scene.shape.Shape;
+
+public abstract class Edge implements Comparable<Edge>, Drawable {
+
+	public Shape line;
+	public Label weightLabel;
 	
-	public double weight()
+	private Vertex begin;
+	private Vertex end;
+	private double weight;
+	public Edge(Vertex v, Vertex u, double weight)
+	{
+		this.begin = v;
+		this.end = u;
+		this.weight = weight;
+		this.weightLabel = new Label(String.valueOf(weight));
+		
+	}
+	public Shape getLine() {
+		return line;
+	}
+	public void setLine(Shape line)
+	{
+		this.line = line;
+	}
+	public double getWeight()
 	{
 		return this.weight;
 	}
 	
-	public int begin()
+	public Vertex getBegin()
 	{
-		return v;
+		return begin;
 	}
 	
-	public int other(int vertex)
+	public Vertex getEnd(Vertex vertex)
 	{
-		if (v!=vertex)
+		if (begin.equals(vertex))
 		{
-			return v;
+			return begin;
 		}
-		return u;
+		return end;
 	}
 	
-	public int end()
+	
+	@Override
+	public boolean equals(Object o)
 	{
-		return u;
+		if (o == this)
+		{
+			return true;
+		}
+		if (!(o instanceof Edge))
+		{
+			return false;
+		}
+		Edge e = (Edge) o;
+		return ((e.getBegin().equals(this.getBegin())) 
+				&& (e.getEnd(e.getBegin()).equals(this.getEnd(this.getBegin())))
+				&& (e.getWeight() == this.getWeight()));
 	}
-	
 	@Override
 	public int compareTo(Edge that) {
 		// TODO Auto-generated method stub
-		if (this.weight() < that.weight())
+		if (this.getWeight() < that.getWeight())
 		{
 			return -1;
 		}
-		if (this.weight() == that.weight())
+		if (this.getWeight() == that.getWeight())
 		{
 			return 0;
 		}
