@@ -43,9 +43,9 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 	{
 		if (begin.equals(vertex))
 		{
-			return begin;
+			return end;
 		}
-		return end;
+		return begin;
 	}
 	public Vertex getEnd() {
 		return end;
