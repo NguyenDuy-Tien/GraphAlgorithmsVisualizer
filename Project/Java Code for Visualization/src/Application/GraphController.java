@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
+
 import Elements.Arrow;
+import Elements.DirectedEdge;
 import Elements.Edge;
 import Elements.UndirectedEdge;
 import Elements.Vertex;
@@ -53,13 +56,15 @@ public class GraphController implements Initializable{
 	@FXML
 	private RadioButton addEdgeButton;
 	@FXML
-	private Button backButton;
+	private JFXButton backButton;
 	@FXML
-	private Button resetButton;
+	private JFXButton resetButton;
 	@FXML
-	private Button clearButton;
+	private JFXButton clearButton;
 	@FXML
-	private Button pauseButton;
+	private JFXButton runOneButton;
+	@FXML
+	private JFXButton runAllButton;
     @FXML
     private Group canvasGroup;
     @FXML 
@@ -208,7 +213,7 @@ public class GraphController implements Initializable{
                                 line_arrow = edgeLine;
 
                             } else if (directed) {
-                                temp = new UndirectedEdge(selectedVertex, circle, Double.valueOf(weight.getText()));
+                                temp = new DirectedEdge(selectedVertex, circle, Double.valueOf(weight.getText()));
 //                                selectedVertexFX.vertex.adjacents.add(temp);
 //                                circle.node.revAdjacents.add(new Edge(circle.node, selectedVertexFx.node, Integer.valueOf(weight.getText()), arrow));
                                 temp.setLine(line_arrow);
