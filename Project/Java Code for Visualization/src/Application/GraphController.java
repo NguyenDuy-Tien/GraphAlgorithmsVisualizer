@@ -396,6 +396,10 @@ public class GraphController implements Initializable{
         if(!circles.isEmpty()) {
 			circles.get(0).resetCount();
         }
+        edges.clear();
+        circles.clear();
+        mstEdges.clear();
+        realEdges.clear();
         nNode = 0;
         canvasGroup.getChildren().clear();
         canvasGroup.getChildren().addAll(viewer);
