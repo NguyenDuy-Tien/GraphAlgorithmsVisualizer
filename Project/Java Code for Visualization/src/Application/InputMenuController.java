@@ -118,7 +118,7 @@ public class InputMenuController implements Initializable{
 	public void validate()
 	{
 		boolean valid = true;
-		if(!graph.getList_of_vertices().isEmpty()) {
+		if(!graph.get_vertices().isEmpty()) {
 			graph.resetGraph();
 		}
 		if (directedBox.isSelected())
@@ -151,7 +151,9 @@ public class InputMenuController implements Initializable{
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
 			{
+
 				getInput(graphText);
+
 				
 			}
 			System.out.println("GraphText: " + graphText + valid);

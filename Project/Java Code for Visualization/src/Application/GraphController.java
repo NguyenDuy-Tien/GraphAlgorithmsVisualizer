@@ -430,7 +430,7 @@ public class GraphController implements Initializable{
 		System.out.println("Initialize drawing graph");
 		
 		ResetHandle(null);
-		for(Vertex vertex : InputMenuController.graph.getList_of_vertices()) {
+		for(Vertex vertex : InputMenuController.graph.get_vertices()) {
 			vertexId = new Label();
             canvasGroup.getChildren().add(vertexId);
             vertexId.setLayoutX(vertex.getPosition().getX() - 6);
@@ -444,7 +444,7 @@ public class GraphController implements Initializable{
             vertex.setOnMouseExited(mouseHandler);
             vertex.setOnMouseEntered(mouseHandler);
 		}
-		for(Edge edge : InputMenuController.graph.getList_of_edges()) {
+		for(Edge edge : InputMenuController.graph.get_edges()) {
 			weight = new Label();
 			if (undirected) {
                 edgeLine = new Line(edge.getBegin().getPosition().getX(), edge.getBegin().getPosition().getY(), 
@@ -465,7 +465,7 @@ public class GraphController implements Initializable{
                 weight.setText(String.valueOf(edge.getWeight()));
                 canvasGroup.getChildren().add(weight);
 		}
-		if(InputMenuController.graph.getList_of_edges().size() >= 2) {
+		if(InputMenuController.graph.get_edges().size() >= 2) {
 			addEdgeButton.setDisable(false);
 		}
 		clearButton.setDisable(true);
