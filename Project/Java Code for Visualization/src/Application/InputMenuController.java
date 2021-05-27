@@ -46,7 +46,7 @@ public class InputMenuController implements Initializable{
 	public void validate()
 	{
 		boolean valid = true;
-		if(!graph.getList_of_vertices().isEmpty()) {
+		if(!graph.get_vertices().isEmpty()) {
 			graph.resetGraph();
 		}
 		if (directedBox.isSelected())
@@ -98,8 +98,8 @@ public class InputMenuController implements Initializable{
 					u = Integer.valueOf(splitdata[2 + 3*i]);
 					v = Integer.valueOf(splitdata[3 + 3*i]);
 					w = Integer.valueOf(splitdata[4 + 3*i]);
-					Vertex beginVertex = graph.getList_of_vertices().elementAt(u - 1);
-					Vertex endVertex = graph.getList_of_vertices().elementAt(v - 1);
+					Vertex beginVertex = graph.get_vertices().elementAt(u - 1);
+					Vertex endVertex = graph.get_vertices().elementAt(v - 1);
 					if(undirected) {
 						UndirectedEdge edge = new UndirectedEdge(beginVertex, endVertex, w);
 						graph.addEdge(edge);

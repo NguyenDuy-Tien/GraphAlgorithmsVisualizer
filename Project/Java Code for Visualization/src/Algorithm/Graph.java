@@ -9,8 +9,6 @@ import Elements.UndirectedEdge;
 import Elements.Vertex;
 
 public class Graph {
-	private int number_of_vertices;
-	private int number_of_edges;
 	private Vector<Vertex> list_of_vertices;
 	
 	private Vector<Edge> list_of_edges;
@@ -55,10 +53,10 @@ public class Graph {
 		}
 		this.list_of_vertices.remove(v);
 	}
-	public Vector<Vertex> getList_of_vertices() {
+	public Vector<Vertex> get_vertices() {
 		return list_of_vertices;
 	}
-	public Vector<Edge> getList_of_edges() {
+	public Vector<Edge> get_edges() {
 		return list_of_edges;
 	}
 	public Iterable<Edge> adjacent_edges_of_vertex(Vertex v)
@@ -107,8 +105,6 @@ public class Graph {
 	}
 	public void resetGraph() {
 		this.list_of_vertices.elementAt(0).resetCount();
-		number_of_edges = 0;
-		number_of_vertices = 0;
 		list_of_edges.clear();
 		list_of_vertices.clear();
 	}
