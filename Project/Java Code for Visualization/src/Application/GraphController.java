@@ -9,6 +9,7 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 
+import Algorithm.Graph;
 import Elements.Arrow;
 import Elements.DirectedEdge;
 import Elements.Edge;
@@ -168,22 +169,33 @@ public class GraphController implements Initializable{
                         if (addEdge && !isExistsEdge(selectedVertex, circle)) {
                             weight = new Label();
                             System.out.println("Adding Edge");
+                            
+                            // Rename cho de hieu va de su dung
+                            double startX = selectedVertex.getPosition().getX();
+                        	double startY = selectedVertex.getPosition().getY();
+                        	double endX = circle.getPosition().getX();
+                        	double endY = circle.getPosition().getY();
+                        	
                             //Adds the edge between two selected nodes
                             if (undirected) {
-                                edgeLine = new Line(selectedVertex.getPosition().getX(), selectedVertex.getPosition().getY(), 
-                                		circle.getPosition().getX(), circle.getPosition().getY());
+                                edgeLine = new Line(startX, startY, endX, endY);
                                 canvasGroup.getChildren().add(edgeLine);
                                 edgeLine.setId("line");
+                                //Position weight label between two Undirected nodes
+                                weight.setLayoutX((startX + endX) / 2);
+                                weight.setLayoutY((startY + endY) / 2);
+                                
                             } else if (directed) {
-                                arrow = new Arrow(selectedVertex.getPosition().getX(), selectedVertex.getPosition().getY(), 
-                                		circle.getPosition().getX(), circle.getPosition().getY());
+                            	double diffX = (startX - endX)/30;
+                            	double diffY = (startY - endY)/30;
+                                arrow = new Arrow(startX -diffX, startY + diffY, 
+                                		endX -diffX, endY + diffY);
                                 canvasGroup.getChildren().add(arrow);
                                 arrow.setId("arrow");
+                                //Position weight label between two Directed nodes
+                                weight.setLayoutX((startX + endX) / 2);
+                                weight.setLayoutY((startY + endY) / 2 + diffY * 4);
                             }
-
-                            //Adds weight between two selected nodes
-                                weight.setLayoutX(((selectedVertex.getPosition().getX()) + (circle.getPosition().getX())) / 2);
-                                weight.setLayoutY(((selectedVertex.getPosition().getY()) + (circle.getPosition().getY())) / 2);
 
                                 TextInputDialog dialog = new TextInputDialog("0");
                                 dialog.setTitle(null);
@@ -381,6 +393,13 @@ public class GraphController implements Initializable{
     @FXML
     public void ResetHandle(ActionEvent event) {
         ClearHandle(null);
+        if(!circles.isEmpty()) {
+			circles.get(0).resetCount();
+        }
+        edges.clear();
+        circles.clear();
+        mstEdges.clear();
+        realEdges.clear();
         nNode = 0;
         canvasGroup.getChildren().clear();
         canvasGroup.getChildren().addAll(viewer);
