@@ -30,6 +30,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
 
@@ -46,6 +47,8 @@ public class InputMenuController implements Initializable{
 	JFXButton selectFileButton;
 	@FXML
 	Label filePathLabel;
+	@FXML
+	TextField fileLinkField;
 	public static Graph graph = new Graph();
 	public static boolean undirected = false, directed = false;
 	public static void showAlert(String title, String message)
@@ -61,7 +64,7 @@ public class InputMenuController implements Initializable{
 		FileChooser fc = new FileChooser();
 		File file = fc.showOpenDialog(null);
 		if(file != null) {
-			filePathLabel.setText(file.getAbsolutePath());
+			fileLinkField.setText(file.getAbsolutePath().toString());
 			getInputFromFile(file);
 		}
 		

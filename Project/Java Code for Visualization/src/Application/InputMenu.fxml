@@ -6,31 +6,44 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.InputMenuController">
+<AnchorPane prefHeight="395.0" prefWidth="547.0" stylesheets="@Test.css" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.InputMenuController">
    <children>
-      <VBox layoutX="-3.0" prefHeight="400.0" prefWidth="193.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="-3.0" prefHeight="399.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label prefHeight="21.0" prefWidth="138.0" text="Type of graph" />
-            <RadioButton fx:id="directedBox" mnemonicParsing="false" text="Directed">
+            <Label prefHeight="21.0" prefWidth="138.0" text="Type of graph" textFill="#cd0909">
+               <font>
+                  <Font size="19.0" />
+               </font></Label>
+            <RadioButton fx:id="directedBox" mnemonicParsing="false" prefHeight="15.0" prefWidth="89.0" stylesheets="@Test.css" text="Directed">
                <toggleGroup>
                   <ToggleGroup fx:id="GraphType" />
                </toggleGroup>
+               <VBox.margin>
+                  <Insets bottom="3.0" />
+               </VBox.margin>
             </RadioButton>
-            <RadioButton fx:id="undirectedBox" mnemonicParsing="false" selected="true" text="Undirected" toggleGroup="$GraphType" />
-            <Label text="Algorithm" />
-            <ComboBox fx:id="AlgorithmBox" prefWidth="150.0" />
-            <Label text="Graph data (Optional)" />
-            <TextArea fx:id="graphData" prefHeight="239.0" prefWidth="194.0" promptText="(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)" />
-            <HBox prefHeight="55.0" prefWidth="193.0">
+            <RadioButton fx:id="undirectedBox" mnemonicParsing="false" selected="true" stylesheets="@Test.css" text="Undirected" toggleGroup="$GraphType" />
+            <Label text="Algorithm" textFill="#da2727">
+               <font>
+                  <Font size="19.0" />
+               </font></Label>
+            <ComboBox fx:id="AlgorithmBox" prefHeight="26.0" prefWidth="290.0" />
+            <Label text="Graph data (Optional)" textFill="#dd2323">
+               <font>
+                  <Font size="19.0" />
+               </font></Label>
+            <TextArea fx:id="graphData" prefHeight="224.0" prefWidth="228.0" promptText="(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)" />
+            <HBox prefHeight="31.0" prefWidth="286.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#validate" text="Draw Graph" textAlignment="CENTER" />
-                  <Button fx:id="selectFileButoon" mnemonicParsing="false" onAction="#chooseFile" text="Select Input File">
+                  <Button id="sale" mnemonicParsing="false" onAction="#validate" prefHeight="47.0" prefWidth="129.0" stylesheets="@Test.css" text="Draw Graph" textAlignment="CENTER" />
+                  <Button id="sale" fx:id="selectFileButoon" mnemonicParsing="false" onAction="#chooseFile" prefHeight="32.0" prefWidth="138.0" stylesheets="@Test.css" text="Select Input File">
                      <HBox.margin>
                         <Insets left="12.0" />
                      </HBox.margin>
@@ -39,13 +52,6 @@
             </HBox>
          </children>
       </VBox>
-      <Label fx:id="filePathLabel" layoutX="198.0" layoutY="350.0" maxWidth="240.0" prefWidth="240.0" text="// FILE PATH DISPLAYED HERE">
-         <font>
-            <Font name="System Bold Italic" size="12.0" />
-         </font>
-         <padding>
-            <Insets left="4.0" />
-         </padding>
-      </Label>
+      <TextField fx:id="fileLinkField" layoutX="293.0" layoutY="354.0" prefHeight="45.0" prefWidth="258.0" />
    </children>
 </AnchorPane>
