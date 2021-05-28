@@ -7,6 +7,12 @@ public class UndirectedEdge extends Edge{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override 
+	public boolean startsFrom(Vertex v)
+	{
+		return this.getBegin().equals(v);
+	}
+
 	@Override
 	public void draw(int colour) {
 		// TODO Auto-generated method stub

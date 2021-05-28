@@ -1,6 +1,7 @@
 package Algorithm;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import Elements.DirectedEdge;
@@ -9,10 +10,10 @@ import Elements.UndirectedEdge;
 import Elements.Vertex;
 
 public class Graph {
-	private Vector<Vertex> list_of_vertices;
-	
-	private Vector<Edge> list_of_edges;
+	private List<Vertex> list_of_vertices;
+	private List<Edge> list_of_edges;
 	private Algorithm algorithm;
+	
 	public Graph()
 	{
 		list_of_edges = new Vector<Edge>();
@@ -53,58 +54,51 @@ public class Graph {
 		}
 		this.list_of_vertices.remove(v);
 	}
-	public Vector<Vertex> get_vertices() {
+	public List<Vertex> get_vertices() {
 		return list_of_vertices;
 	}
-	public Vector<Edge> get_edges() {
+	public List<Edge> get_edges() {
 		return list_of_edges;
 	}
+	
 	public Iterable<Edge> adjacent_edges_of_vertex(Vertex v)
 	{
 		Vector<Edge> adj = new Vector<Edge>();
+		// Find the edges that start from this vertex
 		for (Edge e: this.list_of_edges)
-		{
-			if (e instanceof DirectedEdge)
-			{
-				if (e.getBegin().equals(v))
-				{
-					adj.add(e);
-				}
-			}
-			if (e instanceof UndirectedEdge)
-			{
-				if (e.getBegin().equals(v)||e.getEnd(e.getBegin()).equals(v))
-				{
-					adj.add(e);
-				}
-			}
-		}
+			if (e.startsFrom(v))
+				// then add it to the list
+				adj.add(e);
+		
 		return adj;
 	}
+	
+	public List<Edge> getEdgesFrom(Vertex v)
+	{
+		List<Edge> adj = new ArrayList<Edge>();
+		
+		// Find the edges that start from this vertex
+		for (Edge e: this.list_of_edges)
+			if (e.startsFrom(v))
+					// then add it to the list
+					adj.add(e);
+	
+		return adj;
+	}
+	
 	public Iterable<Vertex> adjacent_vertices_of_vertex(Vertex v)
 	{
 		Vector<Vertex> adj = new Vector<Vertex>();
+		// Find the edges that start from this vertex
 		for (Edge e: this.list_of_edges)
-		{
-			if (e instanceof DirectedEdge)
-			{
-				if (e.getBegin().equals(v))
-				{
-					adj.add(e.getEnd(v));
-				}
-			}
-			if (e instanceof UndirectedEdge)
-			{
-				if (e.getBegin().equals(v)||e.getEnd(e.getBegin()).equals(v))
-				{
-					adj.add(e.getEnd(v));
-				}
-			}
-		}
+			if (e.startsFrom(e.getBegin()))
+				// then add the other endpoint to the list
+				adj.add(v);
+		
 		return adj;
 	}
 	public void resetGraph() {
-		this.list_of_vertices.elementAt(0).resetCount();
+		this.list_of_vertices.get(0).resetCount();
 		list_of_edges.clear();
 		list_of_vertices.clear();
 	}
