@@ -1,11 +1,11 @@
 package Algorithm;
 
-import java.util.ArrayList;
+import java.util.List;
 import Elements.*;
 
 public abstract class MST extends Algorithm
 {
-	protected ArrayList<Edge> _currentEdges;
+	protected List<Edge> _currentEdges;
 	
 	public double totalWeight()
 	{
