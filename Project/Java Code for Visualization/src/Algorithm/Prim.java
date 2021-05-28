@@ -16,10 +16,8 @@ public class Prim extends MST
 	public void runOne()
 	{
 		if (this.isDone())
-		{
 			return ;
-		}
-
+		
 		ArrayList<Vertex> mightBeAddedNext = new ArrayList<Vertex>();
 		while (true)
 		{
@@ -34,11 +32,9 @@ public class Prim extends MST
 			if (mightBeAddedNext.size() == 1)
 			{
 				// Add the new bridge
-				//lightestBridge.draw(1);		Uncomment when draw() is implemented
 				_currentEdges.add(lightestBridge);
 				
 				// Add the new vertex 
-				//mightBeAddedNext.get(0).draw(1);	Uncomment when draw() is implemented
 				_currentVertices.addAll(mightBeAddedNext);
 				break;
 			}
