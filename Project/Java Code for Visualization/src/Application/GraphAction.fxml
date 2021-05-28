@@ -20,9 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" style="-fx-background-color: #ccf2ff;" prefWidth="1120.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">
->>>>>>> ad9059c7c72d44f90111a2fc57601b43436a35fc
-   <children>
+<AnchorPane prefHeight="620.0" prefWidth="748.0" style="-fx-background-color: #ccf2ff;" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">   <children>
       <HBox layoutX="13.0" layoutY="80.0">
          <children>
             <RadioButton fx:id="addNodeButton" mnemonicParsing="false" onAction="#AddNodeHandle" selected="true" style="-fx-background-color: 14C216;" stylesheets="@Test.css" text="Add node">

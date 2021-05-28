@@ -10,11 +10,10 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 
 	public Shape line;
 	public Label weightLabel;
-	
 	private Vertex begin;
 	private Vertex end;
-	private double weight;
-	public Edge(Vertex v, Vertex u, double weight)
+	private int weight;
+	public Edge(Vertex v, Vertex u, int weight)
 	{
 		this.begin = v;
 		this.end = u;

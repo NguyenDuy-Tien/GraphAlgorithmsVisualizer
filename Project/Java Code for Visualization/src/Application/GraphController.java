@@ -222,7 +222,7 @@ public class GraphController implements Initializable{
                             Shape line_arrow = null;
                             Edge temp = null;
                             if (undirected) {
-                                temp = new UndirectedEdge(selectedVertex, circle, Double.valueOf(weight.getText()));
+                                temp = new UndirectedEdge(selectedVertex, circle, Integer.valueOf(weight.getText()));
                                 temp.setLine(line_arrow);
                                 realEdges.add(temp);
 
@@ -234,7 +234,7 @@ public class GraphController implements Initializable{
                                 line_arrow = edgeLine;
 
                             } else if (directed) {
-                                temp = new DirectedEdge(selectedVertex, circle, Double.valueOf(weight.getText()));
+                                temp = new DirectedEdge(selectedVertex, circle, Integer.valueOf(weight.getText()));
 //                                selectedVertexFX.vertex.adjacents.add(temp);
 //                                circle.node.revAdjacents.add(new Edge(circle.node, selectedVertexFx.node, Integer.valueOf(weight.getText()), arrow));
                                 temp.setLine(line_arrow);

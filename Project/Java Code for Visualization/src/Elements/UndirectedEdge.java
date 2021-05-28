@@ -2,7 +2,7 @@ package Elements;
 
 public class UndirectedEdge extends Edge{
 	
-	public UndirectedEdge(Vertex v, Vertex u, double weight) {
+	public UndirectedEdge(Vertex v, Vertex u, int weight) {
 		super(v, u, weight);
 		// TODO Auto-generated constructor stub
 	}

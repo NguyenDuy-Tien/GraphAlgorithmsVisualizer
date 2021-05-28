@@ -2,7 +2,7 @@ package Elements;
 
 public class DirectedEdge extends Edge{
 
-	public DirectedEdge(Vertex v, Vertex u, double weight) {
+	public DirectedEdge(Vertex v, Vertex u, int weight) {
 		super(v, u, weight);
 		// TODO Auto-generated constructor stub
 	}
