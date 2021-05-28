@@ -170,13 +170,14 @@ public class InputMenuController implements Initializable{
 		// TODO Auto-generated method stub
 		String[] algo = {"Dijkstra", "Kruskal MST - for undirected only", "Prim MST - for undirected only"};
 		AlgorithmBox.getItems().clear();
-		AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
+		AlgorithmBox.setItems(FXCollections.observableArrayList(algo)); 
 		graphData.setText("");
 	}
 	public void loadNextScence() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphAction.fxml"));
         Parent root;
 		try {
+			GraphController.AlgorithmName = AlgorithmBox.getSelectionModel().getSelectedItem().toString().toUpperCase();
 			root = loader.load();
 			Scene newScene = new Scene(root);
 	        InputMenu.primaryStage.setScene(newScene);

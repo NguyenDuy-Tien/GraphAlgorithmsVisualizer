@@ -50,11 +50,12 @@ import javafx.util.Duration;
 
 public class GraphController implements Initializable{
 
+	public static String AlgorithmName;
 	@FXML
 	private AnchorPane anchorRoot;
 	
 	@FXML
-	private TextField textAlgorithm;
+	private Label textAlgorithm;
 	@FXML
 	private RadioButton addNodeButton;
 	@FXML
@@ -435,6 +436,8 @@ public class GraphController implements Initializable{
     }
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		textAlgorithm.setText(AlgorithmName);
+		
 		System.out.println("Initialize drawing graph");
 		
 		ResetHandle(null);
