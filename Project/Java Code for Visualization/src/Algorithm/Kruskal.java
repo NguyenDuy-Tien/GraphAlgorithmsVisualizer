@@ -1,10 +1,11 @@
 package Algorithm;
 
 import Elements.*;
+
 import java.util.PriorityQueue;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Arrays;
 
 public class Kruskal extends MST
 {
@@ -18,10 +19,10 @@ public class Kruskal extends MST
 		
 		// Initial a forest, with one vertex each tree
 		List<Vertex> allTheVertices = g.get_vertices();
-		this._forests = new ArrayList<>(allTheVertices.size());
+		this._forests = new LinkedList<>();
 		for (int iii = 0; iii < allTheVertices.size(); ++iii)
 		{
-			this._forests.add((ArrayList<Vertex>) Arrays.asList(allTheVertices.get(iii)));
+			this._forests.add((LinkedList<Vertex>) Arrays.asList(allTheVertices.get(iii)));
 		}
 	}
 	
@@ -31,16 +32,27 @@ public class Kruskal extends MST
 		if (this.isDone())
 			return;
 
+		// Find the lightest edge
+		// that connects two trees together
 		while (true)
 		{
 			Edge lightestEdge = this._lightestEdge.poll();
-
-			// Find the lightest edge
-			// that connects two trees together
-			if (this.forestOf(lightestEdge.getBegin()) != this.forestOf(lightestEdge.getEnd()))
+			
+			// Detect the location of two ends of the edge
+			int tree1 = this.forestOf(lightestEdge.getBegin()); 
+			int tree2 = this.forestOf(lightestEdge.getEnd());
+			
+			// Connect two trees
+			// Make sure we're not creating any cycle 
+			if (tree1 != tree2)
 			{
 				// and then add it to the MST
 				this._currentEdges.add(lightestEdge);
+				
+				// Merge two trees into one
+				this._forests.get(tree1).addAll(this._forests.get(tree2));
+				this._forests.remove(tree2);
+				
 				break;
 			}
 		}
@@ -68,5 +80,5 @@ public class Kruskal extends MST
 	}
 	
 	private PriorityQueue<Edge> _lightestEdge;
-	private ArrayList<ArrayList<Vertex>> _forests;
+	private List<List<Vertex>> _forests;
 }

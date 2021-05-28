@@ -51,6 +51,8 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 		return end;
 	}
 	
+	// Used to distinguish between un and directed
+	public abstract boolean startsFrom(Vertex v);
 	
 	@Override
 	public boolean equals(Object o)
@@ -68,6 +70,7 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 				&& (e.getEnd(e.getBegin()).equals(this.getEnd(this.getBegin())))
 				&& (e.getWeight() == this.getWeight()));
 	}
+	
 	@Override
 	public int compareTo(Edge that) {
 		// TODO Auto-generated method stub
