@@ -88,9 +88,9 @@ public class InputMenuController implements Initializable{
 			double w;
 			u = Integer.valueOf(splitdata[2 + 3*i]);
 			v = Integer.valueOf(splitdata[3 + 3*i]);
-			w = Integer.valueOf(splitdata[4 + 3*i]);
-			Vertex beginVertex = graph.getList_of_vertices().elementAt(u - 1);
-			Vertex endVertex = graph.getList_of_vertices().elementAt(v - 1);
+			w = Double.valueOf(splitdata[4 + 3*i]);
+			Vertex beginVertex = graph.get_vertices().get(u - 1);
+			Vertex endVertex = graph.get_vertices().get(v - 1);
 			if(undirected) {
 				UndirectedEdge edge = new UndirectedEdge(beginVertex, endVertex, w);
 				graph.addEdge(edge);
@@ -170,13 +170,14 @@ public class InputMenuController implements Initializable{
 		// TODO Auto-generated method stub
 		String[] algo = {"Dijkstra", "Kruskal MST - for undirected only", "Prim MST - for undirected only"};
 		AlgorithmBox.getItems().clear();
-		AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
+		AlgorithmBox.setItems(FXCollections.observableArrayList(algo)); 
 		graphData.setText("");
 	}
 	public void loadNextScence() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphAction.fxml"));
         Parent root;
 		try {
+			GraphController.AlgorithmName = AlgorithmBox.getSelectionModel().getSelectedItem().toString().toUpperCase();
 			root = loader.load();
 			Scene newScene = new Scene(root);
 	        InputMenu.primaryStage.setScene(newScene);

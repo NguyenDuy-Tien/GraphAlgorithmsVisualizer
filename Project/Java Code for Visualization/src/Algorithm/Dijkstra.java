@@ -1,9 +1,11 @@
 package Algorithm;
 
 import Elements.*;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import java.util.HashMap;
 
 public class Dijkstra extends Algorithm
@@ -22,7 +24,9 @@ public class Dijkstra extends Algorithm
 	public void changeRoot(Vertex newRoot)
 	{
 		this._root = newRoot;
+
 		this.reset();
+
 	}
 	
 	public void changeDestination(Vertex newDest)
@@ -30,6 +34,7 @@ public class Dijkstra extends Algorithm
 		this._dest = newDest;
 	}
 	
+
 	private void reset()	// Petition to delete this. Let's see what the future holds
 	{
 		// Reset the edges to travel
@@ -42,17 +47,21 @@ public class Dijkstra extends Algorithm
 			this._minDistTo.put(v, Double.MAX_VALUE);
 		// Initiallize the distance from root to root be 0
 		this._minDistTo.put(this._root, 0.0);
+
 	}
 	
 	public boolean isDone()
 	{
+
 		return this._nextEdge.size() == 0 ;
+
 	}
 	
 	public void runOne()
 	{
 		if (this.isDone())
 			return;
+
 		
 		// Get the next Edge waiting to be examined
 		Edge edge = this._nextEdge.get(0);
@@ -84,10 +93,13 @@ public class Dijkstra extends Algorithm
 						this._nextEdge.add(e);
 			}
 		}
+
 	}
 	
 	private Vertex _root;
 	private Vertex _dest;
+
 	private List<Edge> _nextEdge;
 	private Map<Vertex, Double> _minDistTo;
+
 }

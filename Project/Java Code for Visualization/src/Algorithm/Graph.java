@@ -66,7 +66,9 @@ public class Graph {
 		Vector<Edge> adj = new Vector<Edge>();
 		// Find the edges that start from this vertex
 		for (Edge e: this.list_of_edges)
+
 			if (e.startsFrom(v))
+
 				// then add it to the list
 				adj.add(e);
 		
@@ -79,7 +81,9 @@ public class Graph {
 		
 		// Find the edges that start from this vertex
 		for (Edge e: this.list_of_edges)
+
 			if (e.startsFrom(v))
+
 					// then add it to the list
 					adj.add(e);
 	
@@ -93,7 +97,9 @@ public class Graph {
 		for (Edge e: this.list_of_edges)
 			if (e.startsFrom(e.getBegin()))
 				// then add the other endpoint to the list
+
 				adj.add(v);
+
 		
 		return adj;
 	}
