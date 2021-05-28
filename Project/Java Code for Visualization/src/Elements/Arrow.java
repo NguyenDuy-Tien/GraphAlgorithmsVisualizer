@@ -41,7 +41,7 @@ public class Arrow extends Path{
     }
     
     public Arrow(double startX, double startY, double endX, double endY){
-        this(startX, startY, endX, endY, defaultArrowHeadSize);
+        this(startX, startY, endX, endY, 4);
     }
 }
 

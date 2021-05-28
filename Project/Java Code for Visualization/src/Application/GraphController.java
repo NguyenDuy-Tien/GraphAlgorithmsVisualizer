@@ -43,6 +43,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 public class GraphController implements Initializable{
@@ -118,6 +121,8 @@ public class GraphController implements Initializable{
                     nNode++;
                     Vertex vertex = new Vertex(ev.getX(), ev.getY(), 12.0);
                     vertexId = new Label();
+                    vertexId.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
+                    vertexId.setTextFill(Color.ORANGERED);
                     canvasGroup.getChildren().add(vertexId);
                     vertexId.setLayoutX(ev.getX() - 6);
                     vertexId.setLayoutY(ev.getY() - 6);
@@ -168,6 +173,7 @@ public class GraphController implements Initializable{
                     if (selectedVertex != null) {
                         if (addEdge && !isExistsEdge(selectedVertex, circle)) {
                             weight = new Label();
+                            weight.setFont(new Font(10.6));
                             System.out.println("Adding Edge");
                             
                             // Rename cho de hieu va de su dung
@@ -177,7 +183,7 @@ public class GraphController implements Initializable{
                         	double endY = circle.getPosition().getY();
                         	
                             //Adds the edge between two selected nodes
-                            if (undirected) {
+                        	if (undirected) {
                                 edgeLine = new Line(startX, startY, endX, endY);
                                 canvasGroup.getChildren().add(edgeLine);
                                 edgeLine.setId("line");
@@ -186,16 +192,18 @@ public class GraphController implements Initializable{
                                 weight.setLayoutY((startY + endY) / 2);
                                 
                             } else if (directed) {
-                            	double diffX = (startX - endX)/30;
-                            	double diffY = (startY - endY)/30;
-                                arrow = new Arrow(startX -diffX, startY + diffY, 
-                                		endX -diffX, endY + diffY);
+                            	double diffX = (startX - endX)/50;
+                            	double diffY = (startY - endY)/50;
+                            	double ratioXY = Math.abs(diffX / diffY);
+                                arrow = new Arrow(startX -diffX/ratioXY, startY + diffY*ratioXY, 
+                                		endX -diffX/ratioXY, endY + diffY*ratioXY);
                                 canvasGroup.getChildren().add(arrow);
                                 arrow.setId("arrow");
-                                //Position weight label between two Directed nodes
-                                weight.setLayoutX((startX + endX) / 2);
-                                weight.setLayoutY((startY + endY) / 2 + diffY * 4);
+                                weight.setLayoutX((startX + endX - 2*diffX/ratioXY) / 2 );
+                                weight.setLayoutY((startY + endY + 2*diffY*ratioXY) / 2 );
+                                
                             }
+
 
                                 TextInputDialog dialog = new TextInputDialog("0");
                                 dialog.setTitle(null);
@@ -432,6 +440,8 @@ public class GraphController implements Initializable{
 		ResetHandle(null);
 		for(Vertex vertex : InputMenuController.graph.get_vertices()) {
 			vertexId = new Label();
+			vertexId.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
+            vertexId.setTextFill(Color.ORANGERED);
             canvasGroup.getChildren().add(vertexId);
             vertexId.setLayoutX(vertex.getPosition().getX() - 6);
             vertexId.setLayoutY(vertex.getPosition().getY() - 6);
@@ -446,22 +456,32 @@ public class GraphController implements Initializable{
 		}
 		for(Edge edge : InputMenuController.graph.get_edges()) {
 			weight = new Label();
-			if (undirected) {
-                edgeLine = new Line(edge.getBegin().getPosition().getX(), edge.getBegin().getPosition().getY(), 
-                		edge.getEnd().getPosition().getX(), edge.getEnd().getPosition().getY());
+			weight.setFont(new Font(10.6));
+			double startX = edge.getBegin().getPosition().getX();
+        	double startY = edge.getBegin().getPosition().getY();
+        	double endX = edge.getEnd().getPosition().getX();
+        	double endY = edge.getEnd().getPosition().getY();
+        	
+            //Adds the edge between two selected nodes
+        	if (undirected) {
+                edgeLine = new Line(startX, startY, endX, endY);
                 canvasGroup.getChildren().add(edgeLine);
                 edgeLine.setId("line");
+                //Position weight label between two Undirected nodes
+                weight.setLayoutX((startX + endX) / 2);
+                weight.setLayoutY((startY + endY) / 2);
+                
             } else if (directed) {
-                arrow = new Arrow(edge.getBegin().getPosition().getX(), edge.getBegin().getPosition().getY(), 
-                		edge.getEnd().getPosition().getX(), edge.getEnd().getPosition().getY());
+            	double diffX = (startX - endX)/50;
+            	double diffY = (startY - endY)/50;
+            	double ratioXY = Math.abs(diffX / diffY);
+                arrow = new Arrow(startX -diffX/ratioXY, startY + diffY*ratioXY, 
+                		endX -diffX/ratioXY, endY + diffY*ratioXY);
                 canvasGroup.getChildren().add(arrow);
                 arrow.setId("arrow");
+                weight.setLayoutX((startX + endX - 2*diffX/ratioXY) / 2 );
+                weight.setLayoutY((startY + endY + 2*diffY*ratioXY) / 2 );   
             }
-
-            //Adds weight between two selected nodes
-                weight.setLayoutX(((edge.getBegin().getPosition().getX()) + (edge.getEnd().getPosition().getX())) / 2);
-                weight.setLayoutY(((edge.getBegin().getPosition().getY()) + (edge.getEnd().getPosition().getY())) / 2);
-
                 weight.setText(String.valueOf(edge.getWeight()));
                 canvasGroup.getChildren().add(weight);
 		}

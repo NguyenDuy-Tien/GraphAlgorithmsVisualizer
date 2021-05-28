@@ -80,7 +80,7 @@ public class InputMenuController implements Initializable{
 		graph = new Graph();
 		for(int i = 0; i < number_of_vertices; i++) {
 			Random random = new Random();
-			Vertex vertex = new Vertex(random.nextDouble() * 500 , random.nextDouble() * 400 - random.nextDouble()*40, 12.0);
+			Vertex vertex = new Vertex(random.nextDouble() * 800 , random.nextDouble() * 400 + random.nextDouble() * 200, 12.0);
 			graph.addVertex(vertex);
 		}
 		for (int i = 0; i < number_of_edges; i++){
@@ -89,8 +89,8 @@ public class InputMenuController implements Initializable{
 			u = Integer.valueOf(splitdata[2 + 3*i]);
 			v = Integer.valueOf(splitdata[3 + 3*i]);
 			w = Integer.valueOf(splitdata[4 + 3*i]);
-			Vertex beginVertex = graph.getList_of_vertices().elementAt(u - 1);
-			Vertex endVertex = graph.getList_of_vertices().elementAt(v - 1);
+			Vertex beginVertex = graph.get_vertices().get(u - 1);
+			Vertex endVertex = graph.get_vertices().get(v - 1);
 			if(undirected) {
 				UndirectedEdge edge = new UndirectedEdge(beginVertex, endVertex, w);
 				graph.addEdge(edge);

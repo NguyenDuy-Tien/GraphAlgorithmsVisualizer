@@ -18,7 +18,7 @@ public class Vertex extends Circle implements Drawable{
 		count++;
 		position = new Point((int)x, (int)y);
 		this.ID = count;
-		this.setOpacity(0.4);
+		this.setOpacity(0.2);
 	}
 	
 	public Point getPosition()
