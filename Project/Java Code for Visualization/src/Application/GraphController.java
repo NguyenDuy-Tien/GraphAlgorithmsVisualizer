@@ -88,16 +88,18 @@ public class GraphController implements Initializable{
     
     boolean menuBool = false;
     ContextMenu globalMenu;
-    List<Vertex> circles = new ArrayList<>();
-//    List<Edge> mstEdges = new ArrayList<>(), realEdges = new ArrayList<>();
+    Graph graph = new Graph();
+//*    List<Vertex> circles = new ArrayList<>();
+//*    List<Shape> edges = new ArrayList<>();
+//*    List<Edge> mstEdges = new ArrayList<>(), realEdges = new ArrayList<>();
 	Vertex selectedVertex = null;
-    List<Shape> edges = new ArrayList<>();
+	
+	
     boolean addNode = true, addEdge = false, calculate = false,
             calculated = false, playing = false, paused = false, pinned = false;
     private boolean directed = InputMenuController.directed, undirected = InputMenuController.undirected;
     List<Label> distances = new ArrayList<Label>(); 
     int nNode = 0;
-    Graph graph = new Graph();
 	public GraphController() {
 		
 	}
@@ -125,7 +127,7 @@ public class GraphController implements Initializable{
                     vertexId.setLayoutY(ev.getY() - 6);
                     vertexId.setText(String.valueOf(vertex.getID()));
                     canvasGroup.getChildren().add(vertex);
-                    circles.add(vertex);
+                    graph.addVertex(vertex);
                     
                     vertex.setOnMousePressed(mouseHandler);
                     vertex.setOnMouseReleased(mouseHandler);
@@ -167,11 +169,12 @@ public class GraphController implements Initializable{
                             //Adds the edge between two selected nodes
                         	if (undirected) {
                                 edgeLine = new Line(startX, startY, endX, endY);
-                                canvasGroup.getChildren().add(edgeLine);
                                 edgeLine.setId("line");
                                 //Position weight label between two Undirected nodes
                                 weight.setLayoutX((startX + endX) / 2);
                                 weight.setLayoutY((startY + endY) / 2);
+                                
+                                canvasGroup.getChildren().add(edgeLine);
                                 
                             } else if (directed) {
                             	double diffX = (startX - endX)/50;
@@ -207,7 +210,7 @@ public class GraphController implements Initializable{
                                 temp.setLine(line_arrow);
                                 graph.addEdge(temp);
 
-                                edges.add(edgeLine);
+                                graph.addEdge(edgeLine);
 //                                realEdges.add(selectedVertexFX.node.adjacents.get(selectedVertexFX.node.adjacents.size() - 1));
 //                                realEdges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
                                 line_arrow = edgeLine;

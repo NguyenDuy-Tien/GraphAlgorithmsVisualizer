@@ -31,32 +31,38 @@ public class Graph {
 	{
 		this.algorithm = newAlgorithm;
 	}
+	
 	public void addVertex(Vertex v)
 	{
 		this.list_of_vertices.add(v);
 	}
+	
 	public void runOne()
 	{
 		this.algorithm.runOne();
 	}
+	
 	public void runAll()
 	{
 		this.algorithm.runAll();
 	}
+	
 	public void removeVertex(Vertex v)
 	{
 		for (Edge e: this.list_of_edges)
 		{
-			if (e.getBegin().equals(v) || e.getEnd(e.getBegin()).equals(v))
+			if (e.getBegin().equals(v) || e.getEnd().equals(v))
 			{
 				this.list_of_edges.remove(e);
 			}
 		}
 		this.list_of_vertices.remove(v);
 	}
+	
 	public List<Vertex> get_vertices() {
 		return list_of_vertices;
 	}
+	
 	public List<Edge> get_edges() {
 		return list_of_edges;
 	}
