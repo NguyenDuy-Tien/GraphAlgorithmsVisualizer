@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="748.0" style="-fx-background-color: #C6EFF8;" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">   <children>
+<AnchorPane prefHeight="620.0" prefWidth="748.0" style="-fx-background-color: #C6EFF8;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">   <children>
       <HBox layoutX="13.0" layoutY="80.0">
          <children>
             <RadioButton fx:id="addNodeButton" mnemonicParsing="false" onAction="#AddNodeHandle" selected="true" stylesheets="@Test.css" text="Add node">
@@ -63,7 +63,7 @@
                   <Font name="SansSerif Bold" size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="runOneButton" prefHeight="44.0" prefWidth="136.0" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Run One" textFill="#fffef6">
+            <JFXButton fx:id="runOneButton" onAction="#runOne" prefHeight="44.0" prefWidth="136.0" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Run One" textFill="#fffef6">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

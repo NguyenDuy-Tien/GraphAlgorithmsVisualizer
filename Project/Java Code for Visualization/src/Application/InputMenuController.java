@@ -51,6 +51,7 @@ public class InputMenuController implements Initializable{
 	TextField fileLinkField;
 	public static Graph graph = new Graph();
 	public static boolean undirected = false, directed = false;
+	public static boolean kruskal = false, prim = false, dijkstra = false;
 	public static void showAlert(String title, String message)
 	{
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -147,6 +148,19 @@ public class InputMenuController implements Initializable{
 			else valid = true;
 		}
 		
+		if(AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Kruskal")) {
+			resetAlgorithmChoice();
+			kruskal = true;
+		}
+		else if(AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Prim")){
+			resetAlgorithmChoice();
+			prim = true;
+		}
+		else {
+			resetAlgorithmChoice();
+			dijkstra = true;
+		}
+		
 		try {
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
@@ -164,6 +178,9 @@ public class InputMenuController implements Initializable{
 			showAlert("Invalid data", "(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)");
 			exception.printStackTrace();
 		}
+	}
+	public void resetAlgorithmChoice() {
+		kruskal = prim = dijkstra = false;
 	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
