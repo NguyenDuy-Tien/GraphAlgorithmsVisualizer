@@ -1,6 +1,7 @@
 package Algorithm;
 
 import Elements.*;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,7 +34,7 @@ public class Prim extends MST
 			{
 				// Add the new bridge
 				_currentEdges.add(lightestBridge);
-				
+				lightestBridge.changeColorEdge(Color.YELLOW);
 				// Add the new vertex 
 				_currentVertices.addAll(mightBeAddedNext);
 				break;

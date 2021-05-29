@@ -9,17 +9,14 @@ import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 
+import Algorithm.Algorithm;
 import Algorithm.Graph;
+import Algorithm.Prim;
 import Elements.Arrow;
 import Elements.DirectedEdge;
 import Elements.Edge;
 import Elements.UndirectedEdge;
 import Elements.Vertex;
-import javafx.animation.Animation;
-import javafx.animation.FillTransition;
-import javafx.animation.Interpolator;
-import javafx.animation.ScaleTransition;
-import javafx.animation.StrokeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,14 +25,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -43,10 +37,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.util.Duration;
 
 public class GraphController implements Initializable{
 
@@ -78,26 +68,19 @@ public class GraphController implements Initializable{
     @FXML
     private Label sourceText = new Label("Source ");
     @FXML
-    private Label weight;
-    @FXML
-    private Label vertexId;
-    @FXML
-    private Line edgeLine;
-    @FXML
     private Arrow arrow;
     
     boolean menuBool = false;
     ContextMenu globalMenu;
     List<Vertex> circles = new ArrayList<>();
-//    List<Edge> mstEdges = new ArrayList<>(), realEdges = new ArrayList<>();
 	Vertex selectedVertex = null;
     List<Shape> edges = new ArrayList<>();
-    boolean addNode = true, addEdge = false, calculate = false,
-            calculated = false, playing = false, paused = false, pinned = false;
+    boolean addNode = true, addEdge = false;
     private boolean directed = InputMenuController.directed, undirected = InputMenuController.undirected;
     List<Label> distances = new ArrayList<Label>(); 
     int nNode = 0;
     Graph graph = new Graph();
+    //Algorithm algorithm = new Prim(graph) ;
 	public GraphController() {
 		
 	}
@@ -117,28 +100,17 @@ public class GraphController implements Initializable{
                     nNode++;
                     Vertex vertex = new Vertex(ev.getX(), ev.getY(), 12.0);
                     graph.addVertex(vertex);
-                    vertexId = new Label();
-                    vertexId.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
-                    vertexId.setTextFill(Color.ORANGERED);
-                    canvasGroup.getChildren().add(vertexId);
-                    vertexId.setLayoutX(ev.getX() - 6);
-                    vertexId.setLayoutY(ev.getY() - 6);
-                    vertexId.setText(String.valueOf(vertex.getID()));
+                    vertex.setVertexID(new Label());
+                    canvasGroup.getChildren().add(vertex.getVertexID());
+                    vertex.getVertexID().setLayoutX(ev.getX() - 6);
+                    vertex.getVertexID().setLayoutY(ev.getY() - 6);
                     canvasGroup.getChildren().add(vertex);
-                    circles.add(vertex);
-                    
+                    graph.addVertex(vertex);
                     vertex.setOnMousePressed(mouseHandler);
                     vertex.setOnMouseReleased(mouseHandler);
                     vertex.setOnMouseDragged(mouseHandler);
                     vertex.setOnMouseExited(mouseHandler);
                     vertex.setOnMouseEntered(mouseHandler);
-
-//                    ScaleTransition tr = new ScaleTransition(Duration.millis(100), circle);
-//                    tr.setByX(10f);
-//                    tr.setByY(10f);
-//                    tr.setInterpolator(Interpolator.EASE_OUT);
-//                    tr.play();
-
                 }
             }
         }
@@ -154,8 +126,6 @@ public class GraphController implements Initializable{
                 if (!circle.isSelected) {
                     if (selectedVertex != null) {
                         if (addEdge && !graph.isExistsEdge(selectedVertex, circle)) {
-                            weight = new Label();
-                            weight.setFont(new Font(10.6));
                             System.out.println("Adding Edge");
                             
                             // Rename cho de hieu va de su dung
@@ -166,14 +136,18 @@ public class GraphController implements Initializable{
                         	
                             //Adds the edge between two selected nodes
                         	if (undirected) {
-                                edgeLine = new Line(startX, startY, endX, endY);
+                        		Edge edge = new UndirectedEdge(selectedVertex, circle, 0);
+                                Shape edgeLine = new Line(startX, startY, endX, endY);
+                                edge.setLine(edgeLine);
                                 canvasGroup.getChildren().add(edgeLine);
                                 edgeLine.setId("line");
                                 //Position weight label between two Undirected nodes
-                                weight.setLayoutX((startX + endX) / 2);
-                                weight.setLayoutY((startY + endY) / 2);
+                                edge.getWeightLabel().setLayoutX((startX + endX) / 2);
+                                edge.getWeightLabel().setLayoutY((startY + endY) / 2);
+                                graph.addEdge(edge);
                                 
                             } else if (directed) {
+                            	Edge edge = new DirectedEdge(selectedVertex, circle, 0);
                             	double diffX = (startX - endX)/50;
                             	double diffY = (startY - endY)/50;
                             	double ratioXY = Math.abs(diffX / diffY);
@@ -181,9 +155,12 @@ public class GraphController implements Initializable{
                                 		endX -diffX/ratioXY, endY + diffY*ratioXY);
                                 canvasGroup.getChildren().add(arrow);
                                 arrow.setId("arrow");
-                                weight.setLayoutX((startX + endX - 2*diffX/ratioXY) / 2 );
-                                weight.setLayoutY((startY + endY + 2*diffY*ratioXY) / 2 );
                                 
+                                edge.setLine(arrow);
+                                
+                                edge.getWeightLabel().setLayoutX((startX + endX - 2*diffX/ratioXY) / 2 );
+                                edge.getWeightLabel().setLayoutY((startY + endY + 2*diffY*ratioXY) / 2 );
+                                graph.addEdge(edge);
                             }
 
 
@@ -193,37 +170,15 @@ public class GraphController implements Initializable{
                                 dialog.setContentText(null);
 
                                 Optional<String> result = dialog.showAndWait();
+                                int n = graph.get_edges().size()-1;
                                 if (result.isPresent()) {
-                                    weight.setText(result.get());
+                                	graph.get_edges().get(n).getWeightLabel().setText(result.get());
                                 } else {
-                                    weight.setText("0");
+                                	graph.get_edges().get(n).getWeightLabel().setText("0");
                                 }
-                                canvasGroup.getChildren().add(weight);
-                                
-                            Shape line_arrow = null;
-                            Edge temp = null;
-                            if (undirected) {
-                                temp = new UndirectedEdge(selectedVertex, circle, Integer.valueOf(weight.getText()));
-                                temp.setLine(line_arrow);
-                                graph.addEdge(temp);
-
-                                edges.add(edgeLine);
-//                                realEdges.add(selectedVertexFX.node.adjacents.get(selectedVertexFX.node.adjacents.size() - 1));
-//                                realEdges.add(circle.node.adjacents.get(circle.node.adjacents.size() - 1));
-                                line_arrow = edgeLine;
-
-                            } else if (directed) {
-                                temp = new DirectedEdge(selectedVertex, circle, Integer.valueOf(weight.getText()));
-//                                selectedVertexFX.vertex.adjacents.add(temp);
-//                                circle.node.revAdjacents.add(new Edge(circle.node, selectedVertexFx.node, Integer.valueOf(weight.getText()), arrow));
-                                
-                                edges.add(arrow);
-                                line_arrow = arrow;
-                                temp.setLine(line_arrow);
-                                graph.addEdge(temp);
-                            }
+                                canvasGroup.getChildren().add(graph.get_edges().get(n).getWeightLabel());
                        }
-                       if (addNode || (calculate && !calculated) || addEdge) {
+                       if (addNode || addEdge) {
                             selectedVertex.isSelected = false;
                             selectedVertex.changeColorVertex(Color.BLACK);
                         }
@@ -251,7 +206,6 @@ public class GraphController implements Initializable{
 	public void AddNodeHandle(ActionEvent event) {
         addNode = true;
         addEdge = false;
-        calculate = false;
         addNodeButton.setSelected(true);
         addEdgeButton.setSelected(false);
        
@@ -260,7 +214,6 @@ public class GraphController implements Initializable{
     public void AddEdgeHandle(ActionEvent event) {
         addNode = false;
         addEdge = true;
-        calculate = false;
         addNodeButton.setSelected(false);
         addEdgeButton.setSelected(true);
     }
@@ -269,7 +222,6 @@ public class GraphController implements Initializable{
     public void ClearHandle(ActionEvent event) {
         menuBool = false;
         selectedVertex = null;
-        calculated = false;
         System.out.println("IN CLEAR:" + circles.size());
         for (Vertex v : circles) {
             v.isSelected = false;
@@ -288,8 +240,6 @@ public class GraphController implements Initializable{
         addNodeButton.setDisable(false);
         addEdgeButton.setDisable(false);
         AddNodeHandle(null);
-        playing = false;
-        paused = false;
     }
 
     // Reset Handle for handling Reset Button
@@ -308,20 +258,19 @@ public class GraphController implements Initializable{
         selectedVertex = null;
         circles = new ArrayList<Vertex>();
         distances = new ArrayList<Label>();
-//        visitTime = new ArrayList<Label>();
-//        lowTime = new ArrayList<Label>();
         addNode = true;
         addEdge = false;
-        calculate = false;
-        calculated = false;
+
         addNodeButton.setSelected(true);
         addEdgeButton.setSelected(false);
         addEdgeButton.setDisable(true);
         addNodeButton.setDisable(false);
         clearButton.setDisable(true);
-        playing = false;
-        paused = false;
     }
+    
+    public void runOne() {
+//		algorithm.runOne();
+	}
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		textAlgorithm.setText(AlgorithmName);
@@ -330,24 +279,21 @@ public class GraphController implements Initializable{
 		
 		ResetHandle(null);
 		for(Vertex vertex : InputMenuController.graph.get_vertices()) {
-			vertexId = new Label();
-			vertexId.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
-            vertexId.setTextFill(Color.ORANGERED);
-            canvasGroup.getChildren().add(vertexId);
-            vertexId.setLayoutX(vertex.getPosition().getX() - 6);
-            vertexId.setLayoutY(vertex.getPosition().getY() - 6);
-            vertexId.setText(String.valueOf(vertex.getID()));
+            
+            vertex.setVertexID(new Label());
+            canvasGroup.getChildren().add(vertex.getVertexID());
+            vertex.getVertexID().setLayoutX(vertex.getPosition().getX() - 6);
+            vertex.getVertexID().setLayoutY(vertex.getPosition().getY() - 6);
             canvasGroup.getChildren().add(vertex);
-            circles.add(vertex);
+            
+            graph.addVertex(vertex);
             vertex.setOnMousePressed(mouseHandler);
             vertex.setOnMouseReleased(mouseHandler);
             vertex.setOnMouseDragged(mouseHandler);
             vertex.setOnMouseExited(mouseHandler);
             vertex.setOnMouseEntered(mouseHandler);
 		}
-		for(Edge edge : InputMenuController.graph.get_edges()) {
-			weight = new Label();
-			weight.setFont(new Font(10.6));
+		for(Edge edge : InputMenuController.graph.get_edges()) {	
 			double startX = edge.getBegin().getPosition().getX();
         	double startY = edge.getBegin().getPosition().getY();
         	double endX = edge.getEnd().getPosition().getX();
@@ -355,12 +301,14 @@ public class GraphController implements Initializable{
         	
             //Adds the edge between two selected nodes
         	if (undirected) {
-                edgeLine = new Line(startX, startY, endX, endY);
+                Shape edgeLine = new Line(startX, startY, endX, endY);
+                edge.setLine(edgeLine);
                 canvasGroup.getChildren().add(edgeLine);
                 edgeLine.setId("line");
                 //Position weight label between two Undirected nodes
-                weight.setLayoutX((startX + endX) / 2);
-                weight.setLayoutY((startY + endY) / 2);
+                edge.getWeightLabel().setLayoutX((startX + endX) / 2);
+                edge.getWeightLabel().setLayoutY((startY + endY) / 2);
+                graph.addEdge(edge);
                 
             } else if (directed) {
             	double diffX = (startX - endX)/50;
@@ -370,11 +318,16 @@ public class GraphController implements Initializable{
                 		endX -diffX/ratioXY, endY + diffY*ratioXY);
                 canvasGroup.getChildren().add(arrow);
                 arrow.setId("arrow");
-                weight.setLayoutX((startX + endX - 2*diffX/ratioXY) / 2 );
-                weight.setLayoutY((startY + endY + 2*diffY*ratioXY) / 2 );   
+                
+                edge.setLine(arrow);
+                
+                edge.getWeightLabel().setLayoutX((startX + endX - 2*diffX/ratioXY) / 2 );
+                edge.getWeightLabel().setLayoutY((startY + endY + 2*diffY*ratioXY) / 2 );
+                graph.addEdge(edge);
             }
-                weight.setText(String.valueOf(edge.getWeight()));
-                canvasGroup.getChildren().add(weight);
+            
+                edge.getWeightLabel().setText(String.valueOf(edge.getWeight()));
+                canvasGroup.getChildren().add(edge.getWeightLabel());
 		}
 		if(InputMenuController.graph.get_edges().size() >= 2) {
 			addEdgeButton.setDisable(false);

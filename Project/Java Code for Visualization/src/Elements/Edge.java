@@ -5,12 +5,13 @@ import javafx.animation.StrokeTransition;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public abstract class Edge implements Comparable<Edge>, Drawable {
 
-	public Shape line;
-	public Label weightLabel;
+	private Shape line;
+	private Label weightLabel;
 	private Vertex begin;
 	private Vertex end;
 	private int weight;
@@ -21,6 +22,13 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 		this.weight = weight;
 		this.weightLabel = new Label(String.valueOf(weight));
 		
+	}
+	public Label getWeightLabel() {
+		return weightLabel;
+	}
+	public void setWeightLabel(Label weightLabel) {
+		this.weightLabel = weightLabel;
+		weightLabel.setFont(new Font(10.6));
 	}
 	public Shape getLine() {
 		return line;
