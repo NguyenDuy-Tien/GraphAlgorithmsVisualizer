@@ -12,7 +12,6 @@ import javafx.util.Duration;
 public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	
 	private Label weightLabel;
-	
 	private Vertex begin;
 	private Vertex end;
 	private int weight;

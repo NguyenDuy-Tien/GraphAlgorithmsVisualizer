@@ -147,6 +147,19 @@ public class InputMenuController implements Initializable{
 			else valid = true;
 		}
 		
+		if(AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Kruskal")) {
+			resetAlgorithmChoice();
+			kruskal = true;
+		}
+		else if(AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Prim")){
+			resetAlgorithmChoice();
+			prim = true;
+		}
+		else {
+			resetAlgorithmChoice();
+			dijkstra = true;
+		}
+		
 		try {
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
