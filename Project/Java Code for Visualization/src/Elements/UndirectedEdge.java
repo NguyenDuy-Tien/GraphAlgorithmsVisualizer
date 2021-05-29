@@ -3,6 +3,7 @@ package Elements;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
+import javafx.scene.text.Font;
 import javafx.scene.shape.*;
 
 
@@ -46,12 +47,18 @@ public class UndirectedEdge extends Edge{
 	// Draw a line from Begin vertex to End vertex
 	@Override
 	public void draw(Color colour) {
-		this.getElements().add(new MoveTo(this.getBegin().getCenterX(),
+        // Setup the weight-displaying label to be at the middle of the edge
+		weightLabel.setFont(new Font(10.6));
+        weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX()) / 2);
+        weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY()) / 2);
+		
+        // Draw the Edge
+        this.getElements().add(new MoveTo(this.getBegin().getCenterX(),
 											this.getBegin().getCenterY()));
 		
 		this.getElements().add(new LineTo(this.getEnd().getCenterX(),
 											this.getEnd().getCenterY()));
-		
+
 		
 	}
 

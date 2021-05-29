@@ -34,7 +34,7 @@ public class Prim extends MST
 			{
 				// Add the new bridge
 				_currentEdges.add(lightestBridge);
-				lightestBridge.changeColorEdge(Color.YELLOW);
+				lightestBridge.draw(Color.YELLOW);
 				// Add the new vertex 
 				_currentVertices.addAll(mightBeAddedNext);
 				break;

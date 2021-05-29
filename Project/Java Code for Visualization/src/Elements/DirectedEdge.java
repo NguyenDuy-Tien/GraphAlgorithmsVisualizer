@@ -3,6 +3,7 @@ package Elements;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
+import javafx.scene.text.Font;
 
 public class DirectedEdge extends Edge{
 
@@ -28,12 +29,13 @@ public class DirectedEdge extends Edge{
 	
 
 	// Draw an arrow from Begin vertex to End vertex
+    // Translated to OOP from GraphController which was wrote by Hai or Tien (or both).
 	@Override
 	public void draw(Color colour) {
 		strokeProperty().bind(fillProperty());
         setFill(colour);
         
-        //Line
+        // Draw Arrow Body
         getElements().add(new MoveTo(this.getBegin().getCenterX(), 
         								this.getBegin().getCenterY()));
         
@@ -53,17 +55,22 @@ public class DirectedEdge extends Edge{
         double body_vs_ArrowHead_Ratio = 0.1;
         double arrowHeadSize =  bodyLength * body_vs_ArrowHead_Ratio;
         
-        //point1
+        // Two arrow wings
         double x1 = (- 1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + this.getEnd().getCenterX();
         double y1 = (- 1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * arrowHeadSize + this.getEnd().getCenterY();
-        //point2
         double x2 = (1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + this.getEnd().getCenterX();
         double y2 = (1.0 / 2.0 * sin - Math.sqrt(3) / 2 * cos) * arrowHeadSize + this.getEnd().getCenterY();
         
+        // Draw Arrow Head
         getElements().add(new LineTo(x1, y1));
         getElements().add(new LineTo(x2, y2));
-        
         getElements().add(new LineTo(this.getEnd().getCenterX(), 
         								this.getEnd().getCenterY()));
+		
+        // Setup the weight-displaying label
+    	double ratioXY = Math.abs(XDiff / YDiff);
+        weightLabel.setFont(new Font(10.6));
+        weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX() - 2*XDiff/ratioXY) / 2 );
+        weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY() + 2*YDiff*ratioXY) / 2 );
     }
 }

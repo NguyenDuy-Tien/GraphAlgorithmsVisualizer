@@ -121,11 +121,12 @@ public class Graph {
 
 		return adj;
 	}
-	public void resetGraph() {
-		if(!this.list_of_vertices.isEmpty()) {
-			this.list_of_vertices.get(0).resetCount();
-			list_of_vertices.clear();
-		}
+	
+	// Clear all Edges, Vertices
+	// And reset Vertex ID counter
+	public void resetGraph() {		
+		Vertex.resetCounter();
+		list_of_vertices.clear();
 		list_of_edges.clear();
 	}
 }

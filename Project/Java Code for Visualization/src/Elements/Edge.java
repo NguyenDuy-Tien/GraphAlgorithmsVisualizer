@@ -11,7 +11,7 @@ import javafx.util.Duration;
 
 public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	
-	private Label weightLabel;
+	protected Label weightLabel;
 	private Vertex begin;
 	private Vertex end;
 	private int weight;
@@ -25,12 +25,19 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	{
 		this.begin = v;
 		this.end = u;
-		this.weight = weight;
-		this.weightLabel = new Label(String.valueOf(weight));
+		this.weightLabel = new Label();
+		this.setWeight(weight);
         System.out.println("Adding Edge");
 		
-        weightLabel.setFont(new Font(10.6));
+        // I can set the weightLabel here
+        // But draw() takes responsibility for this
 		this.draw(colour);
+	}
+	
+	public void setWeight(int newWeight)
+	{
+		this.weight = newWeight;
+		this.weightLabel.setText(String.valueOf(this.weight));
 	}
 	
 	public double getWeight()
@@ -54,6 +61,11 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	
 	// Used to distinguish between un and directed
 	public abstract boolean startsFrom(Vertex v);
+	
+	public void draw()
+	{
+		this.draw(Color.BLACK);
+	}
 	
 	@Override
 	public int compareTo(Edge that) {

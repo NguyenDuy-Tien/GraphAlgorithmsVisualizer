@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXButton;
 import Algorithm.Graph;
 import Elements.DirectedEdge;
 import Elements.Edge;
+import Elements.EdgeFactory;
 import Elements.UndirectedEdge;
 import Elements.Vertex;
 import javafx.collections.FXCollections;
@@ -49,8 +50,13 @@ public class InputMenuController implements Initializable{
 	Label filePathLabel;
 	@FXML
 	TextField fileLinkField;
+	
+	
 	public static Graph graph = new Graph();
-	public static boolean undirected = false, directed = false;
+	
+	// What type of Edge we're creating
+	public static String edgeDirection = EdgeFactory.DIRECTED;
+	
 	public static void showAlert(String title, String message)
 	{
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);

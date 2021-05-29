@@ -11,21 +11,36 @@ import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
 public class Vertex extends Circle implements Drawable{
-	public static int count = 0;
-	private int ID;
-	public boolean isSelected = false;
-	private Label vertexID;
-	public Vertex(double x, double y, double radius)
-	{
-		super(x, y, radius);
-		count++;
-		this.ID = count;
-		this.setOpacity(0.2);
+	private static int counterID = 0;
+
+	// Instead of THIS ID, we use the get/setId provided by JavaFX
+	//private int ID;
+	
+	// Reset the private auto-incremented counter of Vertex
+	public static void resetCounter() {
+		counterID = 0;
 	}
 	
-	public int getID()
+	public boolean isSelected = false;
+	private Label vertexID;
+	
+	public Vertex(double x, double y, double radius)
 	{
-		return this.ID;
+		this(x, y, radius, Color.BLACK);
+	}
+	
+	public Vertex(double x, double y, double radius, Color color)
+	{
+		super(x, y, radius);
+		counterID++;
+		this.setId(String.valueOf(counterID));
+		this.setOpacity(0.2);
+		this.draw(color);
+	}
+	
+	public String getID()
+	{
+		return this.getId();
 	}
 	public boolean isSelected() {
 		return isSelected;
@@ -45,16 +60,14 @@ public class Vertex extends Circle implements Drawable{
         vertexID.setTextFill(Color.ORANGERED);
         vertexID.setText(String.valueOf(this.getID()));
 	}
-	public void resetCount() {
-		count = 0;
-	}
+	
 	
 	@Override
 	public boolean equals(Object o)
 	{
 		return o == this ||
 				(o instanceof Vertex &&
-						((Vertex) o).getID() == this.getID());
+						((Vertex) o).getID().equals(this.getID()));
 	}
 
 	public void changeColorVertex(Color color) {
@@ -64,5 +77,8 @@ public class Vertex extends Circle implements Drawable{
 	@Override
 	public void draw(Color colour) {
 		this.setFill(colour);
+		this.vertexID = new Label();
+		this.vertexID.setLayoutX(this.getCenterX() - 6);
+		this.vertexID.setLayoutY(this.getCenterY() - 6);
 	}
 }
