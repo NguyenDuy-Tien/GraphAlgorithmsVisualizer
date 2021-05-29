@@ -97,10 +97,8 @@ public class Graph {
 		for (Edge e: this.list_of_edges)
 			if (e.startsFrom(e.getBegin()))
 				// then add the other endpoint to the list
-
 				adj.add(v);
 
-		
 		return adj;
 	}
 	public void resetGraph() {

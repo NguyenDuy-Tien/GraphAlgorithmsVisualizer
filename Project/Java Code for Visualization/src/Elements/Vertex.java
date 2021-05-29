@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import Algorithm.Drawable;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Vertex extends Circle implements Drawable{
@@ -36,24 +37,20 @@ public class Vertex extends Circle implements Drawable{
 	@Override
 	public boolean equals(Object o)
 	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (!(o instanceof Vertex))
-		{
-			return false;
-		}
-		Vertex v = (Vertex) o;
-		if (v.getID() == this.getID())
-		{
-			return true;
-		}
-		return false;
+		return o == this ||
+				(o instanceof Vertex &&
+						((Vertex) o).getID() == this.getID());
 	}
+	
+
 	@Override
-	public void draw(int colour) {
-		// TODO Auto-generated method stub
-		
+	public void draw(Color colour) {
+/*		this.setFill(colour);
+		try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	*/
 	}
 }

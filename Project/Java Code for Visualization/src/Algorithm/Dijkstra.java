@@ -52,9 +52,7 @@ public class Dijkstra extends Algorithm
 	
 	public boolean isDone()
 	{
-
 		return this._nextEdge.size() == 0 ;
-
 	}
 	
 	public void runOne()
@@ -93,7 +91,6 @@ public class Dijkstra extends Algorithm
 						this._nextEdge.add(e);
 			}
 		}
-
 	}
 	
 	private Vertex _root;
