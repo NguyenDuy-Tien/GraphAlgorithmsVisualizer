@@ -1,7 +1,5 @@
 package Elements;
 
-
-
 import Algorithm.Drawable;
 import javafx.animation.StrokeTransition;
 import javafx.scene.control.Label;
@@ -43,12 +41,9 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 	
 	public Vertex getEnd(Vertex vertex)
 	{
-		if (begin.equals(vertex))
-		{
-			return end;
-		}
-		return begin;
+		return begin.equals(vertex) ? end : begin;
 	}
+	
 	public Vertex getEnd() {
 		return end;
 	}
@@ -57,39 +52,19 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 	public abstract boolean startsFrom(Vertex v);
 	
 	@Override
-	public boolean equals(Object o)
-	{
-		if (o == this)
-		{
-			return true;
-		}
-		if (!(o instanceof Edge))
-		{
-			return false;
-		}
-		Edge e = (Edge) o;
-		return ((e.getBegin().equals(this.getBegin())) 
-				&& (e.getEnd(e.getBegin()).equals(this.getEnd(this.getBegin())))
-				&& (e.getWeight() == this.getWeight()));
-	}
-	
-	@Override
 	public int compareTo(Edge that) {
 		// TODO Auto-generated method stub
 		if (this.getWeight() < that.getWeight())
-		{
 			return -1;
-		}
-		if (this.getWeight() == that.getWeight())
-		{
-			return 0;
-		}
-		return 1;
+		
+		return this.getWeight() == that.getWeight()? 0 : 1;
 	}
+
 	public void changeColorEdge(Color color) {
 		StrokeTransition strokeTransition = new StrokeTransition(Duration.millis(100), this.line);
 		strokeTransition.setToValue(color);
         strokeTransition.play();
 	}
+
 
 }

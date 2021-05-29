@@ -1,5 +1,7 @@
 package Elements;
 
+import javafx.scene.paint.Color;
+
 public class DirectedEdge extends Edge{
 
 	public DirectedEdge(Vertex v, Vertex u, int weight) {
@@ -10,11 +12,23 @@ public class DirectedEdge extends Edge{
 	@Override 
 	public boolean startsFrom(Vertex v)
 	{
-		return this.getBegin().equals(v) || this.getEnd().equals(v);
+		return this.getBegin().equals(v);
 	}
+	
 
 	@Override
-	public void draw(int colour) {
+	public boolean equals(Object o)
+	{
+		return o == this ||			// Self Comparing
+				( !(o instanceof DirectedEdge) && 	// Test for Same type 
+					// Test for same two endpoints
+					((DirectedEdge) o).getBegin() == this.getBegin() &&
+					((DirectedEdge) o).getEnd() == this.getEnd());
+	}
+	
+
+	@Override
+	public void draw(Color colour) {
 		// TODO Auto-generated method stub
 		
 	}

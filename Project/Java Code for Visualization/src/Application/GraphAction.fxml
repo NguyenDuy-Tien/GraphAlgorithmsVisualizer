@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import com.jfoenix.controls.JFXButton?>
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
@@ -20,10 +13,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="620.0" prefWidth="748.0" style="-fx-background-color: #ccf2ff;" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">   <children>
+<AnchorPane prefHeight="620.0" prefWidth="748.0" style="-fx-background-color: #C6EFF8;" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">   <children>
       <HBox layoutX="13.0" layoutY="80.0">
          <children>
-            <RadioButton fx:id="addNodeButton" mnemonicParsing="false" onAction="#AddNodeHandle" selected="true" style="-fx-background-color: 14C216;" stylesheets="@Test.css" text="Add node">
+            <RadioButton fx:id="addNodeButton" mnemonicParsing="false" onAction="#AddNodeHandle" selected="true" stylesheets="@Test.css" text="Add node">
                <toggleGroup>
                   <ToggleGroup fx:id="addType" />
                </toggleGroup>
@@ -34,7 +27,7 @@
                   <Font name="SansSerif Regular" size="15.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="addEdgeButton" mnemonicParsing="false" onAction="#AddEdgeHandle" style="-fx-background-color: 14C216;" stylesheets="@Test.css" text="Add edge" toggleGroup="$addType">
+            <RadioButton fx:id="addEdgeButton" mnemonicParsing="false" onAction="#AddEdgeHandle" stylesheets="@Test.css" text="Add edge" toggleGroup="$addType">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
@@ -44,62 +37,46 @@
             </RadioButton>
          </children>
       </HBox>
-      <AnchorPane fx:id="anchorRoot" layoutX="115.0" layoutY="111.0" prefHeight="491.0" prefWidth="576.0">
+      <AnchorPane fx:id="anchorRoot" layoutX="115.0" layoutY="111.0" prefHeight="510.0" prefWidth="627.0">
          <children>
             <Group fx:id="canvasGroup" onMouseClicked="#handle" onMouseDragged="#handle" onMousePressed="#handle" onMouseReleased="#handle">
                <children>
-                  <Pane id="pane1" fx:id="viewer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#handle" onMouseDragged="#handle" onMousePressed="#handle" onMouseReleased="#handle" prefHeight="487.0" prefWidth="627.0" style="-fx-background-color: #F5FCFA;" stylesheets="@Test.css" />
+                  <Pane id="pane1" fx:id="viewer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#handle" onMouseDragged="#handle" onMousePressed="#handle" onMouseReleased="#handle" prefHeight="514.0" prefWidth="633.0" style="-fx-background-color: #F5FCFA;" stylesheets="@Test.css" />
                </children>
             </Group>
          </children></AnchorPane>
-      <VBox layoutX="12.0" layoutY="155.0" prefHeight="200.0" prefWidth="88.0">
+      <VBox layoutX="-3.0" layoutY="111.0" prefHeight="293.0" prefWidth="119.0">
          <children>
-            <JFXButton id="glassBlue" fx:id="resetButton" buttonType="RAISED" onAction="#ResetHandle" prefHeight="31.0" prefWidth="97.0" ripplerFill="WHITE" text="Reset">
+            <JFXButton fx:id="resetButton" onAction="#ResetHandle" prefHeight="44.0" prefWidth="119.0" ripplerFill="WHITE" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Reset" textFill="#fffef6">
                <VBox.margin>
-                  <Insets bottom="5.0" />
+                  <Insets />
                </VBox.margin>
-               <stylesheets>
-                  <URL value="@Button.css" />
-                  <URL value="@Test.css" />
-               </stylesheets>
                <font>
-                  <Font name="SansSerif Regular" size="15.0" />
+                  <Font name="SansSerif Bold" size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton id="glass" fx:id="clearButton" buttonType="RAISED" onAction="#ClearHandle" prefHeight="31.0" prefWidth="97.0" text="Clear">
+            <JFXButton fx:id="clearButton" onAction="#ClearHandle" prefHeight="44.0" prefWidth="161.0" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Clear" textFill="#fffef6">
                <VBox.margin>
-                  <Insets bottom="5.0" />
+                  <Insets />
                </VBox.margin>
-               <stylesheets>
-                  <URL value="@Button.css" />
-                  <URL value="@Test.css" />
-               </stylesheets>
                <font>
-                  <Font name="SansSerif Regular" size="15.0" />
+                  <Font name="SansSerif Bold" size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton id="glassBlue" fx:id="runOneButton" buttonType="RAISED" prefHeight="31.0" prefWidth="98.0" text="Run One">
+            <JFXButton fx:id="runOneButton" prefHeight="44.0" prefWidth="136.0" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Run One" textFill="#fffef6">
                <VBox.margin>
-                  <Insets bottom="5.0" />
+                  <Insets />
                </VBox.margin>
-               <stylesheets>
-                  <URL value="@Button.css" />
-                  <URL value="@Test.css" />
-               </stylesheets>
                <font>
-                  <Font name="SansSerif Regular" size="15.0" />
+                  <Font name="SansSerif Bold" size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton id="glass" fx:id="runAllButton" buttonType="RAISED" prefHeight="31.0" prefWidth="103.0" text="Run All">
+            <JFXButton fx:id="runAllButton" prefHeight="44.0" prefWidth="139.0" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Run All" textFill="#fffef6">
                <VBox.margin>
-                  <Insets bottom="5.0" />
+                  <Insets />
                </VBox.margin>
-               <stylesheets>
-                  <URL value="@Button.css" />
-                  <URL value="@Test.css" />
-               </stylesheets>
                <font>
-                  <Font name="SansSerif Regular" size="15.0" />
+                  <Font name="SansSerif Bold" size="15.0" />
                </font>
             </JFXButton>
          </children>
