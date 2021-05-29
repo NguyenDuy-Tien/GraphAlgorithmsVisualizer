@@ -517,26 +517,7 @@
     -fx-border-radius: 10px;
     -fx-padding: 4px;
 }
-.radio-button .radio:selected {
-    -fx-background-color: white;
-    -fx-background-image: null;
-}
-.radio-button -radio:armed {
-    -fx-background-color: white;
-    -fx-background-image: null;
-}
-.radio-button -radio:determinate {
-    -fx-background-color: white;
-    -fx-background-image: null;
-}
-.radio-button -radio:indeterminate {
-    -fx-background-color: white;
-    -fx-background-image: null;
-}
-.radio-button .dot {
-    -fx-background-radius: 9px;
-    -fx-padding: 5px;
-}
+
 
 
 .root{
