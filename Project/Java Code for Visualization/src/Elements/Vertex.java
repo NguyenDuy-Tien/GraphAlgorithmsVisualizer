@@ -4,9 +4,11 @@ package Elements;
 import java.util.Vector;
 
 import Algorithm.Drawable;
+import javafx.animation.StrokeTransition;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 public class Vertex extends Circle implements Drawable{
 	public static int count = 0;
@@ -41,7 +43,10 @@ public class Vertex extends Circle implements Drawable{
 				(o instanceof Vertex &&
 						((Vertex) o).getID() == this.getID());
 	}
-	
+
+	public void changeColorVertex(Color color) {
+		this.setFill(color);
+	}
 
 	@Override
 	public void draw(Color colour) {

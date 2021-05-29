@@ -89,7 +89,21 @@ public class Graph {
 	
 		return adj;
 	}
-	
+	public boolean isExistsEdge(Vertex begin, Vertex end)
+	{
+		for (Edge edge: list_of_edges)
+		{
+			if (edge.getBegin().equals(begin) && edge.getEnd(edge.getBegin()).equals(end))
+			{
+				return true;
+			}
+			else if (edge instanceof UndirectedEdge && edge.getBegin().equals(end) && edge.getEnd(edge.getBegin()).equals(begin))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	public Iterable<Vertex> adjacent_vertices_of_vertex(Vertex v)
 	{
 		Vector<Vertex> adj = new Vector<Vertex>();
@@ -102,8 +116,10 @@ public class Graph {
 		return adj;
 	}
 	public void resetGraph() {
-		this.list_of_vertices.get(0).resetCount();
+		if(!this.list_of_vertices.isEmpty()) {
+			this.list_of_vertices.get(0).resetCount();
+			list_of_vertices.clear();
+		}
 		list_of_edges.clear();
-		list_of_vertices.clear();
 	}
 }
