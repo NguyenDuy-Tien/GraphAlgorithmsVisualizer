@@ -3,8 +3,11 @@ package Elements;
 
 
 import Algorithm.Drawable;
+import javafx.animation.StrokeTransition;
 import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
 
 public abstract class Edge implements Comparable<Edge>, Drawable {
 
@@ -83,6 +86,10 @@ public abstract class Edge implements Comparable<Edge>, Drawable {
 		}
 		return 1;
 	}
-	
+	public void changeColorEdge(Color color) {
+		StrokeTransition strokeTransition = new StrokeTransition(Duration.millis(100), this.line);
+		strokeTransition.setToValue(color);
+        strokeTransition.play();
+	}
 
 }
