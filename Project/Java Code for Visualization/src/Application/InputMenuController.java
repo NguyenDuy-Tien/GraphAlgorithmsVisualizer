@@ -65,6 +65,7 @@ public class InputMenuController implements Initializable{
 	// What type of Edge we're creating for the graph
 	protected String edgeDirection;
 	
+	private HashMap<RadioButton, EventHandler<ActionEvent>> buttonGraphTypeAction;
 	// Get a Graph from text input
 	// A Graph in Text input has the form:
 	// vertice_num edge_num
@@ -75,12 +76,11 @@ public class InputMenuController implements Initializable{
 	
 	EventHandler<ActionEvent> directedHandler = new EventHandler<ActionEvent>() {
 
-		
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
-			String[] algo = {"Dijkstra"};
 			AlgorithmBox.getItems().clear();
+			String[] algo = {"Dijkstra"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
 			graphData.setText("");
 		}
@@ -88,13 +88,11 @@ public class InputMenuController implements Initializable{
 	
 	EventHandler<ActionEvent> undirectedHandler = new EventHandler<ActionEvent>() {
 
-		
-
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
-			String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
 			AlgorithmBox.getItems().clear();
+			String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
 			graphData.setText("");
 		}
@@ -219,7 +217,13 @@ public class InputMenuController implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		// Set default option of edge types and algorithms available:
+		undirectedBox.setSelected(true);
+		AlgorithmBox.getItems().clear();
+		String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
+		AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
+		graphData.setText("");
+		
 		directedBox.setOnAction(directedHandler);
 		undirectedBox.setOnAction(undirectedHandler);
 	}
