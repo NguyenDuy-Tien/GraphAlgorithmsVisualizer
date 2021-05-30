@@ -88,7 +88,7 @@
          </stylesheets></JFXButton>
       <Label fx:id="textAlgorithm" alignment="CENTER" layoutX="92.0" layoutY="14.0" prefHeight="39.0" prefWidth="507.0" AnchorPane.leftAnchor="92.0" AnchorPane.rightAnchor="91.0">
          <font>
-            <Font name="SansSerif Regular" size="25.0" />
+            <Font name="SansSerif Bold" size="22.0" />
          </font>
       </Label>
    </children>
