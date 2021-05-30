@@ -65,7 +65,6 @@ public class InputMenuController implements Initializable{
 	// What type of Edge we're creating for the graph
 	protected String edgeDirection;
 	
-	private HashMap<RadioButton, EventHandler<Event>> buttonGraphTypeAction;
 	// Get a Graph from text input
 	// A Graph in Text input has the form:
 	// vertice_num edge_num
@@ -74,10 +73,11 @@ public class InputMenuController implements Initializable{
 	// ...
 	// Invalid input will give you a null object, so be careful!
 	
-	EventHandler<Event> directedHandler = new EventHandler<Event>() {
+	EventHandler<ActionEvent> directedHandler = new EventHandler<ActionEvent>() {
 
+		
 		@Override
-		public void handle(Event event) {
+		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
 			String[] algo = {"Dijkstra"};
 			AlgorithmBox.getItems().clear();
@@ -86,10 +86,12 @@ public class InputMenuController implements Initializable{
 		}
 	};
 	
-	EventHandler<Event> undirectedHandler = new EventHandler<Event>() {
+	EventHandler<ActionEvent> undirectedHandler = new EventHandler<ActionEvent>() {
+
+		
 
 		@Override
-		public void handle(Event event) {
+		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
 			String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
 			AlgorithmBox.getItems().clear();
@@ -218,9 +220,7 @@ public class InputMenuController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
-		buttonGraphTypeAction = new HashMap<RadioButton, EventHandler<Event>>();
-		buttonGraphTypeAction.put(directedBox,directedHandler);
-		buttonGraphTypeAction.put(undirectedBox,undirectedHandler);
-		buttonGraphTypeAction.get((RadioButton) GraphType.getSelectedToggle());
+		directedBox.setOnAction(directedHandler);
+		undirectedBox.setOnAction(undirectedHandler);
 	}
 }

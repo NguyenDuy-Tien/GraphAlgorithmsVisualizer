@@ -76,7 +76,7 @@ public class GraphController implements Initializable{
     @FXML
     private Arrow arrow;
     
-    private HashMap<RadioButton, EventHandler> buttonAddingAction;
+    private List<Vertex> selectedVertices = new ArrayList<Vertex>();
     boolean menuBool = false;
     ContextMenu globalMenu;
 	Vertex selectedVertex = null;
@@ -92,7 +92,7 @@ public class GraphController implements Initializable{
 	public GraphController() {
 	}
 
-	public void handle(MouseEvent ev) {
+	public void addNodeHandle(MouseEvent ev) {
         if (addNode) {
             if (nNode == 1) {
                 addNodeButton.setDisable(false);
@@ -119,62 +119,155 @@ public class GraphController implements Initializable{
             }
         }
     }
+	//ADD NODE HANDLER
+	EventHandler<MouseEvent> addNodeHandler = new EventHandler<MouseEvent>() {
 
+		@Override
+		public void handle(MouseEvent event) {
+			// TODO Auto-generated method stub
+			if (graph.get_vertices().size() == 1) {
+                addNodeButton.setDisable(false);
+            }
+            if (graph.get_vertices().size() == 2) {
+                addEdgeButton.setDisable(false);
+                AddNodeHandle(null);
+            }
+            //if you click into a blank space -> create new node
+            if (!event.getSource().equals(canvasGroup)) {
+                if (event.getEventType() == MouseEvent.MOUSE_RELEASED
+                		&& event.getButton() == MouseButton.PRIMARY) 
+                {
+                    nNode++;
+                    Vertex vertex = new Vertex(event.getX(), event.getY(), 12.0);
+                    canvasGroup.getChildren().addAll(vertex.drawableObjects());
+                    graph.addVertex(vertex);
+                    selectedVertices.clear();
+                    selectedVertices.add(vertex);
+                    vertex.setOnMousePressed(mouseHandler);
+                    vertex.setOnMouseReleased(mouseHandler);
+                    vertex.setOnMouseDragged(mouseHandler);
+                    vertex.setOnMouseExited(mouseHandler);
+                    vertex.setOnMouseEntered(mouseHandler);
+                }
+            }
+		}
+		
+	};
+	
+	
+	//ADD EDGE HANDLER
+	EventHandler<MouseEvent> addEdgeHandler = new EventHandler<MouseEvent>() {
+
+		@Override
+		public void handle(MouseEvent mouseEvent) {
+			// TODO Auto-generated method stub
+			Vertex circle = (Vertex) mouseEvent.getSource();
+			
+			//!circle.isSelected
+			if (selectedVertices.contains(circle) && mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED && mouseEvent.getButton() == MouseButton.PRIMARY)
+			{
+				if (selectedVertex != null 
+						&& graph.isExistsEdge(selectedVertex, circle))
+				{
+					//dialog to get weight
+					TextInputDialog dialog = new TextInputDialog("0");
+                    dialog.setTitle(null);
+                    dialog.setHeaderText("Enter Weight of the Edge :");
+                    dialog.setContentText(null);
+
+                    Optional<String> result = dialog.showAndWait();
+                    int w = Integer.MIN_VALUE;
+                    //parse weight
+                    if (result.isPresent()) {
+                    	w = Integer.parseInt(result.get());
+                    } 
+                    else {
+                    }
+                    //draw
+                    if (w != Integer.MIN_VALUE)
+                    {
+                    	Edge newEdge = EdgeFactory.create(edgeDirection, selectedVertex, circle, 0);
+                    	canvasGroup.getChildren().addAll(newEdge.drawableObjects());
+                    	graph.addEdge(newEdge);
+                    }
+                    //unselect selectedVertex
+                    selectedVertex.draw(Color.BLACK);
+                    selectedVertices.remove(selectedVertex);
+                    return;
+				}
+				//highlight circle
+				circle.draw(Color.RED);
+				selectedVertices.remove(selectedVertex);
+				selectedVertex = circle;
+				selectedVertices.add(circle);
+			}
+			else
+			{
+				//unhighlight circle
+				circle.draw(Color.BLACK);
+				selectedVertex = null;
+				selectedVertices.clear();
+			}
+		}
+		
+	};
+	
+	
 	
 	EventHandler<MouseEvent> mouseHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent mouseEvent) {
-            Vertex circle = (Elements.Vertex) mouseEvent.getSource();
-            if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED && mouseEvent.getButton() == MouseButton.PRIMARY) {
-                if (!circle.isSelected) {
-                    if (selectedVertex != null) {
-                    	
-                    	// Create new Edge if there does not exist an edge
-                    	// in the direction chosen between two vertices
-                        if (addEdge && !graph.isExistsEdge(selectedVertex, circle)) {
-                            
-                            //Adds the edge between two selected nodes
-                            Edge newEdge = EdgeFactory.create(edgeDirection, selectedVertex, circle, 0);
-                        	canvasGroup.getChildren().add(newEdge);
-                    	
-                            TextInputDialog dialog = new TextInputDialog("0");
-                            dialog.setTitle(null);
-                            dialog.setHeaderText("Enter Weight of the Edge :");
-                            dialog.setContentText(null);
+        	Vertex circle = (Elements.Vertex) mouseEvent.getSource();
+        	if (mouseEvent.getEventType() == MouseEvent.MOUSE_PRESSED && mouseEvent.getButton() == MouseButton.PRIMARY) {
+        		if (!circle.isSelected) {
+        			if (selectedVertex != null) {
 
-                            Optional<String> result = dialog.showAndWait();
-                            
-                            if (result.isPresent()) {
-                            	newEdge.setWeight(Integer.parseInt(result.get()));
-                            } 
-                            else {
-                            	newEdge.setWeight(0);
-                            }
+        				// Create new Edge if there does not exist an edge
+        				// in the direction chosen between two vertices
+        				if (addEdge && !graph.isExistsEdge(selectedVertex, circle)) {
 
-                            graph.addEdge(newEdge);
-                                
-                       }
-                   if (addNode || addEdge) {
-                        selectedVertex.isSelected = false;
-                        selectedVertex.changeColorVertex(Color.BLACK);
-                    }
-                    selectedVertex = null;
-                    return;
-                }
+        					//Adds the edge between two selected nodes
+        					Edge newEdge = EdgeFactory.create(edgeDirection, selectedVertex, circle, 0);
+        					canvasGroup.getChildren().add(newEdge);
 
-                    circle.draw(Color.RED);
-                    circle.isSelected = true;
-                    selectedVertex = circle;
-                    
-                } 
-                else {
-                    circle.isSelected = false;
-                    circle.draw(Color.BLACK);
-                    selectedVertex = null;
-                }
+        					TextInputDialog dialog = new TextInputDialog("0");
+        					dialog.setTitle(null);
+        					dialog.setHeaderText("Enter Weight of the Edge :");
+        					dialog.setContentText(null);
 
-            }
+        					Optional<String> result = dialog.showAndWait();
+
+        					if (result.isPresent()) {
+        						newEdge.setWeight(Integer.parseInt(result.get()));
+        					} 
+        					else {
+        						newEdge.setWeight(0);
+        					}
+
+        					graph.addEdge(newEdge);
+
+        				}
+        				if (addNode || addEdge) {
+        					selectedVertex.isSelected = false;
+        					selectedVertex.changeColorVertex(Color.BLACK);
+        				}
+        				selectedVertex = null;
+        				return;
+        			}
+
+        			circle.draw(Color.RED);
+        			circle.isSelected = true;
+        			selectedVertex = circle;
+
+        		} 
+        		else {
+        			circle.isSelected = false;
+        			circle.draw(Color.BLACK);
+        			selectedVertex = null;
+        		}
+
+        	}
         }
     };
 
