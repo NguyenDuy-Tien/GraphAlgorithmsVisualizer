@@ -34,29 +34,98 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
-public class InputMenuController implements Initializable{
-	@FXML
-	ToggleGroup GraphType;
-	@FXML
-	RadioButton directedBox, undirectedBox;
-	@FXML
-	ComboBox AlgorithmBox;
-	@FXML
-	TextArea graphData;
-	@FXML
-	JFXButton selectFileButton;
-	@FXML
-	Label filePathLabel;
-	@FXML
-	TextField fileLinkField;
+public abstract class InputMenuController implements Initializable{
 	
+	// THESE PROTECTED FIELDS WILL BE SET
+	// BY THEIR SUBCLASS
+	//@FXML
+	//protected ToggleGroup GraphType;
+	private Stage PrimaryStage;
 	
-	public static Graph graph = new Graph();
+	@FXML
+	protected RadioButton directedBox, undirectedBox;
+	@FXML
+	protected ComboBox<String> AlgorithmBox;
+	@FXML
+	protected TextArea graphData;
+	@FXML
+	protected JFXButton selectFileButton;
+	@FXML
+	protected Label filePathLabel;
+	@FXML
+	protected TextField fileLinkField;
+	// What type of Edge we're creating for the graph
+	protected String edgeDirection;
 	
-	// What type of Edge we're creating
-	public static String edgeDirection = EdgeFactory.DIRECTED;
+	// Get a Graph from text input
+	// A Graph in Text input has the form:
+	// vertice_num edge_num
+	// begin1 end1 weight1
+	// begin2 end2 weight2
+	// ...
+	// Invalid input will give you a null object, so be careful!
+	public Graph getGraphFromInput(String graphText, String EdgeType) {
+		// Split data from String Input
+		String[] splitdata = graphText.split("\\s+");
+		int number_of_vertices = Integer.valueOf(splitdata[0]);
+		int number_of_edges = Integer.valueOf(splitdata[1]);
+		if (splitdata.length > (3*number_of_edges + 2))
+		{
+			showAlert("Invalid data.", "(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)");
+			return null;
+		}
+		
+		// Add Vertices to the graph and
+		// Randomize their positions on the screen
+		Graph graph = new Graph();
+		for(int i = 0; i < number_of_vertices; ++i) {
+			Random random = new Random();
+			Vertex vertex = new Vertex((random.nextDouble() * 1000000) % 580 , (random.nextDouble() * 1000000) % 450, 12.0);
+			graph.addVertex(vertex);
+		}
+		
+		// Adding egdes to the graph
+		for (int i = 0; i < number_of_edges; i++){
+			int u, v;
+			int w;
+			u = Integer.valueOf(splitdata[2 + 3*i]);
+			v = Integer.valueOf(splitdata[3 + 3*i]);
+			w = Integer.valueOf(splitdata[4 + 3*i]);
+			Vertex beginVertex = graph.get_vertices().get(u - 1);
+			Vertex endVertex = graph.get_vertices().get(v - 1);
+			graph.addEdge(EdgeFactory.create(EdgeType, beginVertex, endVertex, w));
+		}
+		return graph;
+	}
 	
+	// Get the graph input from a file
+	// The format of the file is described at getGraphFromInput
+	public Graph getInputFromFile(File inputFile) {
+		StringBuilder string = new StringBuilder();
+		
+		Scanner reader;
+		try {
+			reader = new Scanner(inputFile);
+			while(reader.hasNextLine()) {
+				String dataString = reader.nextLine();
+				string.append(dataString).append("\n");
+			}
+			reader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		finally
+		{
+			// Should there be close here?
+			// But Eclipse keeps popup error
+			//reader.close();
+		}
+		return getGraphFromInput(string.toString(), edgeDirection);
+	}
+	
+	// Popup some stupid alerts on the screen
 	public static void showAlert(String title, String message)
 	{
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -71,112 +140,30 @@ public class InputMenuController implements Initializable{
 		File file = fc.showOpenDialog(null);
 		if(file != null) {
 			fileLinkField.setText(file.getAbsolutePath().toString());
+			// TODO: there should be something to catch the input here 
 			getInputFromFile(file);
 		}
-		
 	}
-	void getInput(String graphText) {
-		String[] splitdata = graphText.split("\\s+");
-		int number_of_vertices = Integer.valueOf(splitdata[0]);
-		int number_of_edges = Integer.valueOf(splitdata[1]);
-		if (splitdata.length > (3*number_of_edges + 2))
-		{
-			showAlert("Invalid data.", "(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)");
-		}
-		graph = new Graph();
-		for(int i = 0; i < number_of_vertices; i++) {
-			Random random = new Random();
-			Vertex vertex = new Vertex((random.nextDouble() * 1000000) % 580 , (random.nextDouble() * 1000000) % 450, 12.0);
-			graph.addVertex(vertex);
-		}
-		for (int i = 0; i < number_of_edges; i++){
-			int u, v;
-			int w;
-			u = Integer.valueOf(splitdata[2 + 3*i]);
-			v = Integer.valueOf(splitdata[3 + 3*i]);
-			w = Integer.valueOf(splitdata[4 + 3*i]);
-			Vertex beginVertex = graph.get_vertices().get(u - 1);
-			Vertex endVertex = graph.get_vertices().get(v - 1);
-			if(undirected) {
-				UndirectedEdge edge = new UndirectedEdge(beginVertex, endVertex, w);
-				graph.addEdge(edge);
-			}
-			else if(directed) {
-				DirectedEdge edge = new DirectedEdge(beginVertex, endVertex, w);
-				graph.addEdge(edge);
-			}
-		}
-	}
-	void getInputFromFile(File inputFile) {
-		try {
-			Scanner reader = new Scanner(inputFile);
-			StringBuilder string = new StringBuilder();
-			while(reader.hasNextLine()) {
-				String dataString = reader.nextLine();
-				string.append(dataString).append("\n");
-			}
-			graphData.setText(string.toString());
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
+	
+	
+	// Binding Function for START DRAWING button
 	public void validate()
 	{
 		boolean valid = true;
-		if(!graph.get_vertices().isEmpty()) {
-			graph.resetGraph();
+		if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
+			showAlert("Algorithm not selected", "Please choose algorithm");
+			return;
 		}
-		if (directedBox.isSelected())
-		{
-			undirected = false;
-			directed = true;
-			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
-				valid = false;
-				showAlert("Algorithm not selected", "Please choose algorithm");
-			}
-			else if (AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Kruskal")||
-					AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Prim"))
-			{
-				showAlert("Invalid algorithm", "Only Dijkstra can be implemented with directed graph");
-				valid = false;
-			}
-		}
-		if (undirectedBox.isSelected())
-		{
-			directed = false;
-			undirected = true;
-			if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
-				valid = false;
-				showAlert("Algorithm not selected", "Please choose algorithm");
-			}
-			else valid = true;
-		}
-		
-		if(AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Kruskal")) {
-			resetAlgorithmChoice();
-			kruskal = true;
-		}
-		else if(AlgorithmBox.getSelectionModel().getSelectedItem().toString().contains("Prim")){
-			resetAlgorithmChoice();
-			prim = true;
-		}
-		else {
-			resetAlgorithmChoice();
-			dijkstra = true;
-		}
-		
+			
 		try {
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
 			{
-
-				getInput(graphText);
-
-				
+				getGraphFromInput(graphText, edgeDirection);
 			}
 			System.out.println("GraphText: " + graphText + valid);
-			if(valid == true) this.loadNextScence();
+			this.loadNextScene();
 		}
 		catch (Exception exception)
 		{
@@ -184,24 +171,16 @@ public class InputMenuController implements Initializable{
 			exception.printStackTrace();
 		}
 	}
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
-		String[] algo = {"Dijkstra", "Kruskal MST - for undirected only", "Prim MST - for undirected only"};
-		AlgorithmBox.getItems().clear();
-		AlgorithmBox.setItems(FXCollections.observableArrayList(algo)); 
-		graphData.setText("");
-	}
-	public void loadNextScence() {
+	
+	// Create a chain of responsibilities between classes
+	// After one Scene is done, load next scene
+	public void loadNextScene() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphAction.fxml"));
         Parent root;
 		try {
-			GraphController.AlgorithmName = AlgorithmBox.getSelectionModel().getSelectedItem().toString().toUpperCase();
 			root = loader.load();
-			Scene newScene = new Scene(root);
-	        InputMenu.primaryStage.setScene(newScene);
+			Main.primaryStage.setScene(new Scene(root));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

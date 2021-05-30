@@ -33,7 +33,7 @@ public class DirectedEdge extends Edge{
 	@Override
 	public void draw(Color colour) {
 		strokeProperty().bind(fillProperty());
-        setFill(colour);
+        setStroke(colour);
         
         // Draw Arrow Body
         getElements().add(new MoveTo(this.getBegin().getCenterX(), 

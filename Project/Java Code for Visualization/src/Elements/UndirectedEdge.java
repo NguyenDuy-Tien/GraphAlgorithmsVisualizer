@@ -1,7 +1,6 @@
 package Elements;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
 import javafx.scene.text.Font;
 import javafx.scene.shape.*;
@@ -58,8 +57,6 @@ public class UndirectedEdge extends Edge{
 		
 		this.getElements().add(new LineTo(this.getEnd().getCenterX(),
 											this.getEnd().getCenterY()));
-
-		
 	}
 
 }

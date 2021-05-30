@@ -38,10 +38,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
+import javafx.stage.Stage;
 
 public class GraphController implements Initializable{
 
-	public static String AlgorithmName;
+	private Stage PrimaryStage;
+	private static String AlgorithmName;
+	private Algorithm algorithm;
+	
 	@FXML
 	private AnchorPane anchorRoot;
 	@FXML
@@ -73,18 +77,17 @@ public class GraphController implements Initializable{
     
     boolean menuBool = false;
     ContextMenu globalMenu;
-    Graph graph = new Graph();
 	Vertex selectedVertex = null;
-	
-	private String edgeDirection = EdgeFactory.DIRECTED;
+
+    Graph graph = new Graph();
+	private String edgeDirection;
 	
     boolean addNode = true, addEdge = false, calculate = false,
             calculated = false, playing = false, paused = false, pinned = false;
-//    private boolean directed = InputMenuController.directed, undirected = InputMenuController.undirected;
-    List<Label> distances = new ArrayList<Label>(); 
+    
     int nNode = 0;
+    
 	public GraphController() {
-		
 	}
 
 	public void handle(MouseEvent ev) {
@@ -102,14 +105,9 @@ public class GraphController implements Initializable{
                 {
                     nNode++;
                     Vertex vertex = new Vertex(ev.getX(), ev.getY(), 12.0);
-                    
+                    canvasGroup.getChildren().addAll(vertex.drawableObjects());
                     graph.addVertex(vertex);
                     
-                    canvasGroup.getChildren().add(vertex.getVertexID());
-                    
-                    
-                    canvasGroup.getChildren().add(vertex);
-                    graph.addVertex(vertex);
                     vertex.setOnMousePressed(mouseHandler);
                     vertex.setOnMouseReleased(mouseHandler);
                     vertex.setOnMouseDragged(mouseHandler);
@@ -167,7 +165,8 @@ public class GraphController implements Initializable{
                     circle.isSelected = true;
                     selectedVertex = circle;
                     
-                } else {
+                } 
+                else {
                     circle.isSelected = false;
                     circle.draw(Color.BLACK);
                     selectedVertex = null;
@@ -175,10 +174,12 @@ public class GraphController implements Initializable{
 
             }
         }
-
     };
 
 	
+    
+
+    // Binding function for AddNode button
     @FXML
 	public void AddNodeHandle(ActionEvent event) {
         addNode = true;
@@ -187,6 +188,8 @@ public class GraphController implements Initializable{
         addEdgeButton.setSelected(false);
        
     }
+
+    // Binding function for AddEdge button
     @FXML
     public void AddEdgeHandle(ActionEvent event) {
         addNode = false;
@@ -195,25 +198,15 @@ public class GraphController implements Initializable{
         addEdgeButton.setSelected(true);
     }
 
+    
     @FXML
     public void ClearHandle(ActionEvent event) {
         menuBool = false;
         selectedVertex = null;
         System.out.println("IN CLEAR:" + graph.get_vertices().size());
-        for (Vertex v : graph.get_vertices()) {
-            v.isSelected = false;
-            v.draw(Color.BLACK);
-        }
-        for (Edge edgeLine : graph.get_edges()) {
-                edgeLine.setFill(Color.BLACK);
-        }
-        canvasGroup.getChildren().remove(sourceText);
-        for (Label x : distances) {
-            x.setText("Distance : INFINITY");
-            canvasGroup.getChildren().remove(x);
-        }
+        
+        canvasGroup.getChildren().removeAll(graph.drawableObjects());
 
-        distances = new ArrayList<>();
         addNodeButton.setDisable(false);
         addEdgeButton.setDisable(false);
         AddNodeHandle(null);
@@ -231,12 +224,12 @@ public class GraphController implements Initializable{
         canvasGroup.getChildren().addAll(viewer);
         selectedVertex = null;
         
-        distances = new ArrayList<Label>();
         addNode = true;
         addEdge = false;
 
         addNodeButton.setSelected(true);
         addEdgeButton.setSelected(false);
+        
         addEdgeButton.setDisable(true);
         addNodeButton.setDisable(false);
         clearButton.setDisable(true);
@@ -245,18 +238,15 @@ public class GraphController implements Initializable{
     public void runOne() {
 //		algorithm.runOne();
 	}
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		textAlgorithm.setText(AlgorithmName);
-		
-		System.out.println("Initialize drawing graph");
-		
-		ResetHandle(null);
-		for(Vertex vertex : InputMenuController.graph.get_vertices()) {
-            ///////
-            canvasGroup.getChildren().add(vertex.getVertexID());
-            canvasGroup.getChildren().add(vertex);
-            
+    
+    public void setup(String newAlgorithmName, Graph inputGraph, Stage primaryStage)
+    {
+    	AlgorithmName = newAlgorithmName;
+    	textAlgorithm.setText(newAlgorithmName);
+    	
+    	this.PrimaryStage = primaryStage;
+    	
+		for(Vertex vertex : inputGraph.get_vertices()) {
             graph.addVertex(vertex);
             vertex.setOnMousePressed(mouseHandler);
             vertex.setOnMouseReleased(mouseHandler);
@@ -264,56 +254,34 @@ public class GraphController implements Initializable{
             vertex.setOnMouseExited(mouseHandler);
             vertex.setOnMouseEntered(mouseHandler);
 		}
-		for(Edge edge : InputMenuController.graph.get_edges()) {	
-			double startX = edge.getBegin().getPosition().getX();
-        	double startY = edge.getBegin().getPosition().getY();
-        	double endX = edge.getEnd().getPosition().getX();
-        	double endY = edge.getEnd().getPosition().getY();
-        	
-            //Adds the edge between two selected nodes
-        	if (undirected) {
-                Shape edgeLine = new Line(startX, startY, endX, endY);
-                edge.setLine(edgeLine);
-                canvasGroup.getChildren().add(edgeLine);
-                edgeLine.setId("line");
-                //Position weight label between two Undirected nodes
-                edge.getWeightLabel().setLayoutX((startX + endX) / 2);
-                edge.getWeightLabel().setLayoutY((startY + endY) / 2);
-                graph.addEdge(edge);
-                
-            } else if (directed) {
-            	double diffX = (startX - endX)/50;
-            	double diffY = (startY - endY)/50;
-            	double ratioXY = Math.abs(diffX / diffY);
-                arrow = new Arrow(startX -diffX/ratioXY, startY + diffY*ratioXY, 
-                		endX -diffX/ratioXY, endY + diffY*ratioXY);
-                canvasGroup.getChildren().add(arrow);
-                arrow.setId("arrow");
-                
-                edge.setLine(arrow);
-                
-                edge.getWeightLabel().setLayoutX((startX + endX - 2*diffX/ratioXY) / 2 );
-                edge.getWeightLabel().setLayoutY((startY + endY + 2*diffY*ratioXY) / 2 );
-                graph.addEdge(edge);
-            }
-            
-                edge.getWeightLabel().setText(String.valueOf(edge.getWeight()));
-                canvasGroup.getChildren().add(edge.getWeightLabel());
+		
+        canvasGroup.getChildren().addAll(graph.drawableObjects());   
+    }
+    
+    public void loadNextScene()
+    {
+		Parent root;
+    	try {
+    		root = FXMLLoader.load(getClass().getResource("InputMenu.fxml"));
+    		PrimaryStage.setScene(new Scene(root));
+		} 
+    	catch (Exception e2) {
+			// TODO: handle exception
 		}
-		if(InputMenuController.graph.get_edges().size() >= 2) {
+    }
+    
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+		System.out.println("Initialize drawing graph");
+
+		if(graph.get_edges().size() >= 2) {
 			addEdgeButton.setDisable(false);
 		}
+		
 		clearButton.setDisable(true);
+		
 		//Back Button pressed
-		backButton.setOnAction(e-> {
-			try {
-				ResetHandle(null);
-				Parent root = FXMLLoader.load(getClass().getResource("InputMenu.fxml"));
-				Scene scene = new Scene(root);
-				InputMenu.primaryStage.setScene(scene);
-			} catch (Exception e2) {
-				// TODO: handle exception
-			}
-		});
+		backButton.setOnAction(e-> {loadNextScene();});
 	}
 }

@@ -1,18 +1,17 @@
 package Algorithm;
 
+import java.util.Collection;
+
+import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+import Elements.*;
 
-import Elements.DirectedEdge;
-import Elements.Edge;
-import Elements.UndirectedEdge;
-import Elements.Vertex;
-
-public class Graph {
+public class Graph implements Drawable{
 	private List<Vertex> list_of_vertices;
 	private List<Edge> list_of_edges;
-	private Algorithm algorithm;
 	
 	public Graph()
 	{
@@ -27,24 +26,10 @@ public class Graph {
 	{
 		this.list_of_edges.remove(e);
 	}
-	public void changeAlgorithm(Algorithm newAlgorithm)
-	{
-		this.algorithm = newAlgorithm;
-	}
 	
 	public void addVertex(Vertex v)
 	{
 		this.list_of_vertices.add(v);
-	}
-	
-	public void runOne()
-	{
-		this.algorithm.runOne();
-	}
-	
-	public void runAll()
-	{
-		this.algorithm.runAll();
 	}
 	
 	public void removeVertex(Vertex v)
@@ -110,6 +95,7 @@ public class Graph {
 		}
 		return false;
 	}
+	
 	public Iterable<Vertex> adjacent_vertices_of_vertex(Vertex v)
 	{
 		Vector<Vertex> adj = new Vector<Vertex>();
@@ -129,4 +115,23 @@ public class Graph {
 		list_of_vertices.clear();
 		list_of_edges.clear();
 	}
+	
+	public void draw(Color color)
+	{
+	}
+	
+	public Collection<Node> drawableObjects()
+	{
+		ArrayList<Node> allObjects = new ArrayList<Node>();
+		for (Edge e: this.list_of_edges)
+		{
+			allObjects.addAll(e.drawableObjects());
+		}
+		for (Vertex v: this.list_of_vertices)
+		{
+			allObjects.addAll(v.drawableObjects());
+		}
+		return allObjects;
+	}
+	
 }

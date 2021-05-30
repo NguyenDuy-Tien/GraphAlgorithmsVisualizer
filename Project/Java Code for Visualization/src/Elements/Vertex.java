@@ -1,28 +1,28 @@
 package Elements;
 
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import Algorithm.Drawable;
-import javafx.animation.StrokeTransition;
+//import javafx.animation.StrokeTransition;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.util.Duration;
+//import javafx.util.Duration;
 
 public class Vertex extends Circle implements Drawable{
+	public boolean isSelected = false;
 	private static int counterID = 0;
+	private Label vertexID;
 
-	// Instead of THIS ID, we use the get/setId provided by JavaFX
-	//private int ID;
-	
 	// Reset the private auto-incremented counter of Vertex
 	public static void resetCounter() {
 		counterID = 0;
 	}
-	
-	public boolean isSelected = false;
-	private Label vertexID;
 	
 	public Vertex(double x, double y, double radius)
 	{
@@ -42,6 +42,7 @@ public class Vertex extends Circle implements Drawable{
 	{
 		return this.getId();
 	}
+	
 	public boolean isSelected() {
 		return isSelected;
 	}
@@ -50,17 +51,6 @@ public class Vertex extends Circle implements Drawable{
 		this.isSelected = isSelected;
 	}
 
-	public Label getVertexID() {
-		return vertexID;
-	}
-
-	public void setVertexID(Label vertexID) {
-		this.vertexID = vertexID;
-		vertexID.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
-        vertexID.setTextFill(Color.ORANGERED);
-        vertexID.setText(String.valueOf(this.getID()));
-	}
-	
 	
 	@Override
 	public boolean equals(Object o)
@@ -76,9 +66,20 @@ public class Vertex extends Circle implements Drawable{
 
 	@Override
 	public void draw(Color colour) {
+		// Draw the circle
 		this.setFill(colour);
+		
+		// Draw the label
 		this.vertexID = new Label();
 		this.vertexID.setLayoutX(this.getCenterX() - 6);
 		this.vertexID.setLayoutY(this.getCenterY() - 6);
+		vertexID.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
+        vertexID.setTextFill(Color.ORANGERED);
+        vertexID.setText(String.valueOf(this.getID()));
+	}
+
+	@Override
+	public Collection<Node> drawableObjects() {
+		return Arrays.asList(this, vertexID);
 	}
 }
