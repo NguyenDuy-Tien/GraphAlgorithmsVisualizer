@@ -3,6 +3,7 @@ package Application;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -75,6 +76,7 @@ public class GraphController implements Initializable{
     @FXML
     private Arrow arrow;
     
+    private HashMap<RadioButton, EventHandler> buttonAddingAction;
     boolean menuBool = false;
     ContextMenu globalMenu;
 	Vertex selectedVertex = null;

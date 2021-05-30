@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -19,6 +20,8 @@ import Elements.UndirectedEdge;
 import Elements.Vertex;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -33,10 +36,11 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public abstract class InputMenuController implements Initializable{
+public class InputMenuController implements Initializable{
 	
 	// THESE PROTECTED FIELDS WILL BE SET
 	// BY THEIR SUBCLASS
@@ -56,9 +60,12 @@ public abstract class InputMenuController implements Initializable{
 	protected Label filePathLabel;
 	@FXML
 	protected TextField fileLinkField;
+	@FXML
+	private ToggleGroup GraphType;
 	// What type of Edge we're creating for the graph
 	protected String edgeDirection;
 	
+	private HashMap<RadioButton, EventHandler<Event>> buttonGraphTypeAction;
 	// Get a Graph from text input
 	// A Graph in Text input has the form:
 	// vertice_num edge_num
@@ -66,6 +73,30 @@ public abstract class InputMenuController implements Initializable{
 	// begin2 end2 weight2
 	// ...
 	// Invalid input will give you a null object, so be careful!
+	
+	EventHandler<Event> directedHandler = new EventHandler<Event>() {
+
+		@Override
+		public void handle(Event event) {
+			// TODO Auto-generated method stub
+			String[] algo = {"Dijkstra"};
+			AlgorithmBox.getItems().clear();
+			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
+			graphData.setText("");
+		}
+	};
+	
+	EventHandler<Event> undirectedHandler = new EventHandler<Event>() {
+
+		@Override
+		public void handle(Event event) {
+			// TODO Auto-generated method stub
+			String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
+			AlgorithmBox.getItems().clear();
+			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
+			graphData.setText("");
+		}
+	};
 	public Graph getGraphFromInput(String graphText, String EdgeType) {
 		// Split data from String Input
 		String[] splitdata = graphText.split("\\s+");
@@ -104,7 +135,6 @@ public abstract class InputMenuController implements Initializable{
 	// The format of the file is described at getGraphFromInput
 	public Graph getInputFromFile(File inputFile) {
 		StringBuilder string = new StringBuilder();
-		
 		Scanner reader;
 		try {
 			reader = new Scanner(inputFile);
@@ -183,5 +213,14 @@ public abstract class InputMenuController implements Initializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
+		buttonGraphTypeAction = new HashMap<RadioButton, EventHandler<Event>>();
+		buttonGraphTypeAction.put(directedBox,directedHandler);
+		buttonGraphTypeAction.put(undirectedBox,undirectedHandler);
+		buttonGraphTypeAction.get((RadioButton) GraphType.getSelectedToggle());
 	}
 }
