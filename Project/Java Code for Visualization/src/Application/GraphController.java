@@ -78,7 +78,27 @@ public class GraphController implements Initializable{
     
 	public GraphController() {
 	}
+	
 
+	public void handle(MouseEvent event) 
+	{ 
+		System.out.println("Clicked"); 
+		System.out.println(event.isPrimaryButtonDown());
+		System.out.println(!event.getSource().equals(canvasGroup)); 
+		//if you LEFT click into a blank space -> create new node
+        if (event.getButton() == MouseButton.PRIMARY  &&
+        		!event.getSource().equals(canvasGroup)) 
+        {
+                Vertex vertex = new Vertex(event.getX(), event.getY(), 12.0);
+                this.addToGraph(vertex);
+        }
+        // Right click to un-choose every nodes
+        else if (event.isSecondaryButtonDown()) 
+    	{
+            unhighlight(selectedVertices);
+            selectedVertices.clear();
+        }
+    };
     
 	//ADD NODE HANDLER
 	// Bind this directly to vertex.setMouseReleased()
@@ -207,9 +227,6 @@ public class GraphController implements Initializable{
         graph.addVertex(v);
         v.setOnMousePressed(addEdgeHandler);
         v.setOnMouseReleased(addNodeHandler);
-        //v.setOnMouseDragged(mouseHandler);
-        //v.setOnMouseExited(mouseHandler);
-        //v.setOnMouseEntered(mouseHandler);
     } 
     
     protected void addToGraph(Edge e)
@@ -251,7 +268,7 @@ public class GraphController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		//handle = addNodeHandler;
 		System.out.println("Initialize drawing graph");
-
+		edgeDirection = EdgeFactory.UNDIRECTED;
 		if(graph.get_edges().size() >= 2) {
 			addEdgeButton.setDisable(false);
 		}
