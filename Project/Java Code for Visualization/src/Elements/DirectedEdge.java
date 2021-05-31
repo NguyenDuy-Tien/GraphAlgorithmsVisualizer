@@ -21,7 +21,7 @@ public class DirectedEdge extends Edge{
 	public boolean equals(Object o)
 	{
 		return o == this ||			// Self Comparing
-				( !(o instanceof DirectedEdge) && 	// Test for Same type 
+				( (o instanceof DirectedEdge) && 	// Test for Same type 
 					// Test for same two endpoints
 					((DirectedEdge) o).getBegin() == this.getBegin() &&
 					((DirectedEdge) o).getEnd() == this.getEnd());

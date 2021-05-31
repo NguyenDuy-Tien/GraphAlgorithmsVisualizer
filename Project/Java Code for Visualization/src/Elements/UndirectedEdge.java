@@ -29,7 +29,7 @@ public class UndirectedEdge extends Edge{
 	public boolean equals(Object o)
 	{
 		return o == this ||			// Self Comparing
-				( !(o instanceof UndirectedEdge) && 	// Test for Same type 
+				( (o instanceof UndirectedEdge) && 	// Test for Same type 
 					
 					((DirectedEdge) o).getWeight() == this.getWeight() &&	// Test for weight
 					
