@@ -66,6 +66,8 @@ public class InputMenuController implements Initializable{
 	protected String edgeDirection;
 	
 	private HashMap<RadioButton, EventHandler<ActionEvent>> buttonGraphTypeAction;
+	
+	
 	// Get a Graph from text input
 	// A Graph in Text input has the form:
 	// vertice_num edge_num
@@ -73,12 +75,10 @@ public class InputMenuController implements Initializable{
 	// begin2 end2 weight2
 	// ...
 	// Invalid input will give you a null object, so be careful!
-	
 	EventHandler<ActionEvent> directedHandler = new EventHandler<ActionEvent>() {
 
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
 			AlgorithmBox.getItems().clear();
 			String[] algo = {"Dijkstra"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
@@ -90,7 +90,6 @@ public class InputMenuController implements Initializable{
 
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
 			AlgorithmBox.getItems().clear();
 			String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
@@ -117,7 +116,7 @@ public class InputMenuController implements Initializable{
 			graph.addVertex(vertex);
 		}
 		
-		// Adding egdes to the graph
+		// Adding edges to the graph
 		for (int i = 0; i < number_of_edges; i++){
 			int u, v;
 			int w;
@@ -180,7 +179,7 @@ public class InputMenuController implements Initializable{
 	// Binding Function for START DRAWING button
 	public void validate()
 	{
-		boolean valid = true;
+		boolean valid = true;	// used to print graphTexts validity 
 		if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
 			showAlert("Algorithm not selected", "Please choose algorithm");
 			return;
@@ -190,6 +189,8 @@ public class InputMenuController implements Initializable{
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
 			{
+				//TODO: Pass this input 
+				// to the graph in GraphController 
 				getGraphFromInput(graphText, edgeDirection);
 			}
 			System.out.println("GraphText: " + graphText + valid);
@@ -219,10 +220,11 @@ public class InputMenuController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// Set default option of edge types and algorithms available:
 		undirectedBox.setSelected(true);
-		AlgorithmBox.getItems().clear();
-		String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
-		AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
-		graphData.setText("");
+		undirectedHandler.handle(null);	// Do a "Fake" click. I hope this work
+		//AlgorithmBox.getItems().clear();
+		//String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
+		//AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
+		//graphData.setText("");
 		
 		directedBox.setOnAction(directedHandler);
 		undirectedBox.setOnAction(undirectedHandler);

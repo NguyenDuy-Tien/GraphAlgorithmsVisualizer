@@ -32,9 +32,6 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 		this.weightLabel = new Label();
 		this.setWeight(weight);
         System.out.println("Adding Edge");
-		
-        // I can set the weightLabel here
-        // But draw() takes responsibility for this
 		this.draw(colour);
 	}
 	
