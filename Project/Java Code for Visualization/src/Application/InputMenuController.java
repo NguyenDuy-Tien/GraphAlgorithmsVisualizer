@@ -64,7 +64,7 @@ public class InputMenuController implements Initializable{
 	private ToggleGroup GraphType;
 	// What type of Edge we're creating for the graph
 	protected String edgeDirection;
-	
+	private GraphPropertyHolder holder = GraphPropertyHolder.getHolder();
 	private HashMap<RadioButton, EventHandler<ActionEvent>> buttonGraphTypeAction;
 	
 	
@@ -184,7 +184,6 @@ public class InputMenuController implements Initializable{
 			showAlert("Algorithm not selected", "Please choose algorithm");
 			return;
 		}
-			
 		try {
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
@@ -193,6 +192,7 @@ public class InputMenuController implements Initializable{
 				// to the graph in GraphController 
 				getGraphFromInput(graphText, edgeDirection);
 			}
+			
 			System.out.println("GraphText: " + graphText + valid);
 			this.loadNextScene();
 		}
@@ -208,6 +208,8 @@ public class InputMenuController implements Initializable{
 	public void loadNextScene() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphAction.fxml"));
         Parent root;
+        holder.setAlgo(AlgorithmBox.getSelectionModel().getSelectedItem());
+		holder.setDirection(((RadioButton)GraphType.getSelectedToggle()).getText());
 		try {
 			root = loader.load();
 			Main.primaryStage.setScene(new Scene(root));

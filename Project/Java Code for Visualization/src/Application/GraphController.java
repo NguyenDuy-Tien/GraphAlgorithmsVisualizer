@@ -261,7 +261,8 @@ public class GraphController implements Initializable{
 		if(graph.get_edges().size() >= 2) {
 			addEdgeButton.setDisable(false);
 		}
-		
+		GraphPropertyHolder holder = GraphPropertyHolder.getHolder();
+		System.out.println(holder.getAlgo() + "\n" + holder.getDirection());
 		clearButton.setDisable(true);
 		
 		//Back Button pressed
