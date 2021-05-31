@@ -15,10 +15,9 @@ import javafx.scene.text.FontWeight;
 //import javafx.util.Duration;
 
 public class Vertex extends Circle implements Drawable{
-	public boolean isSelected = false;
 	private static int counterID = 0;
 	private Label vertexID;
-
+	private Point position;
 	// Reset the private auto-incremented counter of Vertex
 	public static void resetCounter() {
 		counterID = 0;
@@ -27,6 +26,7 @@ public class Vertex extends Circle implements Drawable{
 	public Vertex(double x, double y, double radius)
 	{
 		this(x, y, radius, Color.BLACK);
+		this.position = new Point((int)x, (int)y);
 	}
 	
 	public Vertex(double x, double y, double radius, Color color)
@@ -36,19 +36,20 @@ public class Vertex extends Circle implements Drawable{
 		this.setId(String.valueOf(counterID));
 		this.setOpacity(0.2);
 		this.draw(color);
+		this.position = new Point((int)x, (int)y);
 	}
 	
+	public Point getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+
 	public String getID()
 	{
 		return this.getId();
-	}
-	
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
 	}
 
 	

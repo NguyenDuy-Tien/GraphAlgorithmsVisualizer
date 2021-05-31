@@ -16,7 +16,7 @@
 <AnchorPane prefHeight="620.0" prefWidth="748.0" style="-fx-background-color: #C6EFF8;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Application.GraphController">   <children>
       <HBox layoutX="13.0" layoutY="80.0">
          <children>
-            <RadioButton fx:id="addNodeButton" mnemonicParsing="false" onAction="#AddNodeHandle" selected="true" stylesheets="@Test.css" text="Add node">
+            <RadioButton fx:id="addNodeButton" mnemonicParsing="false" onAction="#handle" selected="true" stylesheets="@Test.css" text="Add node">
                <toggleGroup>
                   <ToggleGroup fx:id="addType" />
                </toggleGroup>
@@ -27,7 +27,7 @@
                   <Font name="SansSerif Regular" size="15.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="addEdgeButton" mnemonicParsing="false" onAction="#AddEdgeHandle" stylesheets="@Test.css" text="Add edge" toggleGroup="$addType">
+            <RadioButton fx:id="addEdgeButton" mnemonicParsing="false" onAction="#handle" stylesheets="@Test.css" text="Add edge" toggleGroup="$addType">
                <HBox.margin>
                   <Insets right="10.0" />
                </HBox.margin>
