@@ -40,17 +40,17 @@ public class DirectedEdge extends Edge{
 										this.getEnd().getCenterY()));
         
         //ArrowHead
-        double XDiff = this.getBegin().getCenterX() - this.getEnd().getCenterX();
-        double YDiff = this.getBegin().getCenterY() - this.getEnd().getCenterY();
+        double XDiff = this.getEnd().getCenterX() - this.getBegin().getCenterX();
+        double YDiff = this.getEnd().getCenterY() - this.getBegin().getCenterY();
         
         double angle = Math.atan2(YDiff, XDiff) - Math.PI / 2.0;
         double sin = Math.sin(angle);
         double cos = Math.cos(angle);
         
         // Set arrow wings length
-        double bodyLength = Math.sqrt(XDiff*XDiff + YDiff*YDiff);
-        double body_vs_ArrowHead_Ratio = 0.1;
-        double arrowHeadSize =  bodyLength * body_vs_ArrowHead_Ratio;
+//        double bodyLength = Math.sqrt(XDiff*XDiff + YDiff*YDiff);
+//        double body_vs_ArrowHead_Ratio = 0.1;
+        double arrowHeadSize =  17;
         
         // Two arrow wings
         double x1 = (- 1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + this.getEnd().getCenterX();
