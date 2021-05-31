@@ -1,4 +1,4 @@
-package Algorithm;
+package Elements;
 
 import java.util.Collection;
 
@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
+import Algorithm.Drawable;
 import Elements.*;
 
 public class Graph implements Drawable{

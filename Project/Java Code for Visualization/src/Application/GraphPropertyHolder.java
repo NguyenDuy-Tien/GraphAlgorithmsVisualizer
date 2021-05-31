@@ -1,25 +1,20 @@
 package Application;
 
-import Algorithm.Algorithm;
+import Algorithm.*;
+import Elements.*;
 
 public final class GraphPropertyHolder {
-	private String algo;
-	private String direction;
-	private final static GraphPropertyHolder holder = new GraphPropertyHolder();
-	public String getAlgo() {
-		return algo;
-	}
-	public void setAlgo(String algo) {
-		this.algo = algo;
-	}
-	public String getDirection() {
-		return direction;
-	}
-	public void setDirection(String direction) {
-		this.direction = direction;
-	}
-	public static GraphPropertyHolder getHolder()
-	{
-		return holder;
-	}
+	private Graph  graph;
+	private String edgeDirection;
+	private String algorithmName;
+	private final static GraphPropertyHolder singleton = new GraphPropertyHolder();
+
+	public static Graph getGraph()			{return singleton.graph;}
+	public static String getEdgeDirection()	{return singleton.edgeDirection;}
+	public static String getAlgorithmName() {return singleton.algorithmName;}
+	
+	public static void setGraph(Graph g)				{singleton.graph = g;}
+	public static void setEdgeDirection(String direction)	{singleton.edgeDirection = direction;}
+	public static void setAlgorithmName(String algoName)	{singleton.algorithmName = algoName;}
 }
+

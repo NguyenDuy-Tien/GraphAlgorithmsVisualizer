@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 import com.jfoenix.controls.JFXButton;
 
 import Algorithm.Algorithm;
-import Algorithm.Graph;
+import Algorithm.AlgorithmFactory;
 import Algorithm.Prim;
 import Elements.*;
 import javafx.event.ActionEvent;
@@ -20,6 +20,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
@@ -44,10 +45,6 @@ public class GraphController implements Initializable{
 	@FXML
 	private Label textAlgorithm;
 	@FXML
-	private RadioButton addNodeButton;
-	@FXML
-	private RadioButton addEdgeButton;
-	@FXML
 	private JFXButton backButton;
 	@FXML
 	private JFXButton resetButton;
@@ -60,7 +57,7 @@ public class GraphController implements Initializable{
     @FXML
     private Group canvasGroup;
     @FXML 
-    private Pane viewer;
+    private Pane graphDrawingCanvas;
     @FXML
 	private ToggleGroup addType;
     @FXML
@@ -118,7 +115,6 @@ public class GraphController implements Initializable{
 				System.out.println(v.getID());
 			
 			
-			
 			if (selectedVertices.size () == 1)	// highlight the clicked vertex
 				highlight(selectedVertices);
 
@@ -160,50 +156,31 @@ public class GraphController implements Initializable{
 	
 
 	protected void unhighlight(List<Vertex> v)	{	for (Vertex vtx: v) unhighlight(vtx);	}
-	protected void unhighlight(Vertex v)			{	v.draw(Color.BLACK);	}
+	protected void unhighlight(Vertex v)		{	v.draw(Color.BLACK);	}
 	
 	protected void highlight(List<Vertex> v)	{	for (Vertex vtx: v) highlight(vtx);	}
-	protected void highlight(Vertex v)		{	v.draw(Color.RED);	}
+	protected void highlight(Vertex v)			{	v.draw(Color.RED);	}
     
-
-    // Binding function for AddNode button
-	/*
+	// ClearGraph handler: Wipe out all these things:
+	// The graph on the screen
+	// The internal graph
     @FXML
-	public void AddNodeHandle(ActionEvent event) {
-        addNodeButton.setSelected(true);
-        addEdgeButton.setSelected(false);
-       
+    private void ClearGraphHandle(ActionEvent event) {
+        
+    	graph.resetGraph();
+        clearButton.setDisable(true);
+        
+        if (graphLocked)
+        	unlockGraph();
     }
 
-    // Binding function for AddEdge button
-    @FXML
-    public void AddEdgeHandle(ActionEvent event) {
-        addNodeButton.setSelected(false);
-        addEdgeButton.setSelected(true);
-    }*/
-    
-    @FXML
-    private void ClearHandle(ActionEvent event) {
-        System.out.println("IN CLEAR:" + graph.get_vertices().size());
-        canvasGroup.getChildren().removeAll(graph.drawableObjects());
-    }
-
-    // Reset Handle for handling Reset Button
-    // Clear the graph - Lam
+    // Reset Handle for handling Reset Algorithm Button
+    // Set the Algorithm back to the first step
     @FXML
     private void ResetHandle(ActionEvent event) {
-        ClearHandle(null);
-
-        graph.resetGraph();
-        
-        /*
-        addNodeButton.setSelected(true);
-        addEdgeButton.setSelected(false);
-        
-        addEdgeButton.setDisable(true);
-        addNodeButton.setDisable(false);
-        */
-        clearButton.setDisable(true);
+        System.out.println("IN CLEAR:" + graph.get_vertices().size());
+        canvasGroup.getChildren().removeAll(graph.drawableObjects());
+        canvasGroup.getChildren().addAll(graph.drawableObjects());
     }
     
     protected void addToGraph(Vertex v)
@@ -211,7 +188,6 @@ public class GraphController implements Initializable{
         canvasGroup.getChildren().addAll(v.drawableObjects());
         graph.addVertex(v);
         v.setOnMousePressed(addEdgeHandler);
-        //v.setOnMouseReleased(addEdgeHandler);
     } 
     
     protected void addToGraph(Edge e)
@@ -220,21 +196,52 @@ public class GraphController implements Initializable{
         graph.addEdge(e);
     }
     
+    // Stop the user from creating any new edges/vertices
+    protected void lockGraph()
+    {
+    	for (Vertex v: graph.get_vertices())
+    		v.setOnMousePressed(null);
+    	graphDrawingCanvas.setOnMouseClicked(null);
+    	graphLocked = true;
+    	
+    	// Graph can't be changed anymore. 
+    	// Time to create the algorithm
+    	algorithm = AlgorithmFactory.create(this.AlgorithmName, this.graph);
+    }
+    
+    // Enable the user to create vertices/edges again
+    protected void unlockGraph()
+    {
+    	for (Vertex v: graph.get_vertices())
+    		v.setOnMousePressed(addEdgeHandler);
+    	graphDrawingCanvas.setOnMouseClicked(addNodeHandler);
+    	graphLocked = false;
+    }
     
     public void runOne() {
-//		algorithm.runOne();
+    	if (!graphLocked)
+    		lockGraph();
+    	
+		algorithm.runOne();
 	}
     
-    public void setup(String newAlgorithmName, Graph inputGraph, Stage primaryStage)
+    public void runAll() {
+    	if (!graphLocked)
+    		lockGraph();
+    	algorithm.runAll();
+    	unlockGraph();
+	}
+    
+    // Setup the GraphController from GraphPropertyHolder
+    // which has data passed from InputMenuController
+    public void setup()
     {
-    	AlgorithmName = newAlgorithmName;
-    	textAlgorithm.setText(newAlgorithmName);
+    	AlgorithmName = GraphPropertyHolder.getAlgorithmName();
+    	textAlgorithm.setText(AlgorithmName);
+    	// Algorithm creation is deferred until the first runOne() is called
     	
-    	this.PrimaryStage = primaryStage;
-    	
-		for(Vertex v : inputGraph.get_vertices()) {
-			this.addToGraph(v);
-		}
+    	this.edgeDirection = GraphPropertyHolder.getEdgeDirection();
+    	this.graph = GraphPropertyHolder.getGraph();
     }
     
     public void loadNextScene()
@@ -251,31 +258,28 @@ public class GraphController implements Initializable{
     
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		//handle = addNodeHandler;
 		System.out.println("Initialize drawing graph");
 		
+		this.setup();
 		
-		// TODO: Remove this when you have successfully passed Edge Type from InputMenuController
-		edgeDirection = EdgeFactory.DIRECTED;
-		
-		if(graph.get_edges().size() >= 2) {
-			addEdgeButton.setDisable(false);
-		}
-		GraphPropertyHolder holder = GraphPropertyHolder.getHolder();
-		System.out.println(holder.getAlgo() + "\n" + holder.getDirection());
 		clearButton.setDisable(true);
 		
-		//Back Button pressed
+		//Set Back button handle
 		backButton.setOnAction(e-> {loadNextScene();});
+		
+		if (this.graph != null)
+			canvasGroup.getChildren().addAll(this.graph.drawableObjects());
+		else
+			graph = new Graph();
 	}
 
 	
     // What the mouse has selected so far
     private List<Vertex> selectedVertices = new ArrayList<Vertex>();
-    
+    private boolean graphLocked = false;
 	private Stage PrimaryStage;
-	private static String AlgorithmName;
+	private String AlgorithmName;
 	private Algorithm algorithm;
-    private Graph graph = new Graph();
+    private Graph graph;
 	private String edgeDirection;
 }

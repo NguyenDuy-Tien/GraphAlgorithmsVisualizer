@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 import com.jfoenix.controls.JFXButton;
 
-import Algorithm.Graph;
 import Elements.DirectedEdge;
 import Elements.Edge;
 import Elements.EdgeFactory;
+import Elements.Graph;
 import Elements.UndirectedEdge;
 import Elements.Vertex;
 import javafx.collections.FXCollections;
@@ -59,12 +59,9 @@ public class InputMenuController implements Initializable{
 	@FXML
 	protected Label filePathLabel;
 	@FXML
-	protected TextField fileLinkField;
-	@FXML
 	private ToggleGroup GraphType;
 	// What type of Edge we're creating for the graph
 	protected String edgeDirection;
-	private GraphPropertyHolder holder = GraphPropertyHolder.getHolder();
 	private HashMap<RadioButton, EventHandler<ActionEvent>> buttonGraphTypeAction;
 	
 	
@@ -96,7 +93,10 @@ public class InputMenuController implements Initializable{
 			graphData.setText("");
 		}
 	};
-	public Graph getGraphFromInput(String graphText, String EdgeType) {
+	
+	// Get data from graphData 
+	// And then put it in the GraphPropertyHolder
+	public void getGraphFromInput(String graphText, String EdgeType) {
 		// Split data from String Input
 		String[] splitdata = graphText.split("\\s+");
 		int number_of_vertices = Integer.valueOf(splitdata[0]);
@@ -104,7 +104,7 @@ public class InputMenuController implements Initializable{
 		if (splitdata.length > (3*number_of_edges + 2))
 		{
 			showAlert("Invalid data.", "(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)");
-			return null;
+			GraphPropertyHolder.setGraph(null);
 		}
 		
 		// Add Vertices to the graph and
@@ -127,12 +127,15 @@ public class InputMenuController implements Initializable{
 			Vertex endVertex = graph.get_vertices().get(v - 1);
 			graph.addEdge(EdgeFactory.create(EdgeType, beginVertex, endVertex, w));
 		}
-		return graph;
+		
+		GraphPropertyHolder.setGraph(graph);
 	}
 	
+	
 	// Get the graph input from a file
+	// Write it to the graphData TextBox
 	// The format of the file is described at getGraphFromInput
-	public Graph getInputFromFile(File inputFile) {
+	public void getInputFromFile(File inputFile) {
 		StringBuilder string = new StringBuilder();
 		Scanner reader;
 		try {
@@ -151,7 +154,7 @@ public class InputMenuController implements Initializable{
 			// But Eclipse keeps popup error
 			//reader.close();
 		}
-		return getGraphFromInput(string.toString(), edgeDirection);
+		graphData.setText(string.toString());
 	}
 	
 	// Popup some stupid alerts on the screen
@@ -168,8 +171,6 @@ public class InputMenuController implements Initializable{
 		FileChooser fc = new FileChooser();
 		File file = fc.showOpenDialog(null);
 		if(file != null) {
-			fileLinkField.setText(file.getAbsolutePath().toString());
-			// TODO: there should be something to catch the input here 
 			getInputFromFile(file);
 		}
 	}
@@ -189,7 +190,7 @@ public class InputMenuController implements Initializable{
 			if (!graphText.equals(""))
 			{
 				//TODO: Pass this input 
-				// to the graph in GraphController 
+				// to GraphPropertyHolder 
 				getGraphFromInput(graphText, edgeDirection);
 			}
 			
@@ -208,8 +209,8 @@ public class InputMenuController implements Initializable{
 	public void loadNextScene() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphAction.fxml"));
         Parent root;
-        holder.setAlgo(AlgorithmBox.getSelectionModel().getSelectedItem());
-		holder.setDirection(((RadioButton)GraphType.getSelectedToggle()).getText());
+        GraphPropertyHolder.setAlgorithmName(AlgorithmBox.getSelectionModel().getSelectedItem());
+        GraphPropertyHolder.setEdgeDirection(((RadioButton)GraphType.getSelectedToggle()).getText());
 		try {
 			root = loader.load();
 			Main.primaryStage.setScene(new Scene(root));

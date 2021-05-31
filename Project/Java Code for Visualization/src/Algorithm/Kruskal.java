@@ -1,6 +1,7 @@
 package Algorithm;
 
 import Elements.*;
+import javafx.scene.paint.Color;
 
 import java.util.PriorityQueue;
 import java.util.LinkedList;
@@ -13,19 +14,23 @@ public class Kruskal extends MST
 	{
 		this._graph = g;
 		
-		// Sort the edges by its weight
-		this._lightestEdge = new PriorityQueue<>();
-		this._lightestEdge.addAll(g.get_edges());
-		
-		// Initial a forest, with one vertex each tree
-		List<Vertex> allTheVertices = g.get_vertices();
-		this._forests = new LinkedList<>();
-		for (int iii = 0; iii < allTheVertices.size(); ++iii)
-		{
-			this._forests.add((LinkedList<Vertex>) Arrays.asList(allTheVertices.get(iii)));
-		}
+		this.reset();
 	}
 	
+	public void reset()
+	{
+		// Sort the edges by its weight
+			this._lightestEdge = new PriorityQueue<>();
+			this._lightestEdge.addAll(this._graph.get_edges());
+			
+			// Initial a forest, with one vertex each tree
+			List<Vertex> allTheVertices = this._graph.get_vertices();
+			this._forests = new LinkedList<>();
+			for (int iii = 0; iii < allTheVertices.size(); ++iii)
+			{
+				this._forests.add((LinkedList<Vertex>) Arrays.asList(allTheVertices.get(iii)));
+			}
+	}
 	
 	public void runOne()
 	{
@@ -44,9 +49,12 @@ public class Kruskal extends MST
 			
 			// Connect two trees
 			// Make sure we're not creating any cycle 
+			// and then add it to the MST
 			if (tree1 != tree2)
 			{
-				// and then add it to the MST
+				lightestEdge.draw(HIGHLIGHT_EDGE);
+				lightestEdge.getBegin().draw(HIGHLIGHT_VERTEX);
+				lightestEdge.getEnd().draw(HIGHLIGHT_VERTEX);
 				this._currentEdges.add(lightestEdge);
 				
 				// Merge two trees into one
@@ -78,6 +86,9 @@ public class Kruskal extends MST
 		// But oh well, Java needs this
 		return -1;	
 	}
+	
+	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
+	private final Color HIGHLIGHT_EDGE = Color.RED;
 	
 	private PriorityQueue<Edge> _lightestEdge;
 	private List<List<Vertex>> _forests;

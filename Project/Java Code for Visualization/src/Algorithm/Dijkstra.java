@@ -1,6 +1,7 @@
 package Algorithm;
 
 import Elements.*;
+import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class Dijkstra extends Algorithm
 	}
 	
 
-	private void reset()	// Petition to delete this. Let's see what the future holds
+	public void reset()	// Petition to delete this. Let's see what the future holds
 	{
 		// Reset the edges to travel
 		this._nextEdge = new LinkedList<>();
@@ -80,15 +81,27 @@ public class Dijkstra extends Algorithm
 				if (!edge.startsFrom(first))
 					continue;
 			
+			// Highlight the vertices and edge of this step
+			first.draw(HIGHLIGHT_VERTEX);
+			edge.draw(HIGHLIGHT_EDGE);
+			
 			
 			if (this._minDistTo.get(second) > this._minDistTo.get(first) + edge.getWeight())
 			{
+				// Highlight the vertex as changed value
 				this._minDistTo.put(second, this._minDistTo.get(first) + edge.getWeight());
-				
-				// Second vertex changed value, thus we need to re-evaluate all vertices connected to Second
+					second.draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+
+				// Second vertex changed minimum distance value
+				// thus we need to re-evaluate all vertices connected to Second
 				for (Edge e: this._graph.getEdgesFrom(second))
 					if (!this._nextEdge.contains(e))
+					{
 						this._nextEdge.add(e);
+						e.draw(HIGHLIGHT_RE_EVALUATE_EDGE);
+						e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+						e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+					}
 			}
 		}
 	}
@@ -98,5 +111,10 @@ public class Dijkstra extends Algorithm
 
 	private List<Edge> _nextEdge;
 	private Map<Vertex, Double> _minDistTo;
+
+	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
+	private final Color HIGHLIGHT_EDGE = Color.BLUE;
+	private final Color HIGHLIGHT_RE_EVALUATE_EDGE = Color.RED;
+	private final Color HIGHLIGHT_RE_EVALUATE_VERTEX = Color.DARKRED;
 
 }
