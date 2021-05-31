@@ -13,12 +13,7 @@ import com.jfoenix.controls.JFXButton;
 import Algorithm.Algorithm;
 import Algorithm.Graph;
 import Algorithm.Prim;
-import Elements.Arrow;
-import Elements.DirectedEdge;
-import Elements.Edge;
-import Elements.EdgeFactory;
-import Elements.UndirectedEdge;
-import Elements.Vertex;
+import Elements.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -70,8 +65,6 @@ public class GraphController implements Initializable{
 	private ToggleGroup addType;
     @FXML
     private Label sourceText = new Label("Source ");
-    @FXML
-    private Arrow arrow;
     // // // // //
     ContextMenu globalMenu;		// ???? What is this?
     
@@ -82,22 +75,7 @@ public class GraphController implements Initializable{
 
 	public void handle(MouseEvent event) 
 	{ 
-		System.out.println("Clicked"); 
-		System.out.println(event.isPrimaryButtonDown());
-		System.out.println(!event.getSource().equals(canvasGroup)); 
-		//if you LEFT click into a blank space -> create new node
-        if (event.getButton() == MouseButton.PRIMARY  &&
-        		!event.getSource().equals(canvasGroup)) 
-        {
-                Vertex vertex = new Vertex(event.getX(), event.getY(), 12.0);
-                this.addToGraph(vertex);
-        }
-        // Right click to un-choose every nodes
-        else if (event.isSecondaryButtonDown()) 
-    	{
-            unhighlight(selectedVertices);
-            selectedVertices.clear();
-        }
+        addNodeHandler.handle(event);
     };
     
 	//ADD NODE HANDLER
@@ -106,14 +84,14 @@ public class GraphController implements Initializable{
 		@Override
 		public void handle(MouseEvent event) {
             //if you LEFT click into a blank space -> create new node
-            if (event.isPrimaryButtonDown()  &&
+            if (event.getButton() == MouseButton.PRIMARY  &&
             		!event.getSource().equals(canvasGroup)) 
             {
                     Vertex vertex = new Vertex(event.getX(), event.getY(), 12.0);
                     addToGraph(vertex);
             }
             // Right click to un-choose every nodes
-            else if (event.isSecondaryButtonDown()) 
+            else if (event.getButton() == MouseButton.SECONDARY) 
             	{
                     unhighlight(selectedVertices);
                     selectedVertices.clear();
@@ -128,15 +106,22 @@ public class GraphController implements Initializable{
 
 		@Override
 		public void handle(MouseEvent mouseEvent) {
+			System.out.println("Pointed!");
+			
 			// TODO Auto-generated method stub
 			Vertex circle = (Vertex) mouseEvent.getSource();
 			
 			selectedVertices.remove(circle);	// Avoid clicking one vertex twice.
 			selectedVertices.add(circle);
+
+			for (Vertex v: selectedVertices)
+				System.out.println(v.getID());
+			
+			
 			
 			if (selectedVertices.size () == 1)	// highlight the clicked vertex
 				highlight(selectedVertices);
-				
+
 			// Add an edge if there's not one there
 			else if (!graph.isExistsEdge(selectedVertices.get(0), selectedVertices.get(1))) 
 			{
@@ -157,7 +142,7 @@ public class GraphController implements Initializable{
                     //draw
                     if (w != Integer.MIN_VALUE)
                     {
-                    	Edge newEdge = EdgeFactory.create(edgeDirection, selectedVertices.get(0), selectedVertices.get(1), 0);
+                    	Edge newEdge = EdgeFactory.create(edgeDirection, selectedVertices.get(0), selectedVertices.get(1), w);
                     	addToGraph(newEdge);
                     }
                     
@@ -226,7 +211,7 @@ public class GraphController implements Initializable{
         canvasGroup.getChildren().addAll(v.drawableObjects());
         graph.addVertex(v);
         v.setOnMousePressed(addEdgeHandler);
-        v.setOnMouseReleased(addNodeHandler);
+        //v.setOnMouseReleased(addEdgeHandler);
     } 
     
     protected void addToGraph(Edge e)
@@ -268,7 +253,11 @@ public class GraphController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		//handle = addNodeHandler;
 		System.out.println("Initialize drawing graph");
-		edgeDirection = EdgeFactory.UNDIRECTED;
+		
+		
+		// TODO: Remove this when you have successfully passed Edge Type from InputMenuController
+		edgeDirection = EdgeFactory.DIRECTED;
+		
 		if(graph.get_edges().size() >= 2) {
 			addEdgeButton.setDisable(false);
 		}

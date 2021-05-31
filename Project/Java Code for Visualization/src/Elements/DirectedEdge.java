@@ -32,9 +32,6 @@ public class DirectedEdge extends Edge{
     // Translated to OOP from GraphController which was wrote by Hai or Tien (or both).
 	@Override
 	public void draw(Color colour) {
-		strokeProperty().bind(fillProperty());
-        setStroke(colour);
-        
         // Draw Arrow Body
         getElements().add(new MoveTo(this.getBegin().getCenterX(), 
         								this.getBegin().getCenterY()));

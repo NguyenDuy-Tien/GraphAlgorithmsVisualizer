@@ -65,6 +65,8 @@ public class Vertex extends Circle implements Drawable{
 		vertexID.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
         vertexID.setTextFill(Color.ORANGERED);
         vertexID.setText(String.valueOf(this.getID()));
+        vertexID.setDisable(true);
+        vertexID.setOpacity(99999.0);
 	}
 
 	@Override
