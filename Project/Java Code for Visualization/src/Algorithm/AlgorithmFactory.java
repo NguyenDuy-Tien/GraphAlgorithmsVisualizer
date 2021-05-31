@@ -18,4 +18,6 @@ public class AlgorithmFactory {
 					return new Dijkstra(g);
 			}
 		}
+		
+		
 }
