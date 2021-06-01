@@ -1,21 +1,29 @@
 package Algorithm;
 
-public class AlgorithmFactory {
+import Elements.Graph;
 
+public class AlgorithmFactory {
+		
+	public static final String DIJKSTRA = "dijkstra",
+								KRUSKAL = "kruskal mst",
+								PRIM	= "prim mst";
+	
 		public static Algorithm create(String algorithmName, Graph g)
 		{
 			algorithmName = algorithmName.toLowerCase();
 			
 			switch (algorithmName)
 			{
-				case "prim":
+				case PRIM:
 					return new Prim(g);
 				
-				case "kruskal":
+				case KRUSKAL:
 					return new Kruskal(g);
 					
 				default:
 					return new Dijkstra(g);
 			}
 		}
+		
+		
 }

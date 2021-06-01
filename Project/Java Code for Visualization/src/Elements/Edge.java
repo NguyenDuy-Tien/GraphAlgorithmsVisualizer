@@ -23,6 +23,7 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	public Edge(Vertex v, Vertex u, int weight)
 	{
 		this(v, u, weight, Color.BLACK);
+		this.setStrokeWidth(1.6);
 	}
 	
 	public Edge(Vertex v, Vertex u, int weight, Color colour)
@@ -32,10 +33,8 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 		this.weightLabel = new Label();
 		this.setWeight(weight);
         System.out.println("Adding Edge");
-		
-        // I can set the weightLabel here
-        // But draw() takes responsibility for this
 		this.draw(colour);
+		this.setStrokeWidth(1.6);
 	}
 	
 	public void setWeight(int newWeight)
@@ -76,9 +75,10 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	}	
 	
 	// DRAWABLE INTERFACES
-	public void draw()
+	public void draw(Color color)
 	{
-		this.draw(Color.BLACK);
+		//this.setDisable(true);
+		this.draw(color);
 	}
 
 	public Collection<Node> drawableObjects()

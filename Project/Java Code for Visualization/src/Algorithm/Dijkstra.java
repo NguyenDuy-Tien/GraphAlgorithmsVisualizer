@@ -1,11 +1,12 @@
 package Algorithm;
 
 import Elements.*;
+import javafx.scene.paint.Color;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Dijkstra extends Algorithm
@@ -19,6 +20,15 @@ public class Dijkstra extends Algorithm
 		this.changeDestination(g.get_vertices().get(g.get_vertices().size()-1));
 		 
 		this._minDistTo = new HashMap<>();
+		
+		this._edgeTo = new HashMap<Vertex, Edge>();
+		
+		for (Vertex v: g.get_vertices())
+		{
+			this._minDistTo.put(v, Double.POSITIVE_INFINITY);
+		}
+		
+		this._minDistTo.put(this._root, 0.0);
 	}
 	
 	public void changeRoot(Vertex newRoot)
@@ -35,7 +45,7 @@ public class Dijkstra extends Algorithm
 	}
 	
 
-	private void reset()	// Petition to delete this. Let's see what the future holds
+	public void reset()	// Petition to delete this. Let's see what the future holds
 	{
 		// Reset the edges to travel
 		this._nextEdge = new LinkedList<>();
@@ -52,6 +62,20 @@ public class Dijkstra extends Algorithm
 	
 	public boolean isDone()
 	{
+		if (this._nextEdge.size() == 0)
+		{
+			for (Edge e: this._graph.get_edges())
+			{
+				if (!this._edgeTo.containsValue(e))
+				{
+					e.draw(Color.BLACK);
+				}
+				else
+				{
+					e.draw(HIGHLIGHT_EDGE);
+				}
+			}
+		}
 		return this._nextEdge.size() == 0 ;
 	}
 	
@@ -80,23 +104,51 @@ public class Dijkstra extends Algorithm
 				if (!edge.startsFrom(first))
 					continue;
 			
+			// Highlight the vertices and edge of this step
+			first.draw(HIGHLIGHT_VERTEX);
+			edge.draw(HIGHLIGHT_EDGE);
+			
 			
 			if (this._minDistTo.get(second) > this._minDistTo.get(first) + edge.getWeight())
 			{
+				// Highlight the vertex as changed value
 				this._minDistTo.put(second, this._minDistTo.get(first) + edge.getWeight());
-				
-				// Second vertex changed value, thus we need to re-evaluate all vertices connected to Second
+					second.draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+				this._edgeTo.put(second, edge);
+				// Second vertex changed minimum distance value
+				// thus we need to re-evaluate all vertices connected to Second
 				for (Edge e: this._graph.getEdgesFrom(second))
 					if (!this._nextEdge.contains(e))
+					{
 						this._nextEdge.add(e);
+						e.draw(HIGHLIGHT_RE_EVALUATE_EDGE);
+						e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+						e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+					}
 			}
 		}
 	}
 	
+	public String toString()
+	{
+		StringBuilder res = new StringBuilder();
+		for (Vertex v: this._minDistTo.keySet())
+		{
+			res.append(v.getID() + " " + this._minDistTo.get(v) + "\n");
+		}
+		return res.toString();
+	}
 	private Vertex _root;
 	private Vertex _dest;
 
 	private List<Edge> _nextEdge;
 	private Map<Vertex, Double> _minDistTo;
+	
+	private Map<Vertex, Edge> _edgeTo;
+
+	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
+	private final Color HIGHLIGHT_EDGE = Color.BLUE;
+	private final Color HIGHLIGHT_RE_EVALUATE_EDGE = Color.RED;
+	private final Color HIGHLIGHT_RE_EVALUATE_VERTEX = Color.DARKRED;
 
 }

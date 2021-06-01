@@ -34,9 +34,27 @@ public class Prim extends MST
 			{
 				// Add the new bridge
 				_currentEdges.add(lightestBridge);
-				lightestBridge.draw(Color.YELLOW);
+				
+				lightestBridge.draw(HIGHLIGHT_EDGE);
+				for (Edge e: this._graph.getEdgesFrom(lightestBridge.getBegin()))
+				{
+					if (!this._bridges.contains(e))
+					{
+						this._bridges.add(e);
+					}
+				}
+				for (Edge e: this._graph.getEdgesFrom(lightestBridge.getEnd()))
+				{
+					if (!this._bridges.contains(e))
+					{
+						this._bridges.add(e);
+					}
+				}
 				// Add the new vertex 
 				_currentVertices.addAll(mightBeAddedNext);
+				this._currentEdges.add(lightestBridge);
+				// Highlight that vertex on screen
+				mightBeAddedNext.get(0).setFill(HIGHLIGHT_VERTEX);
 				break;
 			}
 		}
@@ -47,21 +65,36 @@ public class Prim extends MST
 		_currentVertices.clear();
 		_currentVertices.add(newRoot);
 		
+		newRoot.setFill(HIGHLIGHT_VERTEX);
+		
 		_currentEdges.clear();
 		
-		Iterator<Edge> it =  this._graph.adjacent_edges_of_vertex(newRoot).iterator();
 		
-		while (it.hasNext())
-			_currentEdges.add(it.next());
+		for (Edge e: this._graph.adjacent_edges_of_vertex(newRoot))
+		{
+			_bridges.add(e);
+			_currentEdges.add(e);
+		}
 	}
 	
 	public Prim(Graph g)
 	{
 		this._graph = g;
-		
-		this.changeRoot(g.get_vertices().get(0));
+		this._root = g.get_vertices().get(0);
+		this._currentVertices = new ArrayList<Vertex>();
+		this._bridges = new PriorityQueue<Edge>();
+		this._currentEdges = new ArrayList<Edge>();
+		this.reset();
 	}
 	
+	public void reset()
+	{
+		this.changeRoot(this._root);
+	}
+	
+	private Vertex _root;
 	private PriorityQueue<Edge> _bridges;
 	private ArrayList<Vertex> _currentVertices;
+	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
+	private final Color HIGHLIGHT_EDGE = Color.RED;
 }

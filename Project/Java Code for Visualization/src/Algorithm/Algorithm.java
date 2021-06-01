@@ -1,5 +1,6 @@
 package Algorithm;
 
+import Elements.Graph;
 
 public abstract class Algorithm {
 
@@ -15,6 +16,11 @@ public abstract class Algorithm {
 	}
 	
 	public abstract boolean isDone();
+	public abstract void reset();
 	
 	protected Graph _graph;
+	public String toString()
+	{
+		return this.getClass().getName();
+	}
 }

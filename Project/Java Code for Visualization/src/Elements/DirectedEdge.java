@@ -21,7 +21,7 @@ public class DirectedEdge extends Edge{
 	public boolean equals(Object o)
 	{
 		return o == this ||			// Self Comparing
-				( !(o instanceof DirectedEdge) && 	// Test for Same type 
+				( (o instanceof DirectedEdge) && 	// Test for Same type 
 					// Test for same two endpoints
 					((DirectedEdge) o).getBegin() == this.getBegin() &&
 					((DirectedEdge) o).getEnd() == this.getEnd());
@@ -32,9 +32,6 @@ public class DirectedEdge extends Edge{
     // Translated to OOP from GraphController which was wrote by Hai or Tien (or both).
 	@Override
 	public void draw(Color colour) {
-		strokeProperty().bind(fillProperty());
-        setStroke(colour);
-        
         // Draw Arrow Body
         getElements().add(new MoveTo(this.getBegin().getCenterX(), 
         								this.getBegin().getCenterY()));
@@ -43,17 +40,15 @@ public class DirectedEdge extends Edge{
 										this.getEnd().getCenterY()));
         
         //ArrowHead
-        double XDiff = this.getBegin().getCenterX() - this.getEnd().getCenterX();
-        double YDiff = this.getBegin().getCenterY() - this.getEnd().getCenterY();
-        
+        double XDiff = this.getEnd().getCenterX() - this.getBegin().getCenterX();
+        double YDiff = this.getEnd().getCenterY() - this.getBegin().getCenterY();
         double angle = Math.atan2(YDiff, XDiff) - Math.PI / 2.0;
         double sin = Math.sin(angle);
         double cos = Math.cos(angle);
         
-        // Set arrow wings length
-        double bodyLength = Math.sqrt(XDiff*XDiff + YDiff*YDiff);
-        double body_vs_ArrowHead_Ratio = 0.1;
-        double arrowHeadSize =  bodyLength * body_vs_ArrowHead_Ratio;
+        // Set arrow wings 
+        double arrowHeadSize =  6;
+        setFill(Color.BLACK);
         
         // Two arrow wings
         double x1 = (- 1.0 / 2.0 * cos + Math.sqrt(3) / 2 * sin) * arrowHeadSize + this.getEnd().getCenterX();
@@ -70,7 +65,22 @@ public class DirectedEdge extends Edge{
         // Setup the weight-displaying label
     	double ratioXY = Math.abs(XDiff / YDiff);
         weightLabel.setFont(new Font(10.6));
-        weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX() - 2*XDiff/ratioXY) / 2 );
-        weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY() + 2*YDiff*ratioXY) / 2 );
+        if(XDiff > 0 && YDiff > 0) {
+        	weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX())/2 + (YDiff/30));
+        	weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY())/2 - (XDiff/30));
+        }
+        else if(XDiff < 0 && YDiff > 0) {
+        	weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX())/2 - (YDiff/30));
+        	weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY())/2 + (XDiff/30));
+        }
+        else if(XDiff > 0 && YDiff < 0) {
+        	weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX())/2 - (YDiff/30));
+        	weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY())/2 + (XDiff/30));
+        }
+        else {
+        	weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX())/2 + (YDiff/30));
+        	weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY())/2 - (XDiff/30));
+        }
+        this.setStroke(colour);
     }
 }

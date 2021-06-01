@@ -12,10 +12,10 @@ import java.util.Scanner;
 
 import com.jfoenix.controls.JFXButton;
 
-import Algorithm.Graph;
 import Elements.DirectedEdge;
 import Elements.Edge;
 import Elements.EdgeFactory;
+import Elements.Graph;
 import Elements.UndirectedEdge;
 import Elements.Vertex;
 import javafx.collections.FXCollections;
@@ -59,13 +59,12 @@ public class InputMenuController implements Initializable{
 	@FXML
 	protected Label filePathLabel;
 	@FXML
-	protected TextField fileLinkField;
-	@FXML
 	private ToggleGroup GraphType;
 	// What type of Edge we're creating for the graph
-	protected String edgeDirection;
-	
+	//protected String edgeDirection = new String();
 	private HashMap<RadioButton, EventHandler<ActionEvent>> buttonGraphTypeAction;
+	
+	
 	// Get a Graph from text input
 	// A Graph in Text input has the form:
 	// vertice_num edge_num
@@ -73,16 +72,15 @@ public class InputMenuController implements Initializable{
 	// begin2 end2 weight2
 	// ...
 	// Invalid input will give you a null object, so be careful!
-	
 	EventHandler<ActionEvent> directedHandler = new EventHandler<ActionEvent>() {
 
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
 			AlgorithmBox.getItems().clear();
 			String[] algo = {"Dijkstra"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
 			graphData.setText("");
+			GraphPropertyHolder.setEdgeDirection("directed");
 		}
 	};
 	
@@ -90,14 +88,17 @@ public class InputMenuController implements Initializable{
 
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
 			AlgorithmBox.getItems().clear();
 			String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
 			graphData.setText("");
+			GraphPropertyHolder.setEdgeDirection("undirected");
 		}
 	};
-	public Graph getGraphFromInput(String graphText, String EdgeType) {
+	
+	// Get data from graphData 
+	// And then put it in the GraphPropertyHolder
+	public void getGraphFromInput(String graphText, String EdgeType) {
 		// Split data from String Input
 		String[] splitdata = graphText.split("\\s+");
 		int number_of_vertices = Integer.valueOf(splitdata[0]);
@@ -105,7 +106,7 @@ public class InputMenuController implements Initializable{
 		if (splitdata.length > (3*number_of_edges + 2))
 		{
 			showAlert("Invalid data.", "(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)");
-			return null;
+			GraphPropertyHolder.setGraph(null);
 		}
 		
 		// Add Vertices to the graph and
@@ -117,7 +118,7 @@ public class InputMenuController implements Initializable{
 			graph.addVertex(vertex);
 		}
 		
-		// Adding egdes to the graph
+		// Adding edges to the graph
 		for (int i = 0; i < number_of_edges; i++){
 			int u, v;
 			int w;
@@ -128,12 +129,15 @@ public class InputMenuController implements Initializable{
 			Vertex endVertex = graph.get_vertices().get(v - 1);
 			graph.addEdge(EdgeFactory.create(EdgeType, beginVertex, endVertex, w));
 		}
-		return graph;
+		
+		GraphPropertyHolder.setGraph(graph);
 	}
 	
+	
 	// Get the graph input from a file
+	// Write it to the graphData TextBox
 	// The format of the file is described at getGraphFromInput
-	public Graph getInputFromFile(File inputFile) {
+	public void getInputFromFile(File inputFile) {
 		StringBuilder string = new StringBuilder();
 		Scanner reader;
 		try {
@@ -152,7 +156,7 @@ public class InputMenuController implements Initializable{
 			// But Eclipse keeps popup error
 			//reader.close();
 		}
-		return getGraphFromInput(string.toString(), edgeDirection);
+		graphData.setText(string.toString());
 	}
 	
 	// Popup some stupid alerts on the screen
@@ -169,8 +173,6 @@ public class InputMenuController implements Initializable{
 		FileChooser fc = new FileChooser();
 		File file = fc.showOpenDialog(null);
 		if(file != null) {
-			fileLinkField.setText(file.getAbsolutePath().toString());
-			// TODO: there should be something to catch the input here 
 			getInputFromFile(file);
 		}
 	}
@@ -180,18 +182,20 @@ public class InputMenuController implements Initializable{
 	// Binding Function for START DRAWING button
 	public void validate()
 	{
-		boolean valid = true;
+		boolean valid = true;	// used to print graphTexts validity 
 		if (AlgorithmBox.getSelectionModel().getSelectedItem() == null) {
 			showAlert("Algorithm not selected", "Please choose algorithm");
 			return;
 		}
-			
 		try {
 			String graphText = graphData.getText().trim();
 			if (!graphText.equals(""))
 			{
-				getGraphFromInput(graphText, edgeDirection);
+				//TODO: Pass this input 
+				// to GraphPropertyHolder 
+				getGraphFromInput(graphText, GraphPropertyHolder.getEdgeDirection());
 			}
+			
 			System.out.println("GraphText: " + graphText + valid);
 			this.loadNextScene();
 		}
@@ -207,6 +211,8 @@ public class InputMenuController implements Initializable{
 	public void loadNextScene() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("GraphAction.fxml"));
         Parent root;
+        GraphPropertyHolder.setAlgorithmName(AlgorithmBox.getSelectionModel().getSelectedItem());
+        GraphPropertyHolder.setEdgeDirection(((RadioButton)GraphType.getSelectedToggle()).getText());
 		try {
 			root = loader.load();
 			Main.primaryStage.setScene(new Scene(root));
@@ -219,10 +225,11 @@ public class InputMenuController implements Initializable{
 	public void initialize(URL location, ResourceBundle resources) {
 		// Set default option of edge types and algorithms available:
 		undirectedBox.setSelected(true);
-		AlgorithmBox.getItems().clear();
-		String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
-		AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
-		graphData.setText("");
+		undirectedHandler.handle(null);	// Do a "Fake" click. I hope this work
+		//AlgorithmBox.getItems().clear();
+		//String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
+		//AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
+		//graphData.setText("");
 		
 		directedBox.setOnAction(directedHandler);
 		undirectedBox.setOnAction(undirectedHandler);

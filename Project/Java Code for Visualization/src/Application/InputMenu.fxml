@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -17,7 +16,7 @@
    <children>
       <VBox layoutX="-3.0" prefHeight="399.0" prefWidth="286.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label prefHeight="21.0" prefWidth="138.0" text="Type of graph" textFill="#cd0909">
+            <Label alignment="TOP_LEFT" prefHeight="31.0" prefWidth="284.0" text="Type of graph" textFill="#cd0909">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font></Label>
@@ -50,7 +49,7 @@
                         <Font name="System Bold" size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton onAction="#chooseFile" prefHeight="54.0" prefWidth="149.0" style="-fx-background-color: #D16232; -fx-border-color: #CFCFCE;" text="Select Input File" textFill="#f5f0f0">
+                  <JFXButton onAction="#chooseFile" prefHeight="54.0" prefWidth="149.0" style="-fx-background-color: #D16232; -fx-border-color: #CFCFCE;" text="Open File" textFill="#f5f0f0">
                      <padding>
                         <Insets right="2.0" />
                      </padding>
@@ -62,6 +61,5 @@
             </HBox>
          </children>
       </VBox>
-      <TextField fx:id="fileLinkField" layoutX="293.0" layoutY="355.0" prefHeight="44.0" prefWidth="258.0" />
    </children>
 </AnchorPane>
