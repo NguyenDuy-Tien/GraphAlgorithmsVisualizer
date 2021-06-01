@@ -95,6 +95,7 @@ public class GraphController implements Initializable{
             if (event.getButton() == MouseButton.PRIMARY  &&
             		!event.getSource().equals(canvasGroup)) 
             {
+
                     Vertex vertex = new Vertex(event.getX(), event.getY(), 20);
                     addToGraph(vertex);
             }
@@ -203,6 +204,7 @@ public class GraphController implements Initializable{
         // Set color of all vertices and edges to color at start (BLACK)
         unhighlightAllVertices(graph.get_vertices());
         unhighlightAllEdges(graph.get_edges());
+        algorithm.reset();
     }
     
     protected void addToGraph(Vertex v)
