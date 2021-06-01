@@ -132,10 +132,10 @@ public class Dijkstra extends Algorithm
 	public String toString()
 	{
 		StringBuilder res = new StringBuilder();
-		res.append("The root is: " + this._root.getID() + "\nThe distance to\n other vertices are:\n");
+		res.append("The root is: " + this._root.getID() + "\nDistance from root to other vertices:\n");
 		for (Vertex v: this._minDistTo.keySet())
 		{
-			res.append(v.getID() + " is " + this._minDistTo.get(v) + "\nunits far from root\n");
+			res.append(" " + v.getID() + "  :  " + this._minDistTo.get(v) + "\n");
 		}
 		return res.toString();
 	}

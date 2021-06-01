@@ -96,7 +96,7 @@ public class GraphController implements Initializable{
             		!event.getSource().equals(canvasGroup)) 
             {
 
-                    Vertex vertex = new Vertex(event.getX(), event.getY(), 20);
+                    Vertex vertex = new Vertex(event.getX(), event.getY(), 18);
                     addToGraph(vertex);
             }
             // Right click to un-choose every nodes
@@ -296,8 +296,12 @@ public class GraphController implements Initializable{
 		//Set Back button handle
 		backButton.setOnAction(e-> {loadNextScene();});
 		
-		if (this.graph != null)
+		if (this.graph != null) {
 			canvasGroup.getChildren().addAll(this.graph.drawableObjects());
+			for(Vertex vertex : this.graph.get_vertices()) {
+				vertex.setOnMousePressed(addEdgeHandler);
+			}
+		}
 		else
 			graph = new Graph();
 	}
