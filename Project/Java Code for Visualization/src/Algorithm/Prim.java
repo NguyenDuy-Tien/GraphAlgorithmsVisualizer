@@ -16,8 +16,8 @@ public class Prim extends MST
 	
 	public void runOne()
 	{
-		if (this.isDone())
-			return ;
+		if (this.isDone()||(!this.connected))
+			return;
 		
 		ArrayList<Vertex> mightBeAddedNext = new ArrayList<Vertex>();
 		while (true)

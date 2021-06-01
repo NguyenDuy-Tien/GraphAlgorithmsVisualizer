@@ -103,9 +103,14 @@ public class Graph implements Drawable{
 		Vector<Vertex> adj = new Vector<Vertex>();
 		// Find the edges that start from this vertex
 		for (Edge e: this.list_of_edges)
-			if (e.startsFrom(e.getBegin()))
+		{
+			if (e.startsFrom(v) || e instanceof UndirectedEdge)
+			{
 				// then add the other endpoint to the list
-				adj.add(v);
+				adj.add(e.getEnd(v));
+			}
+		}	
+		
 
 		return adj;
 	}

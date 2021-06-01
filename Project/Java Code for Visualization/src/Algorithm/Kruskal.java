@@ -32,11 +32,13 @@ public class Kruskal extends MST
 				this._forests.add(new LinkedList<Vertex>());
 				this._forests.get(iii).add(allTheVertices.get(iii));
 			}
+			this.checkConnected();
+			
 	}
 	
 	public void runOne()
 	{
-		if (this.isDone())
+		if (this.isDone()||(!this.connected))
 			return;
 
 		// Find the lightest edge
