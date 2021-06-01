@@ -34,7 +34,10 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 		this.setWeight(weight);
         System.out.println("Adding Edge");
 		this.draw(colour);
-		this.setStrokeWidth(1.6);
+		if(this instanceof UndirectedEdge) {
+			this.setStrokeWidth(1.8);
+		}
+		else this.setStrokeWidth(1.2);
 	}
 	
 	public void setWeight(int newWeight)

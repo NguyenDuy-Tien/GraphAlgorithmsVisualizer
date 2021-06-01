@@ -114,7 +114,7 @@ public class InputMenuController implements Initializable{
 		Graph graph = new Graph();
 		for(int i = 0; i < number_of_vertices; ++i) {
 			Random random = new Random();
-			Vertex vertex = new Vertex((random.nextDouble() * 1000000) % 580 , (random.nextDouble() * 1000000) % 450, 12.0);
+			Vertex vertex = new Vertex((random.nextDouble() * 1000000) % 580 , (random.nextDouble() * 1000000) % 420, 12.0);
 			graph.addVertex(vertex);
 		}
 		
