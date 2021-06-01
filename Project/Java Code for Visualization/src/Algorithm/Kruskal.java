@@ -92,6 +92,7 @@ public class Kruskal extends MST
 		return -1;	
 	}
 	
+	
 	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
 	private final Color HIGHLIGHT_EDGE = Color.RED;
 	
