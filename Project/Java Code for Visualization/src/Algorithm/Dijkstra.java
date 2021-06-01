@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Dijkstra extends Algorithm
@@ -20,6 +20,8 @@ public class Dijkstra extends Algorithm
 		this.changeDestination(g.get_vertices().get(g.get_vertices().size()-1));
 		 
 		this._minDistTo = new HashMap<>();
+		
+		this._edgeTo = new HashMap<Vertex, Edge>();
 		
 		for (Vertex v: g.get_vertices())
 		{
@@ -60,6 +62,20 @@ public class Dijkstra extends Algorithm
 	
 	public boolean isDone()
 	{
+		if (this._nextEdge.size() == 0)
+		{
+			for (Edge e: this._graph.get_edges())
+			{
+				if (!this._edgeTo.containsValue(e))
+				{
+					e.draw(Color.BLACK);
+				}
+				else
+				{
+					e.draw(HIGHLIGHT_EDGE);
+				}
+			}
+		}
 		return this._nextEdge.size() == 0 ;
 	}
 	
@@ -98,7 +114,7 @@ public class Dijkstra extends Algorithm
 				// Highlight the vertex as changed value
 				this._minDistTo.put(second, this._minDistTo.get(first) + edge.getWeight());
 					second.draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
-
+				this._edgeTo.put(second, edge);
 				// Second vertex changed minimum distance value
 				// thus we need to re-evaluate all vertices connected to Second
 				for (Edge e: this._graph.getEdgesFrom(second))
@@ -127,6 +143,8 @@ public class Dijkstra extends Algorithm
 
 	private List<Edge> _nextEdge;
 	private Map<Vertex, Double> _minDistTo;
+	
+	private Map<Vertex, Edge> _edgeTo;
 
 	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
 	private final Color HIGHLIGHT_EDGE = Color.BLUE;
