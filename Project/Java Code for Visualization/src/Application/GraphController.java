@@ -201,6 +201,8 @@ public class GraphController implements Initializable{
     @FXML
     private void ResetHandle(ActionEvent event) {
         System.out.println("IN CLEAR:" + graph.get_vertices().size());
+        if (graphLocked)
+        	unlockGraph();
         // Set color of all vertices and edges to color at start (BLACK)
         unhighlightAllVertices(graph.get_vertices());
         unhighlightAllEdges(graph.get_edges());
