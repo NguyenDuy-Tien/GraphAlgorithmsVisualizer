@@ -86,6 +86,7 @@ public class Prim extends MST
 		this._currentVertices = new ArrayList<Vertex>();
 		this._bridges = new PriorityQueue<Edge>();
 		this._currentEdges = new ArrayList<Edge>();
+		this.checkConnected();
 		this.reset();
 	}
 	
