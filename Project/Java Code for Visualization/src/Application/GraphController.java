@@ -252,6 +252,7 @@ public class GraphController implements Initializable{
     {
 		Parent root;
     	try {
+    		Vertex.resetCounter();
     		root = FXMLLoader.load(getClass().getResource("InputMenu.fxml"));
     		Main.primaryStage.setScene(new Scene(root));
 		} 
