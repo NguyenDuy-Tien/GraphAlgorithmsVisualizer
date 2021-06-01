@@ -104,7 +104,7 @@ public class Graph implements Drawable{
 		// Find the edges that start from this vertex
 		for (Edge e: this.list_of_edges)
 		{
-			if (e.startsFrom(v) || e instanceof UndirectedEdge)
+			if (e.startsFrom(v) || (e instanceof UndirectedEdge && (e.getBegin().equals(v))||e.getEnd().equals(v)))
 			{
 				// then add the other endpoint to the list
 				adj.add(e.getEnd(v));

@@ -18,6 +18,11 @@ public abstract class MST extends Algorithm
 
 	public void checkConnected()
 	{
+		if (this._graph.get_edges().size() < (this._graph.get_vertices().size() - 1))
+		{
+			connected = false;
+			return;
+		}
 		part_of_connected_component = new int[this._graph.get_vertices().size()];
 		for (int i = 0; i < this._graph.get_vertices().size(); i++)
 		{
