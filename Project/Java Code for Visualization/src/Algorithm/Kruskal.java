@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import java.util.PriorityQueue;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Kruskal extends MST
@@ -20,15 +21,16 @@ public class Kruskal extends MST
 	public void reset()
 	{
 		// Sort the edges by its weight
-			this._lightestEdge = new PriorityQueue<>();
+			this._lightestEdge = new PriorityQueue<Edge>();
 			this._lightestEdge.addAll(this._graph.get_edges());
-			
+			this._currentEdges = new ArrayList<Edge>();
 			// Initial a forest, with one vertex each tree
 			List<Vertex> allTheVertices = this._graph.get_vertices();
-			this._forests = new LinkedList<>();
+			this._forests = new LinkedList<List<Vertex>>();
 			for (int iii = 0; iii < allTheVertices.size(); ++iii)
 			{
-				this._forests.add((LinkedList<Vertex>) Arrays.asList(allTheVertices.get(iii)));
+				this._forests.add(new LinkedList<Vertex>());
+				this._forests.get(iii).add(allTheVertices.get(iii));
 			}
 	}
 	
@@ -58,7 +60,10 @@ public class Kruskal extends MST
 				this._currentEdges.add(lightestEdge);
 				
 				// Merge two trees into one
-				this._forests.get(tree1).addAll(this._forests.get(tree2));
+				for (Vertex v: this._forests.get(tree2))
+				{
+					this._forests.get(tree1).add(v);
+				}
 				this._forests.remove(tree2);
 				
 				break;

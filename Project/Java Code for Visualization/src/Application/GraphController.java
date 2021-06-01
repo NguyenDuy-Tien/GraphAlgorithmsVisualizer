@@ -207,7 +207,7 @@ public class GraphController implements Initializable{
     	
     	// Graph can't be changed anymore. 
     	// Time to create the algorithm
-    	algorithm = AlgorithmFactory.create(this.AlgorithmName, this.graph);
+    	algorithm = AlgorithmFactory.create(GraphPropertyHolder.getAlgorithmName(), this.graph);
     }
     
     // Enable the user to create vertices/edges again
@@ -224,6 +224,7 @@ public class GraphController implements Initializable{
     		lockGraph();
     	
 		algorithm.runOne();
+		System.out.println(algorithm.getClass().getName());
 		System.out.println(algorithm.toString());
 	}
     
@@ -266,7 +267,6 @@ public class GraphController implements Initializable{
 		this.setup();
 		
 		clearButton.setDisable(true);
-		
 		//Set Back button handle
 		backButton.setOnAction(e-> {loadNextScene();});
 		

@@ -5,8 +5,8 @@ import Elements.Graph;
 public class AlgorithmFactory {
 		
 	public static final String DIJKSTRA = "dijkstra",
-								KRUSKAL = "kruskal",
-								PRIM	= "prim";
+								KRUSKAL = "kruskal mst",
+								PRIM	= "prim mst";
 	
 		public static Algorithm create(String algorithmName, Graph g)
 		{

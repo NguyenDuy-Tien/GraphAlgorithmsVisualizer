@@ -64,6 +64,10 @@ public class Prim extends MST
 	{
 		this._graph = g;
 		this._root = g.get_vertices().get(0);
+		this._currentVertices = new ArrayList<Vertex>();
+		this._bridges = new PriorityQueue<Edge>();
+		this._bridges.addAll(g.get_edges());
+		this._currentEdges = new ArrayList<Edge>();
 		this.reset();
 	}
 	
