@@ -14,4 +14,15 @@ public abstract class MST extends Algorithm
 			result += e.getWeight();
 		return result;
 	}
+	
+	public String toString()
+	{
+		StringBuilder res = new StringBuilder();
+		res.append("Current total weight:\n "+ this.totalWeight() + "\nList of known edges:\n");
+		for (Edge e: this._currentEdges)
+		{
+			res.append(e.getBegin().getID() + " <-> " + e.getEnd().getID() + "\n");
+		}
+		return res.toString();
+	}
 }

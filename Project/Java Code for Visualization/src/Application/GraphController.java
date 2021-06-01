@@ -16,6 +16,7 @@ import Algorithm.Prim;
 import Elements.*;
 import javafx.animation.FillTransition;
 import javafx.animation.StrokeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -65,6 +67,12 @@ public class GraphController implements Initializable{
 	private ToggleGroup addType;
     @FXML
     private Label sourceText = new Label("Source ");
+    @FXML
+    private Label resultText;
+    @FXML
+    private AnchorPane mainPane;
+    @FXML
+    private ImageView backgroundimg;
     // // // // //
     ContextMenu globalMenu;		// ???? What is this?
     
@@ -87,7 +95,8 @@ public class GraphController implements Initializable{
             if (event.getButton() == MouseButton.PRIMARY  &&
             		!event.getSource().equals(canvasGroup)) 
             {
-                    Vertex vertex = new Vertex(event.getX(), event.getY(), 14.2);
+
+                    Vertex vertex = new Vertex(event.getX(), event.getY(), 20);
                     addToGraph(vertex);
             }
             // Right click to un-choose every nodes
@@ -238,16 +247,19 @@ public class GraphController implements Initializable{
     		lockGraph();
     	
 		algorithm.runOne();
-		System.out.println(algorithm.getClass().getName());
-		System.out.println(algorithm.toString());
+		
+		resultText.setText(algorithm.toString());
+		resultText.toFront();
+		
 	}
     
     public void runAll() {
     	if (!graphLocked)
     		lockGraph();
     	algorithm.runAll();
-    	System.out.println(algorithm.toString());
-    	unlockGraph();
+			resultText.setText(algorithm.toString());
+			resultText.toFront();
+	
 	}
     
     // Setup the GraphController from GraphPropertyHolder
@@ -275,6 +287,7 @@ public class GraphController implements Initializable{
 		}
     }
     
+   
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		System.out.println("Initialize drawing graph");
