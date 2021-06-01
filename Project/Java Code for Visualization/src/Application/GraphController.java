@@ -179,8 +179,9 @@ public class GraphController implements Initializable{
     @FXML
     private void ResetHandle(ActionEvent event) {
         System.out.println("IN CLEAR:" + graph.get_vertices().size());
-        canvasGroup.getChildren().removeAll(graph.drawableObjects());
-        canvasGroup.getChildren().addAll(graph.drawableObjects());
+        //canvasGroup.getChildren().removeAll(graph.drawableObjects());
+        canvasGroup.getChildren().clear();
+        //canvasGroup.getChildren().addAll(graph.drawableObjects());
     }
     
     protected void addToGraph(Vertex v)
@@ -200,8 +201,8 @@ public class GraphController implements Initializable{
     protected void lockGraph()
     {
     	for (Vertex v: graph.get_vertices())
-    		v.setOnMousePressed(null);
-    	graphDrawingCanvas.setOnMouseClicked(null);
+    		v.setOnMousePressed(e -> {});
+    	graphDrawingCanvas.setOnMouseClicked(e -> {});
     	graphLocked = true;
     	
     	// Graph can't be changed anymore. 
@@ -223,12 +224,14 @@ public class GraphController implements Initializable{
     		lockGraph();
     	
 		algorithm.runOne();
+		System.out.println(algorithm.toString());
 	}
     
     public void runAll() {
     	if (!graphLocked)
     		lockGraph();
     	algorithm.runAll();
+    	System.out.println(algorithm.toString());
     	unlockGraph();
 	}
     

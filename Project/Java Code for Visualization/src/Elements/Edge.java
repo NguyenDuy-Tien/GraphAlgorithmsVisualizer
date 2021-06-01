@@ -73,10 +73,10 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	}	
 	
 	// DRAWABLE INTERFACES
-	public void draw()
+	public void draw(Color color)
 	{
 		//this.setDisable(true);
-		this.draw(Color.BLACK);
+		this.draw(color);
 	}
 
 	public Collection<Node> drawableObjects()

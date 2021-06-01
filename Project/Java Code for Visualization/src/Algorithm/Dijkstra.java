@@ -20,6 +20,13 @@ public class Dijkstra extends Algorithm
 		this.changeDestination(g.get_vertices().get(g.get_vertices().size()-1));
 		 
 		this._minDistTo = new HashMap<>();
+		
+		for (Vertex v: g.get_vertices())
+		{
+			this._minDistTo.put(v, Double.POSITIVE_INFINITY);
+		}
+		
+		this._minDistTo.put(this._root, 0.0);
 	}
 	
 	public void changeRoot(Vertex newRoot)
@@ -106,6 +113,15 @@ public class Dijkstra extends Algorithm
 		}
 	}
 	
+	public String toString()
+	{
+		StringBuilder res = new StringBuilder();
+		for (Vertex v: this._minDistTo.keySet())
+		{
+			res.append(v.getID() + " " + this._minDistTo.get(v) + "\n");
+		}
+		return res.toString();
+	}
 	private Vertex _root;
 	private Vertex _dest;
 

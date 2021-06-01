@@ -17,7 +17,7 @@
          <children>
             <Group fx:id="canvasGroup">
                <children>
-                  <Pane id="pane1" fx:id="viewer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#handle" prefHeight="514.0" prefWidth="633.0" style="-fx-background-color: #F5FCFA;" stylesheets="@Test.css" />
+                  <Pane id="pane1" fx:id="graphDrawingCanvas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#handle" prefHeight="514.0" prefWidth="633.0" style="-fx-background-color: #F5FCFA;" stylesheets="@Test.css" />
                </children>
             </Group>
          </children></AnchorPane>
@@ -47,7 +47,7 @@
                   <Font name="SansSerif Bold" size="15.0" />
                </font>
             </JFXButton>
-            <JFXButton fx:id="runAllButton" prefHeight="44.0" prefWidth="139.0" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Run All" textFill="#fffef6">
+            <JFXButton fx:id="runAllButton" onAction="#runAll" prefHeight="44.0" prefWidth="139.0" style="-fx-background-color: #2291AC; -fx-border-color: #20505C;" text="Run All" textFill="#fffef6">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

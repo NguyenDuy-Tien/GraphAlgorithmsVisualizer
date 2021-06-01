@@ -14,7 +14,7 @@ public class AlgorithmFactory {
 			
 			switch (algorithmName)
 			{
-				case DIJKSTRA:
+				case PRIM:
 					return new Prim(g);
 				
 				case KRUSKAL:

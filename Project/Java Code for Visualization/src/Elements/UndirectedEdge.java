@@ -31,14 +31,14 @@ public class UndirectedEdge extends Edge{
 		return o == this ||			// Self Comparing
 				( (o instanceof UndirectedEdge) && 	// Test for Same type 
 					
-					((DirectedEdge) o).getWeight() == this.getWeight() &&	// Test for weight
+					((UndirectedEdge) o).getWeight() == this.getWeight() &&	// Test for weight
 					
 					// Test for same two endpoints
-					((DirectedEdge) o).getBegin() == this.getBegin()? 
-							((DirectedEdge) o).getEnd() == this.getEnd()	// Aligned case
+					((UndirectedEdge) o).getBegin() == this.getBegin()? 
+							((UndirectedEdge) o).getEnd() == this.getEnd()	// Aligned case
 							:
-							(((DirectedEdge) o).getBegin() == this.getEnd() && // Head-over-heel case
-							((DirectedEdge) o).getEnd() == this.getBegin()) 
+							(((UndirectedEdge) o).getBegin() == this.getEnd() && // Head-over-heel case
+							((UndirectedEdge) o).getEnd() == this.getBegin()) 
 					);
 	}
 

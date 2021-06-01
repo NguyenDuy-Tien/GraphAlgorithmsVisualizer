@@ -75,7 +75,7 @@ public class Graph implements Drawable{
 		// Find the edges that start from this vertex
 		for (Edge e: this.list_of_edges)
 
-			if (e.startsFrom(v))
+			if (e.startsFrom(v) || (e.getEnd().equals(v) && e instanceof UndirectedEdge))
 
 					// then add it to the list
 					adj.add(e);
