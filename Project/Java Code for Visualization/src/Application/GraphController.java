@@ -14,6 +14,8 @@ import Algorithm.Algorithm;
 import Algorithm.AlgorithmFactory;
 import Algorithm.Prim;
 import Elements.*;
+import javafx.animation.FillTransition;
+import javafx.animation.StrokeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -36,6 +38,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class GraphController implements Initializable{
 
@@ -84,13 +87,13 @@ public class GraphController implements Initializable{
             if (event.getButton() == MouseButton.PRIMARY  &&
             		!event.getSource().equals(canvasGroup)) 
             {
-                    Vertex vertex = new Vertex(event.getX(), event.getY(), 12.0);
+                    Vertex vertex = new Vertex(event.getX(), event.getY(), 13.6);
                     addToGraph(vertex);
             }
             // Right click to un-choose every nodes
             else if (event.getButton() == MouseButton.SECONDARY) 
             	{
-                    unhighlight(selectedVertices);
+                    unhighlightAllVertices(selectedVertices);
                     selectedVertices.clear();
                 }
             }};
@@ -142,12 +145,12 @@ public class GraphController implements Initializable{
                     	addToGraph(newEdge);
                     }
                     
-                    unhighlight(selectedVertices);
+                    unhighlightAllVertices(selectedVertices);
                     selectedVertices.clear();
 			}
 			else
 			{
-				unhighlight(selectedVertices);
+				unhighlightAllVertices(selectedVertices);
 				selectedVertices.clear();
 			}
 		}
@@ -155,8 +158,19 @@ public class GraphController implements Initializable{
 	};
 	
 
-	protected void unhighlight(List<Vertex> v)	{	for (Vertex vtx: v) unhighlight(vtx);	}
-	protected void unhighlight(Vertex v)		{	v.draw(Color.BLACK);	}
+	protected void unhighlightAllVertices(List<Vertex> v)	{	for (Vertex vtx: v) unhighlight(vtx);	}
+	protected void unhighlight(Vertex v) {	
+		FillTransition ft1 = new FillTransition(Duration.millis(300), v);
+        ft1.setToValue(Color.BLACK);
+        ft1.play();
+	}
+	
+	protected void unhighlightAllEdges(List<Edge> e)	{	for (Edge edge: e) unhighlight(edge);	}
+	protected void unhighlight(Edge e) {	
+		 StrokeTransition ftEdge = new StrokeTransition(Duration.millis(500), e);
+         ftEdge.setToValue(Color.BLACK);
+         ftEdge.play();
+	}
 	
 	protected void highlight(List<Vertex> v)	{	for (Vertex vtx: v) highlight(vtx);	}
 	protected void highlight(Vertex v)			{	v.draw(Color.RED);	}
@@ -166,12 +180,11 @@ public class GraphController implements Initializable{
 	// The internal graph
     @FXML
     private void ClearGraphHandle(ActionEvent event) {
-        
-    	graph.resetGraph();
-        clearButton.setDisable(true);
-        
         if (graphLocked)
         	unlockGraph();
+        graph.resetGraph();
+        canvasGroup.getChildren().clear();
+        canvasGroup.getChildren().addAll(graphDrawingCanvas);
     }
 
     // Reset Handle for handling Reset Algorithm Button
@@ -179,9 +192,9 @@ public class GraphController implements Initializable{
     @FXML
     private void ResetHandle(ActionEvent event) {
         System.out.println("IN CLEAR:" + graph.get_vertices().size());
-        //canvasGroup.getChildren().removeAll(graph.drawableObjects());
-        canvasGroup.getChildren().clear();
-        //canvasGroup.getChildren().addAll(graph.drawableObjects());
+        // Set color of all vertices and edges to color at start (BLACK)
+        unhighlightAllVertices(graph.get_vertices());
+        unhighlightAllEdges(graph.get_edges());
     }
     
     protected void addToGraph(Vertex v)
@@ -252,6 +265,7 @@ public class GraphController implements Initializable{
     {
 		Parent root;
     	try {
+    		graph.resetGraph();
     		root = FXMLLoader.load(getClass().getResource("InputMenu.fxml"));
     		Main.primaryStage.setScene(new Scene(root));
 		} 
@@ -265,8 +279,6 @@ public class GraphController implements Initializable{
 		System.out.println("Initialize drawing graph");
 		
 		this.setup();
-		
-		clearButton.setDisable(true);
 		//Set Back button handle
 		backButton.setOnAction(e-> {loadNextScene();});
 		
