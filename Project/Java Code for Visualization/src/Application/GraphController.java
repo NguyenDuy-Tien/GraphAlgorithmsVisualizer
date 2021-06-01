@@ -252,7 +252,7 @@ public class GraphController implements Initializable{
 		Parent root;
     	try {
     		root = FXMLLoader.load(getClass().getResource("InputMenu.fxml"));
-    		PrimaryStage.setScene(new Scene(root));
+    		Main.primaryStage.setScene(new Scene(root));
 		} 
     	catch (Exception e2) {
 			// TODO: handle exception
@@ -280,7 +280,6 @@ public class GraphController implements Initializable{
     // What the mouse has selected so far
     private List<Vertex> selectedVertices = new ArrayList<Vertex>();
     private boolean graphLocked = false;
-	private Stage PrimaryStage;
 	private String AlgorithmName;
 	private Algorithm algorithm;
     private Graph graph;

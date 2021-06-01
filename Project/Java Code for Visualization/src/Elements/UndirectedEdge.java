@@ -57,6 +57,7 @@ public class UndirectedEdge extends Edge{
 		
 		this.getElements().add(new LineTo(this.getEnd().getCenterX(),
 											this.getEnd().getCenterY()));
+		this.setStroke(colour);
 	}
 
 }

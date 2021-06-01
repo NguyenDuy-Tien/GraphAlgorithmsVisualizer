@@ -81,6 +81,6 @@ public class DirectedEdge extends Edge{
         	weightLabel.setLayoutX((this.getBegin().getCenterX() + this.getEnd().getCenterX())/2 + (YDiff/30));
         	weightLabel.setLayoutY((this.getBegin().getCenterY() + this.getEnd().getCenterY())/2 - (XDiff/30));
         }
-        
+        this.setStroke(colour);
     }
 }

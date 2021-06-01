@@ -61,7 +61,7 @@ public class InputMenuController implements Initializable{
 	@FXML
 	private ToggleGroup GraphType;
 	// What type of Edge we're creating for the graph
-	protected String edgeDirection;
+	//protected String edgeDirection = new String();
 	private HashMap<RadioButton, EventHandler<ActionEvent>> buttonGraphTypeAction;
 	
 	
@@ -80,6 +80,7 @@ public class InputMenuController implements Initializable{
 			String[] algo = {"Dijkstra"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
 			graphData.setText("");
+			GraphPropertyHolder.setEdgeDirection("directed");
 		}
 	};
 	
@@ -91,6 +92,7 @@ public class InputMenuController implements Initializable{
 			String[] algo = {"Dijkstra", "Kruskal MST", "Prim MST"};
 			AlgorithmBox.setItems(FXCollections.observableArrayList(algo));
 			graphData.setText("");
+			GraphPropertyHolder.setEdgeDirection("undirected");
 		}
 	};
 	
@@ -191,7 +193,7 @@ public class InputMenuController implements Initializable{
 			{
 				//TODO: Pass this input 
 				// to GraphPropertyHolder 
-				getGraphFromInput(graphText, edgeDirection);
+				getGraphFromInput(graphText, GraphPropertyHolder.getEdgeDirection());
 			}
 			
 			System.out.println("GraphText: " + graphText + valid);
