@@ -34,10 +34,25 @@ public class Prim extends MST
 			{
 				// Add the new bridge
 				_currentEdges.add(lightestBridge);
+				
 				lightestBridge.draw(HIGHLIGHT_EDGE);
+				for (Edge e: this._graph.getEdgesFrom(lightestBridge.getBegin()))
+				{
+					if (!this._bridges.contains(e))
+					{
+						this._bridges.add(e);
+					}
+				}
+				for (Edge e: this._graph.getEdgesFrom(lightestBridge.getEnd()))
+				{
+					if (!this._bridges.contains(e))
+					{
+						this._bridges.add(e);
+					}
+				}
 				// Add the new vertex 
 				_currentVertices.addAll(mightBeAddedNext);
-
+				this._currentEdges.add(lightestBridge);
 				// Highlight that vertex on screen
 				mightBeAddedNext.get(0).setFill(HIGHLIGHT_VERTEX);
 				break;
@@ -54,10 +69,12 @@ public class Prim extends MST
 		
 		_currentEdges.clear();
 		
-		Iterator<Edge> it =  this._graph.adjacent_edges_of_vertex(newRoot).iterator();
 		
-		while (it.hasNext())
-			_currentEdges.add(it.next());
+		for (Edge e: this._graph.adjacent_edges_of_vertex(newRoot))
+		{
+			_bridges.add(e);
+			_currentEdges.add(e);
+		}
 	}
 	
 	public Prim(Graph g)
@@ -66,7 +83,6 @@ public class Prim extends MST
 		this._root = g.get_vertices().get(0);
 		this._currentVertices = new ArrayList<Vertex>();
 		this._bridges = new PriorityQueue<Edge>();
-		this._bridges.addAll(g.get_edges());
 		this._currentEdges = new ArrayList<Edge>();
 		this.reset();
 	}
