@@ -103,7 +103,7 @@ public class InputMenuController implements Initializable{
 		String[] splitdata = graphText.split("\\s+");
 		int number_of_vertices = Integer.valueOf(splitdata[0]);
 		int number_of_edges = Integer.valueOf(splitdata[1]);
-		if (splitdata.length > (3*number_of_edges + 2))
+		if (splitdata.length != (3*number_of_edges + 2))
 		{
 			showAlert("Invalid data.", "(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)");
 			return false;
@@ -116,7 +116,6 @@ public class InputMenuController implements Initializable{
 			Random random = new Random();
 			Vertex vertex = new Vertex((random.nextDouble() * 1000000) % 820 , (random.nextDouble() * 1000000) % 580, 18.0);
 			graph.addVertex(vertex);
-			
 		}
 		
 		// Adding edges to the graph

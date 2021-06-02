@@ -57,7 +57,7 @@ public abstract class MST extends Algorithm
 	{
 		if (!this.connected)
 		{
-			return "The graph is not connected";
+			return "The graph is not connected\n Click 'Reset' to modify graph\n";
 		}
 		StringBuilder res = new StringBuilder();
 		res.append("Current total weight:\n "+ this.totalWeight() + "\nList of known edges:\n");
