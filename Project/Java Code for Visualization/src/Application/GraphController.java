@@ -194,6 +194,7 @@ public class GraphController implements Initializable{
         graph.resetGraph();
         canvasGroup.getChildren().clear();
         canvasGroup.getChildren().addAll(graphDrawingCanvas);
+        resultText.setText("Cleared Graph");
     }
 
     // Reset Handle for handling Reset Algorithm Button
@@ -207,6 +208,7 @@ public class GraphController implements Initializable{
         unhighlightAllVertices(graph.get_vertices());
         unhighlightAllEdges(graph.get_edges());
         algorithm.reset();
+        resultText.setText("Algorithm reset to first step");
     }
     
     protected void addToGraph(Vertex v)

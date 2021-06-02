@@ -38,7 +38,7 @@ public class Prim extends MST
 					this._currentEdges.add(lightestBridge);
 				}
 				
-				lightestBridge.draw(HIGHLIGHT_EDGE);
+				lightestBridge.highlightEdge(HIGHLIGHT_EDGE);
 				for (Edge e: this._graph.getEdgesFrom(lightestBridge.getBegin()))
 				{
 					if (!this._bridges.contains(e))

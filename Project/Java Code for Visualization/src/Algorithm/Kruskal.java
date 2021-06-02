@@ -56,7 +56,7 @@ public class Kruskal extends MST
 			// and then add it to the MST
 			if (tree1 != tree2)
 			{
-				lightestEdge.draw(HIGHLIGHT_EDGE);
+				lightestEdge.highlightEdge(HIGHLIGHT_EDGE);
 				lightestEdge.getBegin().draw(HIGHLIGHT_VERTEX);
 				lightestEdge.getEnd().draw(HIGHLIGHT_VERTEX);
 				this._currentEdges.add(lightestEdge);

@@ -51,6 +51,10 @@ public class Dijkstra extends Algorithm
 		this._nextEdge = new LinkedList<>();
 		this._nextEdge.addAll(this._graph.getEdgesFrom(this._root));
 		
+		for(Edge edge : this._graph.getEdgesFrom(this._root)) {
+			edge.highlightEdge(HIGHLIGHT_EDGE);
+		}
+		
 		// Reset the distance measures
 		this._minDistTo = new HashMap<>();
 		for (final Vertex v: this._graph.get_vertices())
@@ -106,7 +110,7 @@ public class Dijkstra extends Algorithm
 			
 			// Highlight the vertices and edge of this step
 			first.draw(HIGHLIGHT_VERTEX);
-			edge.draw(HIGHLIGHT_EDGE);
+			//edge.highlightEdge(HIGHLIGHT_EDGE);
 			
 			
 			if (this._minDistTo.get(second) > this._minDistTo.get(first) + edge.getWeight())
