@@ -28,18 +28,19 @@ public class UndirectedEdge extends Edge{
 	@Override
 	public boolean equals(Object o)
 	{
-		return o == this ||			// Self Comparing
-				( (o instanceof UndirectedEdge) && 	// Test for Same type 
-					
-					((UndirectedEdge) o).getWeight() == this.getWeight() &&	// Test for weight
-					
-					// Test for same two endpoints
-					((UndirectedEdge) o).getBegin() == this.getBegin()? 
-							((UndirectedEdge) o).getEnd() == this.getEnd()	// Aligned case
-							:
-							(((UndirectedEdge) o).getBegin() == this.getEnd() && // Head-over-heel case
-							((UndirectedEdge) o).getEnd() == this.getBegin()) 
-					);
+		if (o == this)
+		{
+			return true;
+		}
+		if (!(o instanceof UndirectedEdge))
+		{
+			return false;
+		}
+		else
+		{
+			return (((UndirectedEdge) o).getBegin().equals(this.getBegin())&&((UndirectedEdge) o).getEnd().equals(this.getEnd())
+					||(((UndirectedEdge) o).getBegin().equals(this.getEnd())&&((UndirectedEdge) o).getEnd().equals(this.getBegin())));
+		}
 	}
 
 	

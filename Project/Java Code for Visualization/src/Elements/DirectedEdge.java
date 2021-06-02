@@ -20,11 +20,19 @@ public class DirectedEdge extends Edge{
 	@Override
 	public boolean equals(Object o)
 	{
-		return o == this ||			// Self Comparing
-				( (o instanceof DirectedEdge) && 	// Test for Same type 
-					// Test for same two endpoints
-					((DirectedEdge) o).getBegin() == this.getBegin() &&
-					((DirectedEdge) o).getEnd() == this.getEnd());
+		if (o == this)
+		{
+			return true;
+		}
+		if (!(o instanceof DirectedEdge))
+		{
+			return false;
+		}
+		else {
+			return (((DirectedEdge) o).getBegin().equals(this.getBegin()) 
+					&& (((DirectedEdge) o).getEnd(this.getBegin()).equals(this.getEnd(this.getBegin())))
+					&& (((DirectedEdge) o).getWeight() == this.getWeight()));
+		}
 	}
 	
 
