@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,9 +52,9 @@ public class Dijkstra extends Algorithm
 		this._nextEdge = new LinkedList<>();
 		this._nextEdge.addAll(this._graph.getEdgesFrom(this._root));
 		
-		for(Edge edge : this._graph.getEdgesFrom(this._root)) {
-			edge.highlightEdge(HIGHLIGHT_EDGE);
-		}
+//		for(Edge edge : this._graph.getEdgesFrom(this._root)) {
+//			edge.highlightEdge(HIGHLIGHT_EDGE);
+//		}
 		
 		// Reset the distance measures
 		this._minDistTo = new HashMap<>();
@@ -76,7 +77,7 @@ public class Dijkstra extends Algorithm
 				}
 				else
 				{
-					e.draw(HIGHLIGHT_EDGE);
+					e.draw(HIGHLIGHT_EDGE_DONE);
 				}
 			}
 		}
@@ -108,9 +109,17 @@ public class Dijkstra extends Algorithm
 				if (!edge.startsFrom(first))
 					continue;
 			
+			//
+			for(Edge e : nextHighlightEdges) {
+				e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+				e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+				e.highlightEdge(HIGHLIGHT_RE_EVALUATE_EDGE);
+			}
+			nextHighlightEdges.clear();
+			
 			// Highlight the vertices and edge of this step
 			first.draw(HIGHLIGHT_VERTEX);
-			//edge.highlightEdge(HIGHLIGHT_EDGE);
+			edge.highlightEdge(HIGHLIGHT_EDGE);
 			
 			
 			if (this._minDistTo.get(second) > this._minDistTo.get(first) + edge.getWeight())
@@ -125,9 +134,10 @@ public class Dijkstra extends Algorithm
 					if (!this._nextEdge.contains(e))
 					{
 						this._nextEdge.add(e);
-						e.draw(HIGHLIGHT_RE_EVALUATE_EDGE);
-						e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
-						e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+						nextHighlightEdges.add(e);
+//						e.highlightEdge(HIGHLIGHT_RE_EVALUATE_EDGE);
+//						e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+//						e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
 					}
 			}
 		}
@@ -153,7 +163,9 @@ public class Dijkstra extends Algorithm
 
 	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
 	private final Color HIGHLIGHT_EDGE = Color.BLUE;
+	private final Color HIGHLIGHT_EDGE_DONE = Color.GOLD;
 	private final Color HIGHLIGHT_RE_EVALUATE_EDGE = Color.RED;
 	private final Color HIGHLIGHT_RE_EVALUATE_VERTEX = Color.DARKRED;
+	private Vector<Edge> nextHighlightEdges = new Vector<Edge>();
 
 }
