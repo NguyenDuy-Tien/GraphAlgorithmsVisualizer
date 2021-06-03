@@ -19,8 +19,5 @@ public abstract class Algorithm {
 	public abstract void reset();
 	
 	protected Graph _graph;
-	public String toString()
-	{
-		return this.getClass().getName();
-	}
+	
 }

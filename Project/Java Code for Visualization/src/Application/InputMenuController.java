@@ -98,15 +98,15 @@ public class InputMenuController implements Initializable{
 	
 	// Get data from graphData 
 	// And then put it in the GraphPropertyHolder
-	public void getGraphFromInput(String graphText, String EdgeType) {
+	public boolean getGraphFromInput(String graphText, String EdgeType) {
 		// Split data from String Input
 		String[] splitdata = graphText.split("\\s+");
 		int number_of_vertices = Integer.valueOf(splitdata[0]);
 		int number_of_edges = Integer.valueOf(splitdata[1]);
-		if (splitdata.length > (3*number_of_edges + 2))
+		if (splitdata.length != (3*number_of_edges + 2))
 		{
 			showAlert("Invalid data.", "(First line has 2 number N,M - number of vertices and number of edges; the next M lines each have a combination u, v, w: begin - end - weight)");
-			GraphPropertyHolder.setGraph(null);
+			return false;
 		}
 		
 		// Add Vertices to the graph and
@@ -114,7 +114,7 @@ public class InputMenuController implements Initializable{
 		Graph graph = new Graph();
 		for(int i = 0; i < number_of_vertices; ++i) {
 			Random random = new Random();
-			Vertex vertex = new Vertex((random.nextDouble() * 1000000) % 580 , (random.nextDouble() * 1000000) % 450, 12.0);
+			Vertex vertex = new Vertex((random.nextDouble() * 1000000) % 820 , (random.nextDouble() * 1000000) % 580, 18.0);
 			graph.addVertex(vertex);
 		}
 		
@@ -127,10 +127,18 @@ public class InputMenuController implements Initializable{
 			w = Integer.valueOf(splitdata[4 + 3*i]);
 			Vertex beginVertex = graph.get_vertices().get(u - 1);
 			Vertex endVertex = graph.get_vertices().get(v - 1);
-			graph.addEdge(EdgeFactory.create(EdgeType, beginVertex, endVertex, w));
+			if(! graph.isExistsEdge(beginVertex, endVertex)) 
+					graph.addEdge(EdgeFactory.create(EdgeType, beginVertex, endVertex, w));
+			else {
+				showAlert("Invalid data", "Duplicate edge:  " 
+							+ beginVertex.getID() + " "+ endVertex.getID());
+				graph.resetGraph();
+				return false;
+			}
 		}
 		
 		GraphPropertyHolder.setGraph(graph);
+		return true;
 	}
 	
 	
@@ -193,11 +201,13 @@ public class InputMenuController implements Initializable{
 			{
 				//TODO: Pass this input 
 				// to GraphPropertyHolder 
-				getGraphFromInput(graphText, GraphPropertyHolder.getEdgeDirection());
+				if(! getGraphFromInput(graphText, GraphPropertyHolder.getEdgeDirection())){
+					valid = false;
+				}
 			}
 			
 			System.out.println("GraphText: " + graphText + valid);
-			this.loadNextScene();
+			if(valid) this.loadNextScene();
 		}
 		catch (Exception exception)
 		{

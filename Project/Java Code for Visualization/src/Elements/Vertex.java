@@ -54,7 +54,7 @@ public class Vertex extends Circle implements Drawable{
 	public void draw(Color colour) {
 		// Draw the circle
 		this.setFill(colour);
-		
+		this.setStroke(Color.BLACK);
 		// Draw the label
 		if (this.vertexID == null)
 			this.vertexID = new Label();
@@ -62,7 +62,7 @@ public class Vertex extends Circle implements Drawable{
 		
 		this.vertexID.setLayoutX(this.getCenterX() - 6);
 		this.vertexID.setLayoutY(this.getCenterY() - 6);
-		vertexID.setFont(Font.font("Helvetica", FontWeight.BOLD, 11.6));
+		vertexID.setFont(Font.font("Helvetica", FontWeight.BOLD, 14.6));
         vertexID.setTextFill(Color.ORANGERED);
         vertexID.setText(String.valueOf(this.getID()));
         vertexID.setDisable(true);

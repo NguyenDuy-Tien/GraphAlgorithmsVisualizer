@@ -3,11 +3,14 @@ package Elements;
 import java.util.Arrays;
 
 import java.util.Collection;
+
+import javafx.animation.FadeTransition;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import Algorithm.Drawable;
 import javafx.scene.control.Label;
 import javafx.scene.shape.Path;
+import javafx.util.Duration;
 /*import javafx.animation.StrokeTransition;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
@@ -34,7 +37,10 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 		this.setWeight(weight);
         System.out.println("Adding Edge");
 		this.draw(colour);
-		this.setStrokeWidth(1.6);
+		if(this instanceof UndirectedEdge) {
+			this.setStrokeWidth(1.8);
+		}
+		else this.setStrokeWidth(1.2);
 	}
 	
 	public void setWeight(int newWeight)
@@ -79,6 +85,17 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	{
 		//this.setDisable(true);
 		this.draw(color);
+	}
+	
+	public void highlightEdge(Color color) {
+		 this.draw(color);
+		 FadeTransition ft = new FadeTransition(Duration.millis(500), this);
+	     ft.setFromValue(1.0);
+	     ft.setToValue(0.3);
+	     ft.setCycleCount(4);
+	     ft.setAutoReverse(true);
+	     ft.play();
+	     this.draw(color);
 	}
 
 	public Collection<Node> drawableObjects()

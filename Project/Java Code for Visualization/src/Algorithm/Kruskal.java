@@ -32,11 +32,13 @@ public class Kruskal extends MST
 				this._forests.add(new LinkedList<Vertex>());
 				this._forests.get(iii).add(allTheVertices.get(iii));
 			}
+			this.checkConnected();
+			
 	}
 	
 	public void runOne()
 	{
-		if (this.isDone())
+		if (this.isDone()||(!this.connected))
 			return;
 
 		// Find the lightest edge
@@ -54,7 +56,7 @@ public class Kruskal extends MST
 			// and then add it to the MST
 			if (tree1 != tree2)
 			{
-				lightestEdge.draw(HIGHLIGHT_EDGE);
+				lightestEdge.highlightEdge(HIGHLIGHT_EDGE);
 				lightestEdge.getBegin().draw(HIGHLIGHT_VERTEX);
 				lightestEdge.getEnd().draw(HIGHLIGHT_VERTEX);
 				this._currentEdges.add(lightestEdge);
@@ -91,6 +93,7 @@ public class Kruskal extends MST
 		// But oh well, Java needs this
 		return -1;	
 	}
+	
 	
 	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
 	private final Color HIGHLIGHT_EDGE = Color.RED;

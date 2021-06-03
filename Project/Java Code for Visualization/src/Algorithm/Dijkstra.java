@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -51,6 +52,10 @@ public class Dijkstra extends Algorithm
 		this._nextEdge = new LinkedList<>();
 		this._nextEdge.addAll(this._graph.getEdgesFrom(this._root));
 		
+//		for(Edge edge : this._graph.getEdgesFrom(this._root)) {
+//			edge.highlightEdge(HIGHLIGHT_EDGE);
+//		}
+		
 		// Reset the distance measures
 		this._minDistTo = new HashMap<>();
 		for (final Vertex v: this._graph.get_vertices())
@@ -72,7 +77,7 @@ public class Dijkstra extends Algorithm
 				}
 				else
 				{
-					e.draw(HIGHLIGHT_EDGE);
+					e.draw(HIGHLIGHT_EDGE_DONE);
 				}
 			}
 		}
@@ -104,16 +109,26 @@ public class Dijkstra extends Algorithm
 				if (!edge.startsFrom(first))
 					continue;
 			
+			// highlight re-evaluate edges of last runOne
+			for(Edge e : nextHighlightEdges) {
+				e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+				e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+				e.highlightEdge(HIGHLIGHT_RE_EVALUATE_EDGE);
+			}
+			nextHighlightEdges.clear();
+			
 			// Highlight the vertices and edge of this step
 			first.draw(HIGHLIGHT_VERTEX);
-			edge.draw(HIGHLIGHT_EDGE);
-			
 			
 			if (this._minDistTo.get(second) > this._minDistTo.get(first) + edge.getWeight())
 			{
+				// Highlight edge that satisfy condition
+				edge.highlightEdge(HIGHLIGHT_EDGE);
 				// Highlight the vertex as changed value
 				this._minDistTo.put(second, this._minDistTo.get(first) + edge.getWeight());
 					second.draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+				Edge e1 = this._edgeTo.get(second);
+				if(e1 != null) e1.draw(Color.BLACK);
 				this._edgeTo.put(second, edge);
 				// Second vertex changed minimum distance value
 				// thus we need to re-evaluate all vertices connected to Second
@@ -121,9 +136,10 @@ public class Dijkstra extends Algorithm
 					if (!this._nextEdge.contains(e))
 					{
 						this._nextEdge.add(e);
-						e.draw(HIGHLIGHT_RE_EVALUATE_EDGE);
-						e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
-						e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+						nextHighlightEdges.add(e);	// highlight in next runOne
+//						e.highlightEdge(HIGHLIGHT_RE_EVALUATE_EDGE);
+//						e.getBegin().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
+//						e.getEnd().draw(HIGHLIGHT_RE_EVALUATE_VERTEX);
 					}
 			}
 		}
@@ -132,9 +148,10 @@ public class Dijkstra extends Algorithm
 	public String toString()
 	{
 		StringBuilder res = new StringBuilder();
+		res.append("The root is: " + this._root.getID() + "\nDistance from root to other vertices:\n");
 		for (Vertex v: this._minDistTo.keySet())
 		{
-			res.append(v.getID() + " " + this._minDistTo.get(v) + "\n");
+			res.append(" " + v.getID() + "  :  " + this._minDistTo.get(v) + "\n");
 		}
 		return res.toString();
 	}
@@ -148,7 +165,9 @@ public class Dijkstra extends Algorithm
 
 	private final Color HIGHLIGHT_VERTEX = Color.DARKKHAKI;
 	private final Color HIGHLIGHT_EDGE = Color.BLUE;
+	private final Color HIGHLIGHT_EDGE_DONE = Color.GOLD;
 	private final Color HIGHLIGHT_RE_EVALUATE_EDGE = Color.RED;
 	private final Color HIGHLIGHT_RE_EVALUATE_VERTEX = Color.DARKRED;
+	private Vector<Edge> nextHighlightEdges = new Vector<Edge>();
 
 }
