@@ -88,14 +88,13 @@ public abstract class Edge extends Path implements Comparable<Edge>, Drawable {
 	}
 	
 	public void highlightEdge(Color color) {
-		 this.draw(color);
-		 FadeTransition ft = new FadeTransition(Duration.millis(500), this);
-	     ft.setFromValue(1.0);
-	     ft.setToValue(0.3);
-	     ft.setCycleCount(4);
-	     ft.setAutoReverse(true);
-	     ft.play();
-	     this.draw(color);
+		this.draw(color);
+		FadeTransition ft = new FadeTransition(Duration.millis(500), this);
+	    ft.setFromValue(1.0);
+	    ft.setToValue(0.3);
+	    ft.setCycleCount(4);
+	    ft.setAutoReverse(true);
+	    ft.play();
 	}
 
 	public Collection<Node> drawableObjects()
