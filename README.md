@@ -1,9 +1,6 @@
-###############################################################################
-############################################################################### 
----- J U S T  A N O T H E R  V I S U A L I Z E R  for  A L G O R I T H M S ---- 
-############################################################################### 
-###################################J.A.V.A.####################################
-############################################################################### 
+_#GraphAlgorithmsVisualizer_ 
+
+The app visualizes some Algorithms used in Minimum Spanning Tree and Shortest Path in Graph Theory (Dijkstra, Prim, Kruskals) in a user-friendly manner.
 
 To get started, fire up your most trusted sh, bash and run:
 
